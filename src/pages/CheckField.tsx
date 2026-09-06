@@ -40,7 +40,7 @@ export const CheckField: React.FC = () => {
   const urlFieldId = searchParams.get('fieldId');
   const urlMode = searchParams.get('mode') as CheckMode | null;
 
-  const { fields, getSelectedField, setSelectedFieldId, updateFieldAnalysis, recordFieldFollowUp, addField } = useFieldStore();
+  const { fields, selectedFieldId, getSelectedField, setSelectedFieldId, updateFieldAnalysis, recordFieldFollowUp, addField } = useFieldStore();
   const {
     currentStep,
     setStep,
@@ -57,15 +57,21 @@ export const CheckField: React.FC = () => {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Determine active field
-  const targetField = fields.find((f: Field) => f.id === (urlFieldId || formState.fieldId)) || getSelectedField();
+  // Determine active field: prioritize URL if explicitly passed, otherwise use store's selectedFieldId
+  const targetField =
+    (urlFieldId ? fields.find((f: Field) => f.id === urlFieldId) : null) ||
+    fields.find((f: Field) => f.id === selectedFieldId) ||
+    getSelectedField();
 
-  // Initialize form state whenever field or mode in URL changes
+  // Initialize form state whenever active field or mode changes
   useEffect(() => {
     const isNewUnchecked = targetField.lastCheckedDate === 'Never';
     const effectiveMode: CheckMode = urlMode || (isNewUnchecked ? 'initial' : 'followup');
 
-    setSelectedFieldId(targetField.id);
+    if (selectedFieldId !== targetField.id) {
+      setSelectedFieldId(targetField.id);
+    }
+
     initializeForField(
       targetField.id,
       effectiveMode,
@@ -74,7 +80,7 @@ export const CheckField: React.FC = () => {
       targetField.variety,
       targetField.plantingDate
     );
-  }, [urlFieldId, targetField.id, urlMode]);
+  }, [urlFieldId, targetField.id, urlMode, selectedFieldId]);
 
   // Progress step titles for analysis screen
   const analysisSteps = [

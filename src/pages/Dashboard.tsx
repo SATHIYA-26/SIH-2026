@@ -18,39 +18,42 @@ export const Dashboard: React.FC = () => {
   const latestAnalysis = field.latestAnalysis;
 
   return (
-    <div className="space-y-6">
-      {/* 1. FIELD HEADER */}
+    <div className="space-y-5 pb-8">
+      {/* 1. FIELD HEADER & COMMAND ACTIONS */}
       <FieldHeader field={field} />
 
-      {/* 2. PRIMARY STATUS (CURRENT CONDITION vs 7-DAY RISK) */}
+      {/* 2. FIELD SPECIFICATION & LIVE TELEMETRY STRIP */}
+      <FieldContextStrip field={field} />
+
+      {/* 3. STEP 1 & 2: WHAT IS HAPPENING? + HOW SERIOUS IS IT? */}
       <PrimaryStatusArea
         condition={latestAnalysis.condition}
         risk={latestAnalysis.risk}
+        zoneName={field.inspectionPoints?.[0]?.label || 'Zone NE-2 (Hotspot)'}
       />
 
-      {/* 3. COMPACT FIELD CONTEXT STRIP */}
-      <FieldContextStrip field={field} />
-
-      {/* 4. OPTIONAL RECHECK COMPARISON BANNER (if recent recheck performed or simulated) */}
+      {/* 4. STEP 3: WHAT CHANGED? (BEFORE VS AFTER COMPARISON TELEMETRY) */}
       {field.previousAnalysis && (
         <ComparisonView
           previous={field.previousAnalysis}
           current={latestAnalysis}
-          status={latestAnalysis.comparisonStatus || 'IMPROVING'}
+          status={latestAnalysis.comparisonStatus}
         />
       )}
 
-      {/* 5. FIELD OVERVIEW MAP (Spatial Analysis) */}
-      <FieldOverviewMap field={field} />
+      {/* 5. SPATIAL HOTSPOTS & FIELD OVERVIEW MAP */}
+      <div id="field-map-section">
+        <FieldOverviewMap field={field} />
+      </div>
 
-      {/* 6. CURRENT VISUAL DIAGNOSIS (Leaf Photo & Probabilities) */}
+      {/* 6. CURRENT VISUAL DIAGNOSIS & EVIDENCE */}
       <DiagnosisPanel condition={latestAnalysis.condition} />
 
-      {/* 7. WHY IS THE RISK HIGH? (Risk Drivers) */}
+      {/* 7. STEP 4: WHY DID IT HAPPEN? (ROOT-CAUSE DRIVERS) */}
       <RiskDriversPanel risk={latestAnalysis.risk} />
 
-      {/* 8. WHAT SHOULD I DO? + NEXT FIELD CHECK (2-column grid on desktop) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* 8. STEP 5: WHAT SHOULD I DO NEXT? (OPERATIONAL ACTIONS + NEXT RECHECK) */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <RecommendedActionsPanel
           actions={latestAnalysis.actions}
           fieldId={field.id}
@@ -62,15 +65,15 @@ export const Dashboard: React.FC = () => {
         />
       </div>
 
-      {/* 9. CROP GROWTH LIFECYCLE TIMELINE */}
+      {/* 9. TEMPORAL TRENDS (RISK, DISEASE, PEST) */}
+      <RiskTrendChart />
+
+      {/* 10. CROP GROWTH LIFECYCLE PROGRESSION */}
       <CropTimeline
         stageInfo={latestAnalysis.cropStage}
         daysSincePlanting={field.daysSincePlanting}
         plantingDate={field.plantingDate}
       />
-
-      {/* 10. RISK TREND (Clean Line Chart) */}
-      <RiskTrendChart />
     </div>
   );
 };

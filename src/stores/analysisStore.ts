@@ -290,35 +290,35 @@ export const useAnalysisStore = create<AnalysisState>((set, get) => ({
           if (topClass !== 'healthy') {
             drivers.push({
               id: 'd1',
-              title: 'Visual Disease Signal',
+              title: 'Active Pathogen Signal',
               value: statusTitle,
-              impact: riskLevel === 'HIGH' ? 'high' : 'medium' as any,
-              description: 'Active pathogen symptoms identified on observed crop foliage.'
+              impact: riskLevel === 'HIGH' ? ('high' as const) : ('medium' as const),
+              description: 'Visible leaf symptoms and active pathogen pressure identified in field.'
             });
           }
           if (pestCount > 8) {
             drivers.push({
               id: 'd2',
-              title: 'Elevated Pest Pressure',
+              title: 'Pest Pressure',
               value: `${pestCount} ${formState.pestType}`,
-              impact: pestCount > 15 ? 'high' : 'medium' as any,
-              description: 'Vector feeding punctures facilitate pathogen penetration.'
+              impact: pestCount > 15 ? ('high' as const) : ('medium' as const),
+              description: 'Vector feeding punctures facilitate secondary fungal and bacterial entry.'
             });
           }
           drivers.push({
             id: 'd3',
-            title: 'High Coastal Relative Humidity',
+            title: 'Canopy Humidity',
             value: '86% RH (Chennai)',
-            impact: 'high' as any,
+            impact: 'high' as const,
             description: 'Canopy wetness duration accelerates bacterial and fungal spore propagation.'
           });
           if (isFollowup && treatment === 'YES') {
             drivers.push({
               id: 'd4',
-              title: 'Treatment Mitigation Effect',
-              value: 'Bactericide/Insecticide Applied',
-              impact: 'low' as any,
-              description: 'Applied chemical treatment suppresses active pathogen multiplication rate.'
+              title: 'Treatment Response',
+              value: 'Bactericide / Spray Applied',
+              impact: 'low' as const,
+              description: 'Applied treatment actively suppresses pathogen reproduction rate.'
             });
           }
 

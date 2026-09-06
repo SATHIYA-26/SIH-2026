@@ -2,8 +2,11 @@ import { Field } from '../types/field';
 import { FieldAlert } from '../types/alert';
 import { HistoryTimelineEntry, TrendDataPoint } from '../types/history';
 
-export const COTTON_LEAF_BACTERIAL_IMAGE = '/src/assets/cotton_bacterial_blight.jpg';
-export const COTTON_LEAF_HEALTHY_IMAGE = '/src/assets/cotton_healthy.jpg';
+import cottonBacterial from '../assets/cotton_bacterial_blight.jpg';
+import cottonHealthy from '../assets/cotton_healthy.jpg';
+
+export const COTTON_LEAF_BACTERIAL_IMAGE = cottonBacterial || '/assets/cotton_bacterial_blight.jpg';
+export const COTTON_LEAF_HEALTHY_IMAGE = cottonHealthy || '/assets/cotton_healthy.jpg';
 
 export const DEMO_SCENARIO_HIGH_RISK: Field = {
   id: 'field-cotton-a',
@@ -58,7 +61,7 @@ export const DEMO_SCENARIO_HIGH_RISK: Field = {
     {
       id: 'pt-1',
       lat: 13.1150,
-      lng: 13.1160,
+      lng: 80.1560,
       label: 'Zone NE-2 (Hotspot)',
       type: 'disease',
       diseaseName: 'Bacterial Blight',
@@ -70,8 +73,9 @@ export const DEMO_SCENARIO_HIGH_RISK: Field = {
       id: 'pt-2',
       lat: 13.1135,
       lng: 80.1530,
-      label: 'Zone SW-1',
+      label: 'Zone SW-1 (Monitoring Line)',
       type: 'pest',
+      diseaseName: 'Aphid Cluster',
       pestCount: 12,
       severity: 'moderate',
       lastChecked: 'Today 09:50 AM'
@@ -80,7 +84,7 @@ export const DEMO_SCENARIO_HIGH_RISK: Field = {
       id: 'pt-3',
       lat: 13.1160,
       lng: 80.1525,
-      label: 'Zone NW-4',
+      label: 'Zone NW-4 (Healthy Transect)',
       type: 'healthy',
       pestCount: 4,
       severity: 'low',
@@ -90,7 +94,7 @@ export const DEMO_SCENARIO_HIGH_RISK: Field = {
       id: 'pt-4',
       lat: 13.1120,
       lng: 80.1565,
-      label: 'Zone SE-3',
+      label: 'Zone SE-3 (Border Bed)',
       type: 'warning',
       diseaseName: 'Suspected lesions',
       pestCount: 9,
@@ -364,11 +368,32 @@ export const DEMO_SCENARIO_LOW_RISK: Field = {
       id: 'pt-b1',
       lat: 13.0070,
       lng: 80.2210,
-      label: 'Center Plot',
+      label: 'Center Trial Row 3',
       type: 'healthy',
       pestCount: 3,
       severity: 'low',
-      lastChecked: 'Yesterday'
+      lastChecked: 'Yesterday 10:00 AM'
+    },
+    {
+      id: 'pt-b2',
+      lat: 13.0082,
+      lng: 80.2195,
+      label: 'North Perimeter Bed',
+      type: 'healthy',
+      pestCount: 2,
+      severity: 'low',
+      lastChecked: 'Yesterday 10:30 AM'
+    },
+    {
+      id: 'pt-b3',
+      lat: 13.0055,
+      lng: 80.2220,
+      label: 'South Drainage Line',
+      type: 'warning',
+      diseaseName: 'Mild Leaf Chlorosis',
+      pestCount: 4,
+      severity: 'low',
+      lastChecked: 'Yesterday 11:00 AM'
     }
   ],
   latestAnalysis: {
@@ -535,7 +560,40 @@ export const ALL_FIELDS: Field[] = [
         [12.9215, 80.0965],
       ]
     },
-    inspectionPoints: [],
+    inspectionPoints: [
+      {
+        id: 'pt-c1',
+        lat: 12.9255,
+        lng: 80.1010,
+        label: 'Block East-2 (Vector Hotspot)',
+        type: 'pest',
+        diseaseName: 'Leaf Curl Virus Signs',
+        pestCount: 8,
+        severity: 'moderate',
+        lastChecked: '2 days ago 09:00 AM'
+      },
+      {
+        id: 'pt-c2',
+        lat: 12.9238,
+        lng: 80.0985,
+        label: 'Block West-1 (Canopy Row)',
+        type: 'warning',
+        diseaseName: 'Suspected Upcurling',
+        pestCount: 6,
+        severity: 'moderate',
+        lastChecked: '2 days ago 09:45 AM'
+      },
+      {
+        id: 'pt-c3',
+        lat: 12.9265,
+        lng: 80.0990,
+        label: 'North Canopy Transect',
+        type: 'healthy',
+        pestCount: 3,
+        severity: 'low',
+        lastChecked: '2 days ago 10:15 AM'
+      }
+    ],
     latestAnalysis: {
       ...DEMO_SCENARIO_HIGH_RISK.latestAnalysis,
       fieldId: 'field-cotton-c',
@@ -605,7 +663,39 @@ export const ALL_FIELDS: Field[] = [
         [13.1155, 80.0975],
       ]
     },
-    inspectionPoints: [],
+    inspectionPoints: [
+      {
+        id: 'pt-d1',
+        lat: 13.1185,
+        lng: 80.1010,
+        label: 'Central Sowing Bed A',
+        type: 'healthy',
+        pestCount: 4,
+        severity: 'low',
+        lastChecked: '3 days ago 08:30 AM'
+      },
+      {
+        id: 'pt-d2',
+        lat: 13.1195,
+        lng: 80.0990,
+        label: 'North Windbreak Row',
+        type: 'healthy',
+        pestCount: 2,
+        severity: 'low',
+        lastChecked: '3 days ago 09:15 AM'
+      },
+      {
+        id: 'pt-d3',
+        lat: 13.1168,
+        lng: 80.1005,
+        label: 'South Gate Bed 4',
+        type: 'warning',
+        diseaseName: 'Minor Aphid Cluster',
+        pestCount: 5,
+        severity: 'low',
+        lastChecked: '3 days ago 09:40 AM'
+      }
+    ],
     latestAnalysis: {
       ...DEMO_SCENARIO_LOW_RISK.latestAnalysis,
       fieldId: 'field-cotton-d',

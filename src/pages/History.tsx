@@ -11,26 +11,87 @@ import {
   CartesianGrid,
   Legend,
 } from 'recharts';
-import { Sprout, CheckCircle2, AlertTriangle, Clock, TrendingUp, Bug, Filter } from 'lucide-react';
+import { Sprout, CheckCircle2, AlertTriangle, Clock, TrendingUp, Bug, Filter, MapPin } from 'lucide-react';
 
 export const History: React.FC = () => {
   const { getSelectedField } = useFieldStore();
   const field = getSelectedField();
   const [activeTab, setActiveTab] = useState<'timeline' | 'trends'>('timeline');
 
-  const history = MOCK_FIELD_HISTORY;
-  const trendData = MOCK_TREND_DATA;
+  // Build field-specific timeline dynamically
+  const history =
+    field.id === 'field-cotton-a' && (!field.followUpHistory || field.followUpHistory.length <= 1)
+      ? MOCK_FIELD_HISTORY
+      : [
+          {
+            id: `hist-${field.id}-1`,
+            fieldId: field.id,
+            date: field.plantingDate,
+            displayDate: new Date(field.plantingDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }).toUpperCase(),
+            title: 'Field Sown & Planted',
+            category: 'planting' as const,
+            conditionSummary: `${field.variety} planted across ${field.areaAcres} acres in ${field.locationName}. Initial germination normal.`,
+            riskProbability: 0.05,
+            pestCount: 0,
+            weatherSummary: 'Pre-sowing weather, 31°C, favorable'
+          },
+          ...(field.followUpHistory || []).map((fu) => ({
+            id: fu.id,
+            fieldId: field.id,
+            date: fu.date,
+            displayDate: fu.displayDate.toUpperCase(),
+            title: `Follow-Up Check #${fu.followUpNumber}`,
+            category: 'followup' as const,
+            conditionSummary: `${fu.symptomObserved} · Status: ${fu.statusVerdict}. Treatment applied: ${fu.treatmentApplied}. Notes: ${fu.treatmentNotes || 'Scouted successfully'}.`,
+            riskProbability: fu.riskProbability,
+            pestCount: fu.currentPestCount,
+            weatherSummary: 'Chennai local weather'
+          })),
+          {
+            id: `hist-${field.id}-latest`,
+            fieldId: field.id,
+            date: '2026-09-04',
+            displayDate: 'TODAY',
+            title: `Current Check: ${field.currentConditionStatus}`,
+            category: (field.riskProbability >= 0.6 ? 'detection' : 'check') as 'detection' | 'check',
+            conditionSummary: `Condition: ${field.latestAnalysis.condition.status}. 7-day outbreak risk at ${Math.round(field.riskProbability * 100)}%. Pest pressure: ${field.pestPressureSummary}.`,
+            riskProbability: field.riskProbability,
+            pestCount: field.latestAnalysis.pest.currentCount,
+            weatherSummary: `${field.latestAnalysis.weather.temperature}°C, ${field.latestAnalysis.weather.humidity}% RH, ${field.latestAnalysis.weather.recentRainfall} mm rain`
+          }
+        ];
+
+  // Adjust trend data point for the active field's current risk
+  const trendData = MOCK_TREND_DATA.map((pt, idx) => {
+    if (idx === MOCK_TREND_DATA.length - 1) {
+      return {
+        ...pt,
+        riskProbability: Math.round(field.riskProbability * 100),
+        pestCount: field.latestAnalysis.pest.currentCount,
+        humidity: field.latestAnalysis.weather.humidity,
+        rainfall: field.latestAnalysis.weather.recentRainfall,
+        temperature: field.latestAnalysis.weather.temperature,
+      };
+    }
+    return pt;
+  });
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-            Field History & Progression
-          </h1>
-          <p className="text-sm text-slate-500 mt-0.5">
-            Timeline and health trends for {field.name}
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+              Field History & Progression
+            </h1>
+            <span className="text-xs font-bold bg-emerald-100 text-emerald-900 px-2.5 py-0.5 rounded-full">
+              {field.crop}
+            </span>
+          </div>
+          <p className="text-sm text-slate-500 mt-0.5 flex items-center gap-1.5">
+            <MapPin className="w-3.5 h-3.5 text-slate-400" />
+            <span>Timeline and health trends for <strong>{field.name}</strong> ({field.locationName})</span>
           </p>
         </div>
 
@@ -64,7 +125,7 @@ export const History: React.FC = () => {
         <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs">
           <div className="relative pl-6 sm:pl-8 space-y-6 before:absolute before:left-3 sm:before:left-4 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200">
             {history.map((entry, idx) => (
-              <div key={entry.id} className="relative group">
+              <div key={entry.id || idx} className="relative group">
                 {/* Node marker */}
                 <div
                   className={`absolute -left-6 sm:-left-8 top-1 w-6 h-6 rounded-full border-2 bg-white flex items-center justify-center ${

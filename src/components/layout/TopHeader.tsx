@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useFieldStore } from '../../stores/fieldStore';
 import { useUIStore } from '../../stores/uiStore';
 import {
@@ -17,6 +17,7 @@ import {
 
 export const TopHeader: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { fields, selectedFieldId, setSelectedFieldId, getSelectedField } = useFieldStore();
   const {
     toggleSidebar,
@@ -37,6 +38,14 @@ export const TopHeader: React.FC = () => {
   };
 
   const unreadAlerts = alerts.filter(a => !a.isRead);
+
+  const handleFieldChange = (newFieldId: string) => {
+    setSelectedFieldId(newFieldId);
+    // If on check-field page, update URL search params immediately so the form and view reload
+    if (location.pathname.startsWith('/check-field')) {
+      navigate(`/check-field?fieldId=${newFieldId}`, { replace: true });
+    }
+  };
 
   return (
     <header className="sticky top-0 z-30 bg-white border-b border-slate-200 px-4 md:px-6 py-2.5 transition-all">
@@ -59,7 +68,7 @@ export const TopHeader: React.FC = () => {
                 <div className="flex items-center gap-1.5">
                   <select
                     value={selectedFieldId}
-                    onChange={(e) => setSelectedFieldId(e.target.value)}
+                    onChange={(e) => handleFieldChange(e.target.value)}
                     className="bg-transparent text-sm font-semibold text-slate-900 focus:outline-none cursor-pointer pr-4"
                   >
                     {fields.map((f) => (

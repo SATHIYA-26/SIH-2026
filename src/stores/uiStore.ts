@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import { MOCK_ALERTS } from '../data/mockData';
 import { FieldAlert } from '../types/alert';
 
@@ -17,20 +18,27 @@ interface UIState {
   markAllAlertsRead: () => void;
 }
 
-export const useUIStore = create<UIState>((set) => ({
-  sidebarOpen: true,
-  language: 'English',
-  alerts: MOCK_ALERTS,
-  notificationsOpen: false,
+export const useUIStore = create<UIState>()(
+  persist(
+    (set) => ({
+      sidebarOpen: true,
+      language: 'English',
+      alerts: MOCK_ALERTS,
+      notificationsOpen: false,
 
-  toggleSidebar: () => set(state => ({ sidebarOpen: !state.sidebarOpen })),
-  setSidebarOpen: (open) => set({ sidebarOpen: open }),
-  setLanguage: (lang) => set({ language: lang }),
-  toggleNotifications: () => set(state => ({ notificationsOpen: !state.notificationsOpen })),
-  markAlertRead: (id) => set(state => ({
-    alerts: state.alerts.map(a => a.id === id ? { ...a, isRead: true } : a)
-  })),
-  markAllAlertsRead: () => set(state => ({
-    alerts: state.alerts.map(a => ({ ...a, isRead: true }))
-  }))
-}));
+      toggleSidebar: () => set(state => ({ sidebarOpen: !state.sidebarOpen })),
+      setSidebarOpen: (open) => set({ sidebarOpen: open }),
+      setLanguage: (lang) => set({ language: lang }),
+      toggleNotifications: () => set(state => ({ notificationsOpen: !state.notificationsOpen })),
+      markAlertRead: (id) => set(state => ({
+        alerts: state.alerts.map(a => a.id === id ? { ...a, isRead: true } : a)
+      })),
+      markAllAlertsRead: () => set(state => ({
+        alerts: state.alerts.map(a => ({ ...a, isRead: true }))
+      }))
+    }),
+    {
+      name: 'apocalypse_ai_ui_storage_v1',
+    }
+  )
+);

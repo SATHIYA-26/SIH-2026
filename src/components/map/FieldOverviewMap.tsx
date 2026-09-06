@@ -1,34 +1,92 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Field, InspectionPoint } from '../../types/field';
-import { MapContainer, TileLayer, Polygon, Marker, Popup, CircleMarker } from 'react-leaflet';
-import L from 'leaflet';
-import { MapPin, Layers, Filter, Eye, AlertTriangle, Bug, CheckCircle, ShieldAlert } from 'lucide-react';
+import { MapContainer, TileLayer, Polygon, CircleMarker, Popup, useMap, useMapEvents } from 'react-leaflet';
+import { Layers, Filter, Eye, AlertTriangle, Bug, CheckCircle, ShieldAlert, MapPin } from 'lucide-react';
 
 interface FieldOverviewMapProps {
   field: Field;
 }
 
+// Helper component to smoothly re-center leaflet map when active field changes
+const MapRecenter: React.FC<{ center: [number, number] }> = ({ center }) => {
+  const map = useMap();
+  useEffect(() => {
+    if (center && center.length === 2) {
+      map.setView(center, 16, { animate: true });
+    }
+  }, [center[0], center[1], map]);
+  return null;
+};
+
+// Helper component to handle canvas clicks
+const MapClickDetector: React.FC<{
+  points: InspectionPoint[];
+  onSelect: (pt: InspectionPoint) => void;
+}> = ({ points, onSelect }) => {
+  useMapEvents({
+    click: (e) => {
+      if (points.length === 0) return;
+      // Find closest point to click
+      let closestPt = points[0];
+      let minDistance = Infinity;
+      points.forEach((pt) => {
+        const d = Math.pow(pt.lat - e.latlng.lat, 2) + Math.pow(pt.lng - e.latlng.lng, 2);
+        if (d < minDistance) {
+          minDistance = d;
+          closestPt = pt;
+        }
+      });
+      if (closestPt) {
+        onSelect(closestPt);
+      }
+    },
+  });
+  return null;
+};
+
 export const FieldOverviewMap: React.FC<FieldOverviewMapProps> = ({ field }) => {
   const [activeLayer, setActiveLayer] = useState<'All' | 'Disease' | 'Pest' | 'Risk'>('All');
   const [timeFilter, setTimeFilter] = useState<'Today' | '7 Days' | '30 Days'>('Today');
-  const [selectedPoint, setSelectedPoint] = useState<InspectionPoint | null>(field.inspectionPoints[0] || null);
+  const [selectedPoint, setSelectedPoint] = useState<InspectionPoint | null>(
+    field.inspectionPoints?.[0] || null
+  );
 
-  const center = field.polygon.center || [20.7453, 78.6022];
-  const polygonBounds = field.polygon.bounds || [
-    [20.7480, 78.5990],
-    [20.7485, 78.6050],
-    [20.7420, 78.6060],
-    [20.7415, 78.5995],
-  ];
+  const center = (field.polygon?.center && field.polygon.center.length === 2
+    ? field.polygon.center
+    : [13.1143, 80.1548]) as [number, number];
 
-  // Filter inspection points based on layer
-  const filteredPoints = field.inspectionPoints.filter((pt) => {
-    if (activeLayer === 'All') return true;
-    if (activeLayer === 'Disease') return pt.type === 'disease' || pt.type === 'warning';
-    if (activeLayer === 'Pest') return pt.type === 'pest' || (pt.pestCount && pt.pestCount > 5);
-    if (activeLayer === 'Risk') return pt.severity === 'high';
-    return true;
+  const polygonBounds = (field.polygon?.bounds && field.polygon.bounds.length > 0
+    ? field.polygon.bounds
+    : [
+        [13.1170, 80.1520],
+        [13.1180, 80.1580],
+        [13.1110, 80.1590],
+        [13.1105, 80.1525],
+      ]) as [number, number][];
+
+  const allPoints = field.inspectionPoints || [];
+
+  // Filter inspection points based on layer & time
+  const filteredPoints = allPoints.filter((pt) => {
+    if (activeLayer === 'Disease') return pt.type === 'disease' || pt.type === 'warning' || !!pt.diseaseName;
+    if (activeLayer === 'Pest') return pt.type === 'pest' || (pt.pestCount !== undefined && pt.pestCount > 3);
+    if (activeLayer === 'Risk') return pt.severity === 'high' || pt.severity === 'moderate';
+    return true; // 'All'
   });
+
+  // Re-sync selected point whenever field or layer filter changes
+  useEffect(() => {
+    if (filteredPoints.length > 0) {
+      // Keep selected if still in filtered set, else pick first filtered
+      if (!selectedPoint || !filteredPoints.some((p) => p.id === selectedPoint.id)) {
+        setSelectedPoint(filteredPoints[0]);
+      }
+    } else if (allPoints.length > 0) {
+      setSelectedPoint(allPoints[0]);
+    } else {
+      setSelectedPoint(null);
+    }
+  }, [field.id, activeLayer, filteredPoints.length]);
 
   const getPointColor = (pt: InspectionPoint) => {
     if (pt.severity === 'high' || pt.type === 'disease') return '#dc2626'; // Red
@@ -51,7 +109,7 @@ export const FieldOverviewMap: React.FC<FieldOverviewMapProps> = ({ field }) => 
             </span>
           </div>
           <p className="text-xs text-slate-500 mt-0.5">
-            Geographic distribution of leaf observations, pest counts, and risk zones
+            Geographic distribution of leaf observations, pest counts, and risk zones for {field.name}
           </p>
         </div>
 
@@ -62,10 +120,11 @@ export const FieldOverviewMap: React.FC<FieldOverviewMapProps> = ({ field }) => 
             {(['All', 'Disease', 'Pest', 'Risk'] as const).map((layer) => (
               <button
                 key={layer}
+                type="button"
                 onClick={() => setActiveLayer(layer)}
                 className={`px-2.5 py-1 rounded-md font-semibold transition-colors cursor-pointer ${
                   activeLayer === layer
-                    ? 'bg-white text-emerald-900 shadow-xs'
+                    ? 'bg-white text-emerald-950 shadow-xs'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
@@ -79,6 +138,7 @@ export const FieldOverviewMap: React.FC<FieldOverviewMapProps> = ({ field }) => 
             {(['Today', '7 Days', '30 Days'] as const).map((tf) => (
               <button
                 key={tf}
+                type="button"
                 onClick={() => setTimeFilter(tf)}
                 className={`px-2 py-1 rounded-md font-medium transition-colors cursor-pointer ${
                   timeFilter === tf
@@ -103,6 +163,12 @@ export const FieldOverviewMap: React.FC<FieldOverviewMapProps> = ({ field }) => 
             scrollWheelZoom={false}
             className="w-full h-full"
           >
+            <MapRecenter center={center} />
+            <MapClickDetector
+              points={filteredPoints.length > 0 ? filteredPoints : allPoints}
+              onSelect={(pt) => setSelectedPoint(pt)}
+            />
+
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -118,45 +184,55 @@ export const FieldOverviewMap: React.FC<FieldOverviewMapProps> = ({ field }) => 
                 weight: 2,
                 dashArray: '4, 4',
               }}
+              eventHandlers={{
+                click: () => {
+                  if (filteredPoints.length > 0) {
+                    setSelectedPoint(filteredPoints[0]);
+                  }
+                },
+              }}
             />
 
             {/* Field Inspection Hotspot Points */}
-            {filteredPoints.map((pt) => (
-              <CircleMarker
-                key={pt.id}
-                center={[pt.lat, pt.lng]}
-                radius={pt.severity === 'high' ? 9 : 7}
-                pathOptions={{
-                  color: '#ffffff',
-                  fillColor: getPointColor(pt),
-                  fillOpacity: 0.9,
-                  weight: 2,
-                }}
-                eventHandlers={{
-                  click: () => setSelectedPoint(pt),
-                }}
-              >
-                <Popup>
-                  <div className="p-1 font-sans text-xs space-y-1">
-                    <div className="font-bold text-slate-900">{pt.label}</div>
-                    <div className="text-slate-600">
-                      Type: <span className="capitalize">{pt.type}</span>
+            {(filteredPoints.length > 0 ? filteredPoints : allPoints).map((pt) => {
+              const isSelected = selectedPoint?.id === pt.id;
+              return (
+                <CircleMarker
+                  key={pt.id}
+                  center={[pt.lat, pt.lng]}
+                  radius={isSelected ? 11 : pt.severity === 'high' ? 9 : 7}
+                  pathOptions={{
+                    color: isSelected ? '#0f172a' : '#ffffff',
+                    fillColor: getPointColor(pt),
+                    fillOpacity: isSelected ? 1.0 : 0.85,
+                    weight: isSelected ? 3 : 2,
+                  }}
+                  eventHandlers={{
+                    click: () => setSelectedPoint(pt),
+                  }}
+                >
+                  <Popup>
+                    <div className="p-1 font-sans text-xs space-y-1">
+                      <div className="font-bold text-slate-900">{pt.label}</div>
+                      <div className="text-slate-600">
+                        Type: <span className="capitalize font-semibold">{pt.type}</span>
+                      </div>
+                      {pt.diseaseName && (
+                        <div className="text-rose-700 font-semibold">{pt.diseaseName}</div>
+                      )}
+                      {pt.pestCount !== undefined && (
+                        <div className="text-slate-700">Pest count: {pt.pestCount} insects/leaf</div>
+                      )}
+                      <div className="text-[10px] text-slate-400">Checked: {pt.lastChecked}</div>
                     </div>
-                    {pt.diseaseName && (
-                      <div className="text-rose-700 font-semibold">{pt.diseaseName}</div>
-                    )}
-                    {pt.pestCount !== undefined && (
-                      <div className="text-slate-700">Pest count: {pt.pestCount}</div>
-                    )}
-                    <div className="text-[10px] text-slate-400">Checked: {pt.lastChecked}</div>
-                  </div>
-                </Popup>
-              </CircleMarker>
-            ))}
+                  </Popup>
+                </CircleMarker>
+              );
+            })}
           </MapContainer>
 
           {/* Map Legend Overlay */}
-          <div className="absolute bottom-3 left-3 z-1000 bg-white/95 backdrop-blur-xs border border-slate-200 rounded-lg p-2.5 shadow-md text-xs space-y-1.5 pointer-events-auto">
+          <div className="absolute bottom-3 left-3 z-[1000] bg-white/95 backdrop-blur-xs border border-slate-200 rounded-lg p-2.5 shadow-md text-xs space-y-1.5 pointer-events-auto">
             <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider font-mono">
               MAP LEGEND
             </div>
@@ -217,15 +293,23 @@ export const FieldOverviewMap: React.FC<FieldOverviewMapProps> = ({ field }) => 
                   </div>
                 )}
                 <div className="flex items-center justify-between">
+                  <span className="text-slate-500">Observation Filter:</span>
+                  <span className="font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded">
+                    {timeFilter} ({activeLayer} Layer)
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
                   <span className="text-slate-500">Last Observation:</span>
                   <span className="font-medium text-slate-700">{selectedPoint.lastChecked}</span>
                 </div>
               </div>
 
               <p className="text-xs text-slate-600 leading-relaxed">
-                {selectedPoint.type === 'disease'
-                  ? 'Hotspot shows early angular lesions with bacterial oozing risk under high humidity.'
-                  : 'Monitored area remains within acceptable IPM threshold limits.'}
+                {selectedPoint.type === 'disease' || selectedPoint.severity === 'high'
+                  ? 'Hotspot shows early angular lesions with bacterial oozing risk under high humidity. Immediate spot inspection recommended.'
+                  : selectedPoint.type === 'warning'
+                  ? 'Mild discoloration observed. Closely monitor row aeration and keep aphid traps active.'
+                  : 'Monitored area remains healthy and within acceptable threshold limits.'}
               </p>
             </div>
           ) : (
@@ -235,7 +319,7 @@ export const FieldOverviewMap: React.FC<FieldOverviewMapProps> = ({ field }) => 
           )}
 
           <div className="pt-3 border-t border-slate-200 text-[11px] text-slate-500 flex items-center justify-between">
-            <span>Points in view: {filteredPoints.length}</span>
+            <span>Points in view: {filteredPoints.length || allPoints.length}</span>
             <span className="font-medium text-emerald-700">Total area: {field.areaAcres} acres</span>
           </div>
         </div>

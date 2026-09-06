@@ -1,9 +1,9 @@
 import React from 'react';
 import { useFieldStore } from '../stores/fieldStore';
-import { FileText, Printer, Download, Share2, Sprout, CheckCircle2, AlertTriangle, Calendar } from 'lucide-react';
+import { FileText, Printer, Download, Share2, Sprout, CheckCircle2, AlertTriangle, Calendar, MapPin, User, ShieldCheck } from 'lucide-react';
 
 export const Reports: React.FC = () => {
-  const { getSelectedField } = useFieldStore();
+  const { getSelectedField, fields, setSelectedFieldId } = useFieldStore();
   const field = getSelectedField();
   const analysis = field.latestAnalysis;
 
@@ -11,21 +11,43 @@ export const Reports: React.FC = () => {
     window.print();
   };
 
+  const riskPercent = Math.round(analysis.risk.probability * 100);
+  const reportId = `RPT-2026-${field.id.replace('field-', '').toUpperCase()}-${Date.now().toString().slice(-4)}`;
+
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Action Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200 no-print">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-            Field Health & Advisory Report
-          </h1>
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+              Field Health & Advisory Report
+            </h1>
+            <span className="text-xs font-bold bg-emerald-100 text-emerald-900 px-2.5 py-0.5 rounded-full">
+              {field.name}
+            </span>
+          </div>
           <p className="text-xs text-slate-500 mt-0.5">
-            Official agronomic summary and precision early-warning dossier
+            Official agronomic summary and precision early-warning dossier for {field.name} ({field.locationName})
           </p>
         </div>
 
         <div className="flex items-center gap-2">
+          {/* Quick parcel switcher in report page */}
+          <select
+            value={field.id}
+            onChange={(e) => setSelectedFieldId(e.target.value)}
+            className="bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs font-medium text-slate-800 focus:outline-none focus:ring-1 focus:ring-emerald-600 cursor-pointer"
+          >
+            {fields.map((f) => (
+              <option key={f.id} value={f.id}>
+                {f.name}
+              </option>
+            ))}
+          </select>
+
           <button
+            type="button"
             onClick={handlePrint}
             className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 transition-colors shadow-xs cursor-pointer"
           >
@@ -34,8 +56,9 @@ export const Reports: React.FC = () => {
           </button>
 
           <button
+            type="button"
             onClick={() => {
-              alert('Field dossier PDF generated and downloaded.');
+              window.print();
             }}
             className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
           >
@@ -56,37 +79,47 @@ export const Reports: React.FC = () => {
               </div>
               <span className="text-lg font-bold tracking-tight text-slate-900">APOCALYPSE AI</span>
             </div>
-            <p className="text-xs text-slate-500 mt-1">Apocalypse Precision Agriculture Field Health Advisory</p>
+            <p className="text-xs text-slate-500 mt-1">
+              Precision Crop Disease, Pest & Outbreak Risk Management Dossier
+            </p>
+            <div className="text-xs text-slate-600 mt-1 flex items-center gap-2">
+              <span><strong>Agronomist:</strong> Sathiya (Chennai, Tamil Nadu)</span>
+            </div>
           </div>
 
-          <div className="text-right text-xs text-slate-600">
-            <div><strong>Report Date:</strong> 04 September 2026</div>
-            <div><strong>Period:</strong> Last 30 Days</div>
-            <div><strong>ID:</strong> RPT-2026-0904-FA</div>
+          <div className="text-right text-xs text-slate-600 space-y-0.5">
+            <div><strong>Report Date:</strong> 06 September 2026</div>
+            <div><strong>Evaluation Period:</strong> Last 30 Days</div>
+            <div><strong>Dossier ID:</strong> {reportId}</div>
+            <div><strong>Follow-up Status:</strong> {field.followUpCount || 0} checks completed</div>
           </div>
         </div>
 
         {/* Section 1: Parcel & Crop Info */}
         <div>
           <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono mb-3">
-            1. Parcel Information
+            1. PARCEL & CROP IDENTIFICATION
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-lg bg-slate-50 border border-slate-200 text-xs">
             <div>
               <span className="text-slate-400 block">Field Parcel:</span>
               <strong className="text-slate-900">{field.name}</strong>
+              <div className="text-[10px] text-slate-500">{field.locationName}</div>
             </div>
             <div>
-              <span className="text-slate-400 block">Crop / Variety:</span>
-              <strong className="text-slate-900">{field.crop} ({field.variety})</strong>
+              <span className="text-slate-400 block">Crop & Variety:</span>
+              <strong className="text-slate-900">{field.crop}</strong>
+              <div className="text-[10px] text-slate-500">{field.variety}</div>
             </div>
             <div>
-              <span className="text-slate-400 block">Acreage:</span>
+              <span className="text-slate-400 block">Total Area:</span>
               <strong className="text-slate-900">{field.areaAcres} acres</strong>
+              <div className="text-[10px] text-slate-500">{field.inspectionPoints?.length || 3} scouting points</div>
             </div>
             <div>
-              <span className="text-slate-400 block">Crop Age:</span>
-              <strong className="text-slate-900">Day {field.daysSincePlanting} (Estimated)</strong>
+              <span className="text-slate-400 block">Crop Age & Stage:</span>
+              <strong className="text-slate-900">Day {field.daysSincePlanting}</strong>
+              <div className="text-[10px] text-slate-500">{field.estimatedGrowthStage}</div>
             </div>
           </div>
         </div>
@@ -94,57 +127,96 @@ export const Reports: React.FC = () => {
         {/* Section 2: Health & Risk Evaluation */}
         <div>
           <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono mb-3">
-            2. Health Status & 7-Day Outbreak Risk
+            2. HEALTH STATUS & 7-DAY OUTBREAK RISK FORECAST
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="p-4 rounded-lg border border-slate-200 space-y-1.5 text-xs">
+            <div className="p-4 rounded-lg border border-slate-200 space-y-1.5 text-xs bg-white">
               <span className="text-slate-500 font-medium">Visual Leaf Diagnosis:</span>
               <div className="text-base font-bold text-slate-900">{analysis.condition.status}</div>
               <div className="text-slate-600">
-                AI Confidence: <strong>{(analysis.condition.confidence * 100).toFixed(1)}%</strong>
+                AI Confidence Rating: <strong>{(analysis.condition.confidence * 100).toFixed(1)}%</strong>
+              </div>
+              <div className="text-[11px] text-slate-500 pt-1 border-t border-slate-100">
+                Top Identified Class: <strong className="capitalize">{analysis.condition.topClass}</strong>
               </div>
             </div>
 
-            <div className="p-4 rounded-lg border border-slate-200 space-y-1.5 text-xs">
-              <span className="text-slate-500 font-medium">7-Day Outbreak Risk Forecast:</span>
-              <div className="text-base font-bold text-rose-700">
-                {Math.round(analysis.risk.probability * 100)}% ({analysis.risk.level} RISK)
+            <div
+              className={`p-4 rounded-lg border space-y-1.5 text-xs ${
+                field.riskLevel === 'HIGH'
+                  ? 'bg-rose-50/50 border-rose-200'
+                  : field.riskLevel === 'MODERATE'
+                  ? 'bg-amber-50/50 border-amber-200'
+                  : 'bg-emerald-50/50 border-emerald-200'
+              }`}
+            >
+              <span className="text-slate-600 font-medium">7-Day Outbreak Risk Forecast:</span>
+              <div
+                className={`text-xl font-extrabold ${
+                  field.riskLevel === 'HIGH'
+                    ? 'text-rose-700'
+                    : field.riskLevel === 'MODERATE'
+                    ? 'text-amber-700'
+                    : 'text-emerald-700'
+                }`}
+              >
+                {riskPercent}% ({field.riskLevel} RISK)
               </div>
-              <div className="text-slate-600 leading-snug">{analysis.risk.summary}</div>
+              <div className="text-slate-700 leading-snug">{analysis.risk.summary}</div>
             </div>
           </div>
         </div>
 
-        {/* Section 3: Weather & Pest Context */}
+        {/* Section 3: Weather & Pest Dynamics */}
         <div>
           <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono mb-3">
-            3. Microclimate & Pest Dynamics
+            3. MICROCLIMATE & PEST DYNAMICS
           </h3>
           <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 text-xs space-y-2">
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <span className="text-slate-500">Temperature:</span>{' '}
-                <strong>{analysis.weather.temperature}°C</strong>
+                <span className="text-slate-500">Canopy Temperature:</span>{' '}
+                <strong className="text-slate-900">{analysis.weather.temperature}°C</strong>
               </div>
               <div>
                 <span className="text-slate-500">Relative Humidity:</span>{' '}
-                <strong>{analysis.weather.humidity}% RH</strong>
+                <strong className="text-slate-900">{analysis.weather.humidity}% RH</strong>
               </div>
               <div>
-                <span className="text-slate-500">Rainfall (48h):</span>{' '}
-                <strong>{analysis.weather.recentRainfall} mm</strong>
+                <span className="text-slate-500">Recent Rain (48h):</span>{' '}
+                <strong className="text-slate-900">{analysis.weather.recentRainfall} mm</strong>
               </div>
             </div>
             <div className="pt-2 border-t border-slate-200 text-slate-700">
-              <strong>Pest Scouting Note:</strong> {analysis.pest.currentCount} {analysis.pest.pestType} recorded per 20 leaves ({analysis.pest.pestPressure}).
+              <strong>Pest Scouting Note:</strong> {analysis.pest.currentCount} {analysis.pest.pestType} recorded per 20 leaves ({field.pestPressureSummary}).
             </div>
           </div>
         </div>
 
-        {/* Section 4: Recommended Agronomic Actions */}
+        {/* Section 4: Key Risk Drivers */}
+        {analysis.risk.drivers && analysis.risk.drivers.length > 0 && (
+          <div>
+            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono mb-3">
+              4. RISK CONTRIBUTORS & EXPLANATION
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              {analysis.risk.drivers.map((drv) => (
+                <div key={drv.id} className="p-3 rounded-lg border border-slate-200 bg-white space-y-1">
+                  <div className="flex items-center justify-between">
+                    <strong className="text-slate-900">{drv.title}</strong>
+                    <span className="text-xs font-mono font-bold text-slate-700">{drv.value}</span>
+                  </div>
+                  <p className="text-[11px] text-slate-600">{drv.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Section 5: Recommended Agronomic Actions */}
         <div>
           <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono mb-3">
-            4. Recommended Action Plan
+            5. RECOMMENDED ACTION PLAN
           </h3>
           <div className="space-y-2 text-xs">
             {analysis.actions.map((act) => (
@@ -161,15 +233,15 @@ export const Reports: React.FC = () => {
           </div>
         </div>
 
-        {/* Section 5: Follow-up Requirement */}
+        {/* Section 6: Follow-up Requirement */}
         <div className="p-4 rounded-lg bg-emerald-50 border border-emerald-200 text-xs flex items-center justify-between">
           <div>
-            <div className="font-bold text-emerald-950">Mandatory Follow-up Due:</div>
-            <div className="text-emerald-800">
-              Target Date: {analysis.followup.targetDate} ({analysis.followup.daysRemaining} days remaining)
+            <div className="font-bold text-emerald-950">Recommended Recheck Schedule:</div>
+            <div className="text-emerald-800 mt-0.5">
+              Target Date: <strong>{analysis.followup.targetDate}</strong> ({analysis.followup.daysRemaining} days remaining) · Reason: {analysis.followup.reason}
             </div>
           </div>
-          <span className="text-xs font-bold text-emerald-900 bg-white border border-emerald-300 px-3 py-1 rounded">
+          <span className="text-xs font-bold text-emerald-900 bg-white border border-emerald-300 px-3 py-1.5 rounded shadow-2xs">
             Next Field Check
           </span>
         </div>

@@ -17,90 +17,74 @@ export const NextCheckPanel: React.FC<NextCheckPanelProps> = ({
 }) => {
   const navigate = useNavigate();
 
-  // Dynamic interval guidelines based on risk
-  const getIntervalText = (risk: RiskLevel) => {
-    switch (risk) {
-      case 'HIGH':
-        return 'High Risk: Check again in 2–4 days';
-      case 'MODERATE':
-        return 'Moderate Risk: Check again in 5–7 days';
-      case 'LOW':
-        return 'Low Risk: Routine check in 7–14 days';
-      default:
-        return 'Regular 5–7 day scouting window';
-    }
-  };
-
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-xs flex flex-col justify-between">
+    <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-xs flex flex-col justify-between">
       <div>
-        <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-          <div>
-            <h3 className="text-base font-semibold text-slate-900 uppercase tracking-tight">
-              NEXT FIELD CHECK
+        <div className="flex items-center justify-between pb-2.5 border-b border-slate-100">
+          <div className="flex items-center gap-2">
+            <Calendar className="w-4 h-4 text-slate-700" />
+            <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-tight font-mono">
+              SCHEDULED RECHECK TIMELINE
             </h3>
-            <p className="text-xs text-slate-500 mt-0.5">Recommended check schedule based on crop condition</p>
           </div>
-          <span className="text-[11px] font-bold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded">
-            {followup.status === 'due' ? 'CHECK DUE NOW' : 'SCHEDULED'}
+          <span
+            className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase ${
+              riskLevel === 'HIGH'
+                ? 'bg-rose-100 text-rose-900'
+                : 'bg-emerald-100 text-emerald-900'
+            }`}
+          >
+            {riskLevel === 'HIGH' ? '2–4 Day Critical Cycle' : 'Standard Routine Cycle'}
           </span>
         </div>
 
-        {/* Days Countdown Display */}
-        <div className="mt-4 p-4 rounded-lg bg-emerald-50/50 border border-emerald-100 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-emerald-700 text-white flex items-center justify-center shrink-0">
-              <Calendar className="w-5 h-5" />
+        {/* Countdown Module */}
+        <div className="mt-3.5 p-3.5 rounded-lg bg-slate-50 border border-slate-200/80 flex items-center justify-between">
+          <div>
+            <div className="text-xl sm:text-2xl font-extrabold font-mono text-slate-900">
+              {followup.daysRemaining} Days Remaining
             </div>
-            <div>
-              <div className="text-2xl font-bold text-slate-900">
-                {followup.daysRemaining} days remaining
-              </div>
-              <div className="text-xs font-semibold text-emerald-800">
-                Target Date: {followup.targetDate || 'September 9, 2026'}
-              </div>
+            <div className="text-xs text-slate-600 mt-0.5 font-medium">
+              Target Recheck: <strong>{followup.targetDate || 'September 9, 2026'}</strong>
             </div>
+          </div>
+          <div className="text-right">
+            <span className="text-[10px] uppercase tracking-wider font-mono text-slate-400 block">Status</span>
+            <span className="text-xs font-bold text-emerald-700">Scheduled</span>
           </div>
         </div>
 
-        {/* Checklist of what to recheck */}
-        <div className="mt-4 space-y-2">
-          <div className="text-xs font-bold text-slate-600 uppercase tracking-wider font-mono">
-            Key items to check:
+        {/* Scannable Recheck Protocol */}
+        <div className="mt-3 space-y-1.5 text-xs text-slate-600">
+          <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider font-mono">
+            RECHECK PROTOCOL:
           </div>
-          <ul className="text-xs text-slate-600 space-y-1.5 pl-1">
-            <li className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
-              <span><strong>Crop condition:</strong> Check if leaf spots are healing or spreading.</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
-              <span><strong>Pest count:</strong> Count pests on leaf undersides.</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
-              <span><strong>Weather trend:</strong> Note recent rain and humidity levels.</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
-              <span><strong>7-Day risk:</strong> View updated forecast score.</span>
-            </li>
-          </ul>
+          <div className="grid grid-cols-2 gap-2 text-[11px]">
+            <div className="bg-white border border-slate-200 rounded p-2">
+              <span className="text-slate-400 block">Lesion Boundaries:</span>
+              <strong className="text-slate-900">Measure spread radius</strong>
+            </div>
+            <div className="bg-white border border-slate-200 rounded p-2">
+              <span className="text-slate-400 block">Pest Counts:</span>
+              <strong className="text-slate-900">Underside 20 leaves</strong>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Footer & Action */}
-      <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between">
-        <div className="text-[11px] text-slate-500 font-medium">
-          {getIntervalText(riskLevel)}
+      {/* Footer CTA */}
+      <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+        <div className="text-[11px] text-slate-500">
+          Reason: {followup.reason || 'Risk-based scouting interval'}
         </div>
 
         <button
-          onClick={() => navigate(`/check-field?fieldId=${fieldId}`)}
-          className="flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-lg text-xs font-semibold shadow-xs transition-colors cursor-pointer"
+          type="button"
+          onClick={() => navigate(`/check-field?fieldId=${fieldId}&mode=followup`)}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-800 transition-colors cursor-pointer shadow-2xs"
         >
-          <PlusCircle className="w-3.5 h-3.5" />
-          <span>CHECK FIELD</span>
+          <span>Schedule Reminder</span>
+          <ArrowRight className="w-3 h-3 text-slate-500" />
         </button>
       </div>
     </div>
