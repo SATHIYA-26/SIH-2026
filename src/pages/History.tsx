@@ -29,8 +29,8 @@ export const History: React.FC = () => {
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">
             Field History & Progression
           </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
-            Chronological audit log and multi-dimensional trend charts for {field.name}
+          <p className="text-sm text-slate-500 mt-0.5">
+            Timeline and health trends for {field.name}
           </p>
         </div>
 
@@ -44,7 +44,7 @@ export const History: React.FC = () => {
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            Chronological Timeline
+            Field Timeline
           </button>
           <button
             onClick={() => setActiveTab('trends')}
@@ -54,7 +54,7 @@ export const History: React.FC = () => {
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            Multi-Trend Graphs
+            Health Trends
           </button>
         </div>
       </div>

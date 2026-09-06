@@ -54,10 +54,10 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
           <GitCompare className="w-5 h-5 text-emerald-700" />
           <div>
             <h3 className="text-base font-semibold text-slate-900 uppercase tracking-tight">
-              RECHECK COMPARISON ANALYSIS
+              BEFORE VS AFTER COMPARISON
             </h3>
             <p className="text-xs text-slate-500">
-              Side-by-side progression between consecutive field observations
+              Comparison between your previous check and today
             </p>
           </div>
         </div>
@@ -74,9 +74,9 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
         <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 space-y-3">
           <div className="flex items-center justify-between pb-2 border-b border-slate-200">
             <span className="text-xs font-bold text-slate-600 uppercase tracking-wider font-mono">
-              PREVIOUS OBSERVATION
+              PREVIOUS CHECK
             </span>
-            <span className="text-xs text-slate-500 font-medium">Prior Check</span>
+            <span className="text-xs text-slate-500 font-medium">Last Visit</span>
           </div>
 
           <div className="space-y-3">
@@ -88,7 +88,7 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
             </div>
 
             <div>
-              <span className="text-xs text-slate-500 block">Pest Pressure</span>
+              <span className="text-xs text-slate-500 block">Pest Count</span>
               <div className="text-sm font-bold text-slate-800 mt-0.5">
                 {prevPest} {previous.pest.pestType || 'Aphids'}
               </div>
@@ -107,7 +107,7 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
         <div className="bg-emerald-50/40 rounded-xl p-4 border border-emerald-200 space-y-3">
           <div className="flex items-center justify-between pb-2 border-b border-emerald-100">
             <span className="text-xs font-bold text-emerald-900 uppercase tracking-wider font-mono">
-              CURRENT OBSERVATION
+              CURRENT CHECK
             </span>
             <span className="text-xs font-semibold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">
               Today
@@ -124,13 +124,13 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
                     riskDelta < 0 ? 'text-emerald-700' : riskDelta > 0 ? 'text-rose-700' : 'text-slate-600'
                   }`}
                 >
-                  {riskDelta < 0 ? `${riskDelta}% (Decreased)` : riskDelta > 0 ? `+${riskDelta}% (Increased)` : 'No change'}
+                  {riskDelta < 0 ? `${riskDelta}% (Improved)` : riskDelta > 0 ? `+${riskDelta}% (Increased)` : 'No change'}
                 </span>
               </div>
             </div>
 
             <div>
-              <span className="text-xs text-emerald-800 block">Pest Pressure</span>
+              <span className="text-xs text-emerald-800 block">Pest Count</span>
               <div className="flex items-baseline gap-2 mt-0.5">
                 <span className="text-sm font-bold text-emerald-950">
                   {currPest} {current.pest.pestType || 'Aphids'}
@@ -156,10 +156,10 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
       </div>
 
       <div className="mt-4 p-3 rounded-lg bg-slate-50 text-xs text-slate-600 border border-slate-200">
-        <strong>Agronomic Insight:</strong>{' '}
+        <strong>Field Insight:</strong>{' '}
         {status === 'IMPROVING' || riskDelta < 0
-          ? 'Field response is positive. Inoculum dispersion rate has slowed due to declining relative humidity and controlled pest counts. Continue recommended scouting interval.'
-          : 'Pathogen pressure continues to build under elevated canopy wetness. Prioritize hotspot inspection and drainage review.'}
+          ? 'Crop health is improving. Disease spread has slowed down and leaves are recovering well. Keep following your regular check schedule.'
+          : 'Disease risk is still elevated due to moisture. Inspect affected spots closely and ensure good field drainage.'}
       </div>
     </div>
   );

@@ -39,7 +39,7 @@ export const DiagnosisPanel: React.FC<DiagnosisPanelProps> = ({ condition, onRet
         <div className="md:col-span-5 relative group">
           <div className="w-full h-52 sm:h-56 rounded-lg overflow-hidden bg-slate-900 border border-slate-200 relative">
             <img
-              src={condition.leafImageUrl || 'https://images.unsplash.com/photo-1599427303058-f04cbcf4756f?auto=format&fit=crop&w=800&q=80'}
+              src={condition.leafImageUrl || '/src/assets/cotton_bacterial_blight.jpg'}
               alt="Leaf condition observation"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />

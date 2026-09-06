@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFieldStore } from '../../stores/fieldStore';
 import { useUIStore } from '../../stores/uiStore';
-import { ScenarioSelector } from './ScenarioSelector';
 import {
   CloudRain,
   Thermometer,
@@ -96,12 +95,8 @@ export const TopHeader: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Section: Scenario Control, Language, Notifications, Primary Action */}
+        {/* Right Section: Language, Notifications, Primary Action */}
         <div className="flex items-center gap-2.5">
-          {/* Subtle Demonstration Scenario Switcher */}
-          <div className="hidden lg:block">
-            <ScenarioSelector />
-          </div>
 
           {/* Language Dropdown */}
           <div className="relative hidden sm:flex items-center">

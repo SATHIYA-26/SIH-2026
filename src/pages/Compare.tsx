@@ -45,7 +45,7 @@ export const Compare: React.FC = () => {
           How Continuous Comparison Works
         </h3>
         <p className="text-xs text-slate-600 leading-relaxed">
-          Instead of treating disease detection as an isolated one-time photo event, AgroPulse AI evaluates 
+          Instead of treating disease detection as an isolated one-time photo event, Apocalypse AI evaluates 
           the <strong>temporal delta</strong> across disease symptoms, aphid/pest pressure counts, and microclimate humidity.
           This enables farmers to objectively verify if containment measures and natural drying are succeeding (<strong>IMPROVING</strong>)
           or if high pathogen pressure requires immediate intervention (<strong>WORSENING</strong>).

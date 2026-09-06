@@ -17,6 +17,28 @@ export interface FieldPolygon {
   bounds: [number, number][];
 }
 
+export interface FollowUpRecord {
+  id: string;
+  followUpNumber: number; // e.g. 1, 2, 3
+  date: string;
+  displayDate: string;
+  treatmentApplied: 'YES' | 'PARTIAL' | 'NO';
+  treatmentNotes?: string;
+  leafImageUrl: string;
+  symptomObserved: string;
+  pestType: string;
+  currentPestCount: number;
+  previousPestCount?: number;
+  pestDelta?: number;
+  riskProbability: number;
+  previousRiskProbability?: number;
+  riskDelta?: number;
+  riskLevel: 'LOW' | 'MODERATE' | 'HIGH';
+  statusVerdict: string; // "Fine / Recovered", "Improving", "Critical Outbreak", etc.
+  agronomicAdvisory: string;
+  nextCheckDays: number;
+}
+
 export interface Field {
   id: string;
   name: string; // "Cotton Field A"
@@ -37,4 +59,6 @@ export interface Field {
   inspectionPoints: InspectionPoint[];
   latestAnalysis: FullFieldAnalysis;
   previousAnalysis?: FullFieldAnalysis;
+  followUpCount: number; // e.g. 2
+  followUpHistory: FollowUpRecord[];
 }

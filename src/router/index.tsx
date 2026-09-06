@@ -14,7 +14,6 @@ import { Reports } from '../pages/Reports';
 import { Compare } from '../pages/Compare';
 import { Settings } from '../pages/Settings';
 import { Profile } from '../pages/Profile';
-import { AdminInsights } from '../pages/AdminInsights';
 
 export const router = createBrowserRouter([
   {
@@ -35,7 +34,6 @@ export const router = createBrowserRouter([
       { path: 'compare', element: <Compare /> },
       { path: 'settings', element: <Settings /> },
       { path: 'profile', element: <Profile /> },
-      { path: 'admin-insights', element: <AdminInsights /> },
     ],
   },
 ]);

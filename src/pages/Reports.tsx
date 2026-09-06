@@ -54,9 +54,9 @@ export const Reports: React.FC = () => {
               <div className="w-7 h-7 rounded-lg bg-emerald-800 flex items-center justify-center text-white font-bold text-xs">
                 AP
               </div>
-              <span className="text-lg font-bold tracking-tight text-slate-900">AGROPULSE AI</span>
+              <span className="text-lg font-bold tracking-tight text-slate-900">APOCALYPSE AI</span>
             </div>
-            <p className="text-xs text-slate-500 mt-1">Precision Agriculture Field Health Advisory</p>
+            <p className="text-xs text-slate-500 mt-1">Apocalypse Precision Agriculture Field Health Advisory</p>
           </div>
 
           <div className="text-right text-xs text-slate-600">

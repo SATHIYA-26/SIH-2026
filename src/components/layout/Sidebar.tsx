@@ -15,7 +15,6 @@ import {
   FileText,
   Settings,
   User,
-  ShieldCheck,
   X,
   Sprout,
   LucideIcon,
@@ -75,12 +74,6 @@ export const Sidebar: React.FC = () => {
         { label: 'Profile', path: '/profile', icon: User },
       ],
     },
-    {
-      group: 'SYSTEM / EVALUATION',
-      items: [
-        { label: 'Admin / Model Insights', path: '/admin-insights', icon: ShieldCheck, isJudgeBadge: true },
-      ],
-    },
   ];
 
   return (
@@ -110,10 +103,10 @@ export const Sidebar: React.FC = () => {
             </div>
             <div>
               <div className="text-base font-bold tracking-tight text-slate-900 flex items-center gap-1">
-                AGROPULSE <span className="text-emerald-700 font-extrabold">AI</span>
+                APOCALYPSE <span className="text-emerald-700 font-extrabold">AI</span>
               </div>
               <p className="text-[11px] text-slate-500 font-medium leading-none mt-0.5">
-                Early warning for healthier fields
+                Precision Crop Health Intelligence
               </p>
             </div>
           </div>
@@ -159,10 +152,6 @@ export const Sidebar: React.FC = () => {
                       <span className="text-[10px] font-bold bg-rose-100 text-rose-800 px-1.5 py-0.2 rounded-full">
                         {item.alertCount}
                       </span>
-                    ) : item.isJudgeBadge ? (
-                      <span className="text-[9px] uppercase font-bold tracking-wider bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">
-                        Judge
-                      </span>
                     ) : null}
                   </NavLink>
                 ))}
@@ -175,16 +164,16 @@ export const Sidebar: React.FC = () => {
         <div className="p-3 border-t border-slate-100 bg-slate-50/70">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-full bg-slate-200 flex items-center justify-center text-slate-700 text-xs font-bold">
-                RK
+              <div className="w-7 h-7 rounded-full bg-emerald-800 flex items-center justify-center text-white text-xs font-bold">
+                S
               </div>
               <div className="text-left">
-                <div className="text-xs font-semibold text-slate-900 leading-none">Ramesh Kumar</div>
-                <div className="text-[11px] text-slate-500 leading-none mt-1">Wardha Valley Farm</div>
+                <div className="text-xs font-semibold text-slate-900 leading-none">Sathiya</div>
+                <div className="text-[11px] text-slate-500 leading-none mt-1">Chennai, Tamil Nadu</div>
               </div>
             </div>
             <span className="text-[10px] text-emerald-700 bg-emerald-100/70 font-semibold px-1.5 py-0.5 rounded">
-              Farmer
+              Agronomist
             </span>
           </div>
         </div>

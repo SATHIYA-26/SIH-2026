@@ -1,5 +1,6 @@
 import { create } from 'zustand';
-import { Field } from '../types/field';
+import { Field, FollowUpRecord } from '../types/field';
+import { FullFieldAnalysis } from '../types/analysis';
 import {
   ALL_FIELDS,
   DEMO_SCENARIO_HIGH_RISK,
@@ -24,6 +25,7 @@ interface FieldState {
   setTimeFilter: (filter: 'Today' | '7 Days' | '30 Days') => void;
   setMapLayer: (layer: 'All' | 'Disease' | 'Pest' | 'Risk') => void;
   updateFieldAnalysis: (fieldId: string, updatedField: Field) => void;
+  recordFieldFollowUp: (fieldId: string, followUp: FollowUpRecord, newAnalysis: FullFieldAnalysis) => void;
   addField: (field: Field) => void;
 }
 
@@ -77,6 +79,31 @@ export const useFieldStore = create<FieldState>((set, get) => ({
   updateFieldAnalysis: (fieldId: string, updatedField: Field) => {
     set(state => ({
       fields: state.fields.map(f => f.id === fieldId ? updatedField : f)
+    }));
+  },
+
+  recordFieldFollowUp: (fieldId: string, followUp: FollowUpRecord, newAnalysis: FullFieldAnalysis) => {
+    set(state => ({
+      fields: state.fields.map(f => {
+        if (f.id !== fieldId) return f;
+
+        const updatedHistory = [followUp, ...(f.followUpHistory || [])];
+        const newCount = (f.followUpCount || 0) + 1;
+
+        return {
+          ...f,
+          latestAnalysis: newAnalysis,
+          previousAnalysis: f.latestAnalysis,
+          riskProbability: newAnalysis.risk.probability,
+          riskLevel: newAnalysis.risk.level,
+          currentConditionStatus: newAnalysis.condition.status,
+          nextCheckDays: newAnalysis.followup.daysRemaining,
+          pestPressureSummary: `${newAnalysis.pest.currentCount} ${newAnalysis.pest.pestType} (${newAnalysis.pest.pestPressure})`,
+          lastCheckedDate: 'Today',
+          followUpCount: newCount,
+          followUpHistory: updatedHistory
+        };
+      })
     }));
   },
 

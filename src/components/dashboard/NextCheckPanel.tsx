@@ -21,11 +21,11 @@ export const NextCheckPanel: React.FC<NextCheckPanelProps> = ({
   const getIntervalText = (risk: RiskLevel) => {
     switch (risk) {
       case 'HIGH':
-        return 'High Risk Protocol: Recheck in 2–4 days';
+        return 'High Risk: Check again in 2–4 days';
       case 'MODERATE':
-        return 'Moderate Risk Protocol: Recheck in 5–7 days';
+        return 'Moderate Risk: Check again in 5–7 days';
       case 'LOW':
-        return 'Low Risk Protocol: Recheck in 7–14 days';
+        return 'Low Risk: Routine check in 7–14 days';
       default:
         return 'Regular 5–7 day scouting window';
     }
@@ -39,7 +39,7 @@ export const NextCheckPanel: React.FC<NextCheckPanelProps> = ({
             <h3 className="text-base font-semibold text-slate-900 uppercase tracking-tight">
               NEXT FIELD CHECK
             </h3>
-            <p className="text-xs text-slate-500 mt-0.5">Automated risk-calibrated follow-up timeline</p>
+            <p className="text-xs text-slate-500 mt-0.5">Recommended check schedule based on crop condition</p>
           </div>
           <span className="text-[11px] font-bold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded">
             {followup.status === 'due' ? 'CHECK DUE NOW' : 'SCHEDULED'}
@@ -66,24 +66,24 @@ export const NextCheckPanel: React.FC<NextCheckPanelProps> = ({
         {/* Checklist of what to recheck */}
         <div className="mt-4 space-y-2">
           <div className="text-xs font-bold text-slate-600 uppercase tracking-wider font-mono">
-            Key items to recheck:
+            Key items to check:
           </div>
           <ul className="text-xs text-slate-600 space-y-1.5 pl-1">
             <li className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
-              <span><strong>Crop symptoms:</strong> Inspect if leaf lesions have spread or stabilized.</span>
+              <span><strong>Crop condition:</strong> Check if leaf spots are healing or spreading.</span>
             </li>
             <li className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
-              <span><strong>Pest population:</strong> Recount aphids/whiteflies to assess pressure.</span>
+              <span><strong>Pest count:</strong> Count pests on leaf undersides.</span>
             </li>
             <li className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
-              <span><strong>Weather trend:</strong> Update recent rainfall and humidity logs.</span>
+              <span><strong>Weather trend:</strong> Note recent rain and humidity levels.</span>
             </li>
             <li className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
-              <span><strong>Future risk score:</strong> Re-evaluate 7-day outbreak forecast.</span>
+              <span><strong>7-Day risk:</strong> View updated forecast score.</span>
             </li>
           </ul>
         </div>
