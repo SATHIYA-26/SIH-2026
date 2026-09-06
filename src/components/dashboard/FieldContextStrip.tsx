@@ -1,6 +1,7 @@
 import React from 'react';
 import { Field } from '../../types/field';
 import { Sprout, Clock, CloudSun, Bug, Calendar, MapPin } from 'lucide-react';
+import { computeTargetDate, formatRelativeDays, formatCalendarDate } from '../../utils/dateUtils';
 
 interface FieldContextStripProps {
   field: Field;
@@ -13,17 +14,29 @@ export const FieldContextStrip: React.FC<FieldContextStripProps> = ({ field }) =
   const cropStage = analysis.cropStage;
   const followup = analysis.followup;
 
+  const daysRemaining = followup.daysRemaining ?? field.nextCheckDays ?? 4;
+  const targetDateStr = followup.targetDate
+    ? formatCalendarDate(followup.targetDate)
+    : computeTargetDate(daysRemaining);
+
+  const getCleanStageName = (stage: string) => {
+    if (stage.toLowerCase().includes('flowering')) return 'Flowering Stage';
+    if (stage.toLowerCase().includes('vegetative')) return 'Growing Stage';
+    if (stage.toLowerCase().includes('maturity')) return 'Harvest Stage';
+    return stage;
+  };
+
   return (
     <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 shadow-xs">
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 divide-y sm:divide-y-0 sm:divide-x divide-slate-100">
         {/* 1. CROP & AGE */}
         <div className="pt-2 sm:pt-0 sm:px-2 first:px-0">
-          <div className="flex items-center gap-1.5 text-slate-400 text-[10px] font-bold uppercase tracking-wider font-mono">
+          <div className="flex items-center gap-1.5 text-slate-500 text-[10px] font-bold uppercase tracking-wider font-mono">
             <Sprout className="w-3.5 h-3.5 text-emerald-700" />
-            <span>CROP SPECIFICATION</span>
+            <span>CROP & SIZE</span>
           </div>
           <div className="text-xs sm:text-sm font-bold text-slate-900 mt-0.5">
-            {field.crop} · {field.variety || 'Bt Hybrid'}
+            {field.crop} · {field.variety || 'Hybrid'}
           </div>
           <div className="text-[11px] text-slate-500">
             Day {field.daysSincePlanting} ({field.areaAcres} acres)
@@ -32,61 +45,61 @@ export const FieldContextStrip: React.FC<FieldContextStripProps> = ({ field }) =
 
         {/* 2. GROWTH STAGE */}
         <div className="pt-2 sm:pt-0 sm:px-3">
-          <div className="flex items-center gap-1.5 text-slate-400 text-[10px] font-bold uppercase tracking-wider font-mono">
+          <div className="flex items-center gap-1.5 text-slate-500 text-[10px] font-bold uppercase tracking-wider font-mono">
             <Clock className="w-3.5 h-3.5 text-indigo-700" />
             <span>GROWTH STAGE</span>
           </div>
-          <div className="text-xs sm:text-sm font-bold text-slate-900 mt-0.5 truncate" title={cropStage?.stageName || field.estimatedGrowthStage}>
-            {cropStage?.stageName || field.estimatedGrowthStage}
+          <div className="text-xs sm:text-sm font-bold text-slate-900 mt-0.5 truncate">
+            {getCleanStageName(cropStage?.stageName || field.estimatedGrowthStage)}
           </div>
           <div className="text-[11px] text-slate-500">
-            Planted: {field.plantingDate}
+            Planted: {formatCalendarDate(field.plantingDate, 'display')}
           </div>
         </div>
 
-        {/* 3. WEATHER TELEMETRY */}
+        {/* 3. WEATHER */}
         <div className="pt-2 sm:pt-0 sm:px-3">
-          <div className="flex items-center gap-1.5 text-slate-400 text-[10px] font-bold uppercase tracking-wider font-mono">
+          <div className="flex items-center gap-1.5 text-slate-500 text-[10px] font-bold uppercase tracking-wider font-mono">
             <CloudSun className="w-3.5 h-3.5 text-sky-700" />
-            <span>LIVE CANOPY WEATHER</span>
+            <span>FIELD WEATHER</span>
           </div>
           <div className="text-xs sm:text-sm font-bold text-slate-900 mt-0.5">
-            {weather.temperature}°C · {weather.humidity}% RH
+            {weather.temperature}°C · {weather.humidity}% Humidity
           </div>
           <div className="text-[11px] text-slate-500">
-            {weather.recentRainfall} mm rainfall (48h)
+            {weather.recentRainfall} mm rain (past 2 days)
           </div>
         </div>
 
-        {/* 4. PEST PRESSURE */}
+        {/* 4. INSECTS & PESTS */}
         <div className="pt-2 sm:pt-0 sm:px-3">
-          <div className="flex items-center gap-1.5 text-slate-400 text-[10px] font-bold uppercase tracking-wider font-mono">
+          <div className="flex items-center gap-1.5 text-slate-500 text-[10px] font-bold uppercase tracking-wider font-mono">
             <Bug className="w-3.5 h-3.5 text-rose-700" />
-            <span>SCOUTED INSECTS</span>
+            <span>INSECTS / PESTS</span>
           </div>
           <div className="text-xs sm:text-sm font-bold text-slate-900 mt-0.5">
             {pest.currentCount} {pest.pestType}
           </div>
           <div className="text-[11px] text-slate-500">
             {pest.previousCount !== undefined && pest.currentCount > pest.previousCount
-              ? `↑ from ${pest.previousCount} (Rising)`
+              ? `↑ More than last check (${pest.previousCount})`
               : pest.previousCount !== undefined && pest.currentCount < pest.previousCount
-              ? `↓ from ${pest.previousCount} (Easing)`
-              : pest.pestPressure}
+              ? `↓ Decreased from ${pest.previousCount}`
+              : pest.pestPressure === 'Low' ? 'Low bug count' : 'Moderate count'}
           </div>
         </div>
 
         {/* 5. NEXT CHECK */}
         <div className="pt-2 sm:pt-0 sm:px-3">
-          <div className="flex items-center gap-1.5 text-slate-400 text-[10px] font-bold uppercase tracking-wider font-mono">
+          <div className="flex items-center gap-1.5 text-slate-500 text-[10px] font-bold uppercase tracking-wider font-mono">
             <Calendar className="w-3.5 h-3.5 text-slate-700" />
-            <span>NEXT RECHECK</span>
+            <span>NEXT FIELD CHECK</span>
           </div>
           <div className="text-xs sm:text-sm font-bold text-slate-900 mt-0.5">
-            In {followup.daysRemaining || field.nextCheckDays} Days
+            {formatRelativeDays(daysRemaining)}
           </div>
           <div className="text-[11px] text-slate-500">
-            {followup.targetDate || 'Scheduled'}
+            {targetDateStr}
           </div>
         </div>
       </div>

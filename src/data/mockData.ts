@@ -15,7 +15,7 @@ export const DEMO_SCENARIO_HIGH_RISK: Field = {
   variety: 'Bt Cotton RCH-659',
   areaAcres: 3.5,
   plantingDate: '2026-06-23',
-  daysSincePlanting: 73,
+  daysSincePlanting: 75,
   estimatedGrowthStage: 'Flowering & Boll Development',
   currentConditionStatus: 'Bacterial Blight Detected',
   riskProbability: 0.68,
@@ -105,7 +105,7 @@ export const DEMO_SCENARIO_HIGH_RISK: Field = {
   latestAnalysis: {
     id: 'ana-001',
     fieldId: 'field-cotton-a',
-    timestamp: '2026-09-04T09:30:00Z',
+    timestamp: '2026-09-06T09:30:00Z',
     condition: {
       status: 'Bacterial Blight Detected',
       confidence: 0.913,
@@ -144,9 +144,9 @@ export const DEMO_SCENARIO_HIGH_RISK: Field = {
     cropStage: {
       cropName: 'Cotton',
       plantingDate: '23 June 2026',
-      daysSincePlanting: 73,
+      daysSincePlanting: 75,
       stageName: 'Flowering & Boll Development',
-      stageProgressPercent: 46,
+      stageProgressPercent: 47,
       totalCycleDays: 160,
       stages: [
         { name: 'Planting & Germination', startDay: 0, endDay: 15, isCurrent: false, isCompleted: true },
@@ -204,7 +204,7 @@ export const DEMO_SCENARIO_HIGH_RISK: Field = {
     followup: {
       daysRemaining: 4,
       recommendedIntervalDays: 4,
-      targetDate: 'September 9, 2026',
+      targetDate: 'September 10, 2026',
       status: 'pending',
       reason: 'High risk status requires 2–4 day scouting check'
     }
@@ -328,7 +328,7 @@ export const DEMO_SCENARIO_IMPROVING: Field = {
     followup: {
       daysRemaining: 7,
       recommendedIntervalDays: 7,
-      targetDate: 'September 12, 2026',
+      targetDate: 'September 13, 2026',
       status: 'pending',
       reason: 'Condition improving; moderate 7-day check scheduled'
     }
@@ -343,7 +343,7 @@ export const DEMO_SCENARIO_LOW_RISK: Field = {
   variety: 'Bt Cotton DCH-32',
   areaAcres: 2.8,
   plantingDate: '2026-07-02',
-  daysSincePlanting: 64,
+  daysSincePlanting: 66,
   estimatedGrowthStage: 'Squaring / Bud Formation',
   currentConditionStatus: 'Healthy Foliage',
   riskProbability: 0.18,
@@ -399,7 +399,7 @@ export const DEMO_SCENARIO_LOW_RISK: Field = {
   latestAnalysis: {
     id: 'ana-002',
     fieldId: 'field-cotton-b',
-    timestamp: '2026-09-03T11:00:00Z',
+    timestamp: '2026-09-05T11:00:00Z',
     condition: {
       status: 'Healthy Foliage',
       confidence: 0.945,
@@ -431,7 +431,7 @@ export const DEMO_SCENARIO_LOW_RISK: Field = {
     cropStage: {
       cropName: 'Cotton',
       plantingDate: '02 July 2026',
-      daysSincePlanting: 64,
+      daysSincePlanting: 66,
       stageName: 'Squaring / Bud Formation',
       stageProgressPercent: 88,
       totalCycleDays: 160,
@@ -460,7 +460,7 @@ export const DEMO_SCENARIO_LOW_RISK: Field = {
     followup: {
       daysRemaining: 10,
       recommendedIntervalDays: 10,
-      targetDate: 'September 15, 2026',
+      targetDate: 'September 16, 2026',
       status: 'pending',
       reason: 'Low risk profile permits extended 7–14 day cycle'
     }
@@ -522,7 +522,7 @@ export const DEMO_SCENARIO_WORSENING: Field = {
     followup: {
       daysRemaining: 2,
       recommendedIntervalDays: 2,
-      targetDate: 'September 6, 2026',
+      targetDate: 'September 8, 2026',
       status: 'pending',
       reason: 'Urgent check due to acute worsening risk'
     }
@@ -540,7 +540,7 @@ export const ALL_FIELDS: Field[] = [
     variety: 'Bt Cotton Bunny',
     areaAcres: 4.2,
     plantingDate: '2026-06-15',
-    daysSincePlanting: 81,
+    daysSincePlanting: 83,
     estimatedGrowthStage: 'Flowering & Boll Development',
     currentConditionStatus: 'Mild Curl Virus Observed',
     riskProbability: 0.44,
@@ -630,7 +630,7 @@ export const ALL_FIELDS: Field[] = [
       followup: {
         daysRemaining: 5,
         recommendedIntervalDays: 5,
-        targetDate: 'September 10, 2026',
+        targetDate: 'September 11, 2026',
         status: 'pending',
         reason: 'Moderate risk 5-day cycle'
       }
@@ -643,7 +643,7 @@ export const ALL_FIELDS: Field[] = [
     variety: 'Suraj Cotton',
     areaAcres: 3.0,
     plantingDate: '2026-06-28',
-    daysSincePlanting: 68,
+    daysSincePlanting: 70,
     estimatedGrowthStage: 'Squaring / Bud Formation',
     currentConditionStatus: 'Healthy Foliage',
     riskProbability: 0.22,
@@ -714,7 +714,7 @@ export const ALL_FIELDS: Field[] = [
       followup: {
         daysRemaining: 8,
         recommendedIntervalDays: 8,
-        targetDate: 'September 13, 2026',
+        targetDate: 'September 14, 2026',
         status: 'pending',
         reason: 'Low risk 8-day inspection cycle'
       }
@@ -828,8 +828,8 @@ export const MOCK_FIELD_HISTORY: HistoryTimelineEntry[] = [
   {
     id: 'hist-6',
     fieldId: 'field-cotton-a',
-    date: '2026-09-04',
-    displayDate: '04 SEP',
+    date: '2026-09-06',
+    displayDate: '06 SEP',
     title: 'Current Check: High Outbreak Risk',
     category: 'check',
     conditionSummary: 'Bacterial Blight confidence 91.3%, Aphids 18. 7-day risk 68%.',
@@ -844,6 +844,7 @@ export const MOCK_TREND_DATA: TrendDataPoint[] = [
   { date: 'Aug 24', timestamp: '2026-08-24', riskProbability: 31, pestCount: 6, healthyProb: 76, bacterialProb: 18, curlVirusProb: 3, fusariumProb: 3, humidity: 72, rainfall: 4, temperature: 30 },
   { date: 'Aug 28', timestamp: '2026-08-28', riskProbability: 42, pestCount: 8, healthyProb: 55, bacterialProb: 38, curlVirusProb: 4, fusariumProb: 3, humidity: 78, rainfall: 6, temperature: 30 },
   { date: 'Aug 30', timestamp: '2026-08-30', riskProbability: 55, pestCount: 10, healthyProb: 32, bacterialProb: 61, curlVirusProb: 4, fusariumProb: 3, humidity: 82, rainfall: 8, temperature: 29 },
-  { date: 'Sep 01', timestamp: '2026-09-01', riskProbability: 59, pestCount: 14, healthyProb: 18, bacterialProb: 75, curlVirusProb: 4, fusariumProb: 3, humidity: 84, rainfall: 10, temperature: 29 },
-  { date: 'Sep 04', timestamp: '2026-09-04', riskProbability: 68, pestCount: 18, healthyProb: 2, bacterialProb: 91, curlVirusProb: 4, fusariumProb: 3, humidity: 86, rainfall: 12, temperature: 29, eventLabel: 'Current Check' }
+  { date: 'Sep 02', timestamp: '2026-09-02', riskProbability: 59, pestCount: 14, healthyProb: 18, bacterialProb: 75, curlVirusProb: 4, fusariumProb: 3, humidity: 84, rainfall: 10, temperature: 29 },
+  { date: 'Sep 06', timestamp: '2026-09-06', riskProbability: 68, pestCount: 18, healthyProb: 2, bacterialProb: 91, curlVirusProb: 4, fusariumProb: 3, humidity: 86, rainfall: 12, temperature: 29, eventLabel: 'Current Check' }
 ];
+

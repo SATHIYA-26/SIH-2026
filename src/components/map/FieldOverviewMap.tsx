@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Field, InspectionPoint } from '../../types/field';
 import { MapContainer, TileLayer, Polygon, CircleMarker, Popup, useMap, useMapEvents } from 'react-leaflet';
-import { Layers, Filter, Eye, AlertTriangle, Bug, CheckCircle, ShieldAlert, MapPin } from 'lucide-react';
+import { MapPin, AlertTriangle, Bug, CheckCircle, ShieldCheck } from 'lucide-react';
 
 interface FieldOverviewMapProps {
   field: Field;
@@ -45,10 +45,9 @@ const MapClickDetector: React.FC<{
 };
 
 export const FieldOverviewMap: React.FC<FieldOverviewMapProps> = ({ field }) => {
-  const [activeLayer, setActiveLayer] = useState<'All' | 'Disease' | 'Pest' | 'Risk'>('All');
-  const [timeFilter, setTimeFilter] = useState<'Today' | '7 Days' | '30 Days'>('Today');
+  const allPoints = field.inspectionPoints || [];
   const [selectedPoint, setSelectedPoint] = useState<InspectionPoint | null>(
-    field.inspectionPoints?.[0] || null
+    allPoints.length > 0 ? allPoints[0] : null
   );
 
   const center = (field.polygon?.center && field.polygon.center.length === 2
@@ -64,29 +63,14 @@ export const FieldOverviewMap: React.FC<FieldOverviewMapProps> = ({ field }) => 
         [13.1105, 80.1525],
       ]) as [number, number][];
 
-  const allPoints = field.inspectionPoints || [];
-
-  // Filter inspection points based on layer & time
-  const filteredPoints = allPoints.filter((pt) => {
-    if (activeLayer === 'Disease') return pt.type === 'disease' || pt.type === 'warning' || !!pt.diseaseName;
-    if (activeLayer === 'Pest') return pt.type === 'pest' || (pt.pestCount !== undefined && pt.pestCount > 3);
-    if (activeLayer === 'Risk') return pt.severity === 'high' || pt.severity === 'moderate';
-    return true; // 'All'
-  });
-
-  // Re-sync selected point whenever field or layer filter changes
+  // Re-sync selected point whenever field changes
   useEffect(() => {
-    if (filteredPoints.length > 0) {
-      // Keep selected if still in filtered set, else pick first filtered
-      if (!selectedPoint || !filteredPoints.some((p) => p.id === selectedPoint.id)) {
-        setSelectedPoint(filteredPoints[0]);
-      }
-    } else if (allPoints.length > 0) {
+    if (allPoints.length > 0) {
       setSelectedPoint(allPoints[0]);
     } else {
       setSelectedPoint(null);
     }
-  }, [field.id, activeLayer, filteredPoints.length]);
+  }, [field.id, allPoints.length]);
 
   const getPointColor = (pt: InspectionPoint) => {
     if (pt.severity === 'high' || pt.type === 'disease') return '#dc2626'; // Red
@@ -95,61 +79,32 @@ export const FieldOverviewMap: React.FC<FieldOverviewMapProps> = ({ field }) => 
     return '#16a34a'; // Green
   };
 
+  const getSimpleSummary = (pt: InspectionPoint) => {
+    if (pt.severity === 'high' || pt.type === 'disease') {
+      return 'Leaf spots or infection found in this area. Spray plant protection medicine to stop spreading.';
+    }
+    if (pt.severity === 'moderate' || pt.type === 'warning') {
+      return 'Some leaf yellowing or minor bugs found here. Keep checking this spot regularly.';
+    }
+    return 'Crops in this area are healthy and growing normally.';
+  };
+
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-xs">
-      {/* Header with Title & Filter Controls */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+    <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-xs">
+      {/* Header without cluttered right-side buttons */}
+      <div className="flex items-center justify-between pb-3 border-b border-slate-100">
         <div>
           <div className="flex items-center gap-2">
-            <h3 className="text-base font-semibold text-slate-900 uppercase tracking-tight">
-              FIELD OVERVIEW MAP
+            <h3 className="text-base font-bold text-slate-900 tracking-tight">
+              Field Map & Checked Spots
             </h3>
-            <span className="text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
-              Spatial Hotspots
+            <span className="text-[11px] font-bold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-full">
+              {allPoints.length} Checked Spots
             </span>
           </div>
           <p className="text-xs text-slate-500 mt-0.5">
-            Geographic distribution of leaf observations, pest counts, and risk zones for {field.name}
+            Tap any colored dot on the map to see leaf health and insect numbers for that spot.
           </p>
-        </div>
-
-        {/* Controls: Layer Switcher & Time Filters */}
-        <div className="flex flex-wrap items-center gap-2">
-          {/* Layer Controls */}
-          <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-xs">
-            {(['All', 'Disease', 'Pest', 'Risk'] as const).map((layer) => (
-              <button
-                key={layer}
-                type="button"
-                onClick={() => setActiveLayer(layer)}
-                className={`px-2.5 py-1 rounded-md font-semibold transition-colors cursor-pointer ${
-                  activeLayer === layer
-                    ? 'bg-white text-emerald-950 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                {layer}
-              </button>
-            ))}
-          </div>
-
-          {/* Time Filter */}
-          <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-xs">
-            {(['Today', '7 Days', '30 Days'] as const).map((tf) => (
-              <button
-                key={tf}
-                type="button"
-                onClick={() => setTimeFilter(tf)}
-                className={`px-2 py-1 rounded-md font-medium transition-colors cursor-pointer ${
-                  timeFilter === tf
-                    ? 'bg-white text-slate-900 shadow-xs'
-                    : 'text-slate-500 hover:text-slate-900'
-                }`}
-              >
-                {tf}
-              </button>
-            ))}
-          </div>
         </div>
       </div>
 
@@ -165,7 +120,7 @@ export const FieldOverviewMap: React.FC<FieldOverviewMapProps> = ({ field }) => 
           >
             <MapRecenter center={center} />
             <MapClickDetector
-              points={filteredPoints.length > 0 ? filteredPoints : allPoints}
+              points={allPoints}
               onSelect={(pt) => setSelectedPoint(pt)}
             />
 
@@ -186,15 +141,15 @@ export const FieldOverviewMap: React.FC<FieldOverviewMapProps> = ({ field }) => 
               }}
               eventHandlers={{
                 click: () => {
-                  if (filteredPoints.length > 0) {
-                    setSelectedPoint(filteredPoints[0]);
+                  if (allPoints.length > 0) {
+                    setSelectedPoint(allPoints[0]);
                   }
                 },
               }}
             />
 
             {/* Field Inspection Hotspot Points */}
-            {(filteredPoints.length > 0 ? filteredPoints : allPoints).map((pt) => {
+            {allPoints.map((pt) => {
               const isSelected = selectedPoint?.id === pt.id;
               return (
                 <CircleMarker
@@ -214,14 +169,11 @@ export const FieldOverviewMap: React.FC<FieldOverviewMapProps> = ({ field }) => 
                   <Popup>
                     <div className="p-1 font-sans text-xs space-y-1">
                       <div className="font-bold text-slate-900">{pt.label}</div>
-                      <div className="text-slate-600">
-                        Type: <span className="capitalize font-semibold">{pt.type}</span>
-                      </div>
                       {pt.diseaseName && (
                         <div className="text-rose-700 font-semibold">{pt.diseaseName}</div>
                       )}
                       {pt.pestCount !== undefined && (
-                        <div className="text-slate-700">Pest count: {pt.pestCount} insects/leaf</div>
+                        <div className="text-slate-700">Insects: {pt.pestCount} bugs per leaf</div>
                       )}
                       <div className="text-[10px] text-slate-400">Checked: {pt.lastChecked}</div>
                     </div>
@@ -231,22 +183,22 @@ export const FieldOverviewMap: React.FC<FieldOverviewMapProps> = ({ field }) => 
             })}
           </MapContainer>
 
-          {/* Map Legend Overlay */}
+          {/* Simple Map Legend Overlay */}
           <div className="absolute bottom-3 left-3 z-[1000] bg-white/95 backdrop-blur-xs border border-slate-200 rounded-lg p-2.5 shadow-md text-xs space-y-1.5 pointer-events-auto">
             <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider font-mono">
-              MAP LEGEND
+              MAP GUIDE
             </div>
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-rose-600 ring-1 ring-rose-200" />
-              <span className="text-slate-700 font-medium">Disease Hotspot (High Risk)</span>
+              <span className="text-slate-700 font-medium">Problem / Disease Spot</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-amber-500 ring-1 ring-amber-200" />
-              <span className="text-slate-700 font-medium">Suspected Lesions / Warning</span>
+              <span className="text-slate-700 font-medium">Needs Attention</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 ring-1 ring-emerald-200" />
-              <span className="text-slate-700 font-medium">Healthy Scouting Point</span>
+              <span className="text-slate-700 font-medium">Healthy Crop Spot</span>
             </div>
           </div>
         </div>
@@ -257,7 +209,7 @@ export const FieldOverviewMap: React.FC<FieldOverviewMapProps> = ({ field }) => 
             <div className="space-y-3">
               <div className="flex items-center justify-between pb-2 border-b border-slate-200">
                 <span className="text-xs font-bold text-slate-700 uppercase tracking-wider font-mono">
-                  SCOUTING POINT DETAIL
+                  SELECTED SPOT DETAILS
                 </span>
                 <span
                   className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase ${
@@ -268,59 +220,57 @@ export const FieldOverviewMap: React.FC<FieldOverviewMapProps> = ({ field }) => 
                       : 'bg-emerald-100 text-emerald-800'
                   }`}
                 >
-                  {selectedPoint.severity} Priority
+                  {selectedPoint.severity === 'high'
+                    ? 'High Attention'
+                    : selectedPoint.severity === 'moderate'
+                    ? 'Medium Attention'
+                    : 'Healthy'}
                 </span>
               </div>
 
               <div>
                 <h4 className="text-sm font-bold text-slate-900">{selectedPoint.label}</h4>
                 <div className="text-xs text-slate-500 mt-0.5">
-                  GPS: {selectedPoint.lat.toFixed(4)}°N, {selectedPoint.lng.toFixed(4)}°E
+                  Checked area in {field.name}
                 </div>
               </div>
 
               <div className="bg-white rounded-lg p-3 border border-slate-200 space-y-2 text-xs">
                 {selectedPoint.diseaseName && (
                   <div className="flex items-center justify-between">
-                    <span className="text-slate-500">Disease Signal:</span>
+                    <span className="text-slate-500">Disease / Issue:</span>
                     <span className="font-bold text-rose-700">{selectedPoint.diseaseName}</span>
                   </div>
                 )}
                 {selectedPoint.pestCount !== undefined && (
                   <div className="flex items-center justify-between">
-                    <span className="text-slate-500">Pest Count:</span>
-                    <span className="font-bold text-slate-800">{selectedPoint.pestCount} insects / leaf</span>
+                    <span className="text-slate-500">Insects Count:</span>
+                    <span className="font-bold text-slate-800">{selectedPoint.pestCount} bugs per leaf</span>
                   </div>
                 )}
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-500">Observation Filter:</span>
-                  <span className="font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded">
-                    {timeFilter} ({activeLayer} Layer)
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-500">Last Observation:</span>
+                  <span className="text-slate-500">Last Checked:</span>
                   <span className="font-medium text-slate-700">{selectedPoint.lastChecked}</span>
                 </div>
               </div>
 
-              <p className="text-xs text-slate-600 leading-relaxed">
-                {selectedPoint.type === 'disease' || selectedPoint.severity === 'high'
-                  ? 'Hotspot shows early angular lesions with bacterial oozing risk under high humidity. Immediate spot inspection recommended.'
-                  : selectedPoint.type === 'warning'
-                  ? 'Mild discoloration observed. Closely monitor row aeration and keep aphid traps active.'
-                  : 'Monitored area remains healthy and within acceptable threshold limits.'}
+              <p className="text-xs text-slate-600 leading-relaxed bg-white/70 p-2.5 rounded border border-slate-200">
+                {getSimpleSummary(selectedPoint)}
               </p>
             </div>
           ) : (
-            <div className="text-center py-10 text-xs text-slate-500">
-              Click any point on the map to view scouting notes.
+            <div className="text-center py-10 text-xs text-slate-500 space-y-2">
+              <MapPin className="w-8 h-8 text-slate-300 mx-auto" />
+              <div className="font-semibold text-slate-700">No Checked Spots Found</div>
+              <p className="text-[11px] text-slate-400 max-w-xs mx-auto">
+                Perform a field check to add inspection spots on the map.
+              </p>
             </div>
           )}
 
           <div className="pt-3 border-t border-slate-200 text-[11px] text-slate-500 flex items-center justify-between">
-            <span>Points in view: {filteredPoints.length || allPoints.length}</span>
-            <span className="font-medium text-emerald-700">Total area: {field.areaAcres} acres</span>
+            <span>Checked spots: {allPoints.length}</span>
+            <span className="font-medium text-emerald-700">Field area: {field.areaAcres} acres</span>
           </div>
         </div>
       </div>

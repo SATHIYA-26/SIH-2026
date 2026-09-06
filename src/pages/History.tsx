@@ -23,43 +23,43 @@ export const History: React.FC = () => {
     field.id === 'field-cotton-a' && (!field.followUpHistory || field.followUpHistory.length <= 1)
       ? MOCK_FIELD_HISTORY
       : [
-          {
-            id: `hist-${field.id}-1`,
-            fieldId: field.id,
-            date: field.plantingDate,
-            displayDate: new Date(field.plantingDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }).toUpperCase(),
-            title: 'Field Sown & Planted',
-            category: 'planting' as const,
-            conditionSummary: `${field.variety} planted across ${field.areaAcres} acres in ${field.locationName}. Initial germination normal.`,
-            riskProbability: 0.05,
-            pestCount: 0,
-            weatherSummary: 'Pre-sowing weather, 31°C, favorable'
-          },
-          ...(field.followUpHistory || []).map((fu) => ({
-            id: fu.id,
-            fieldId: field.id,
-            date: fu.date,
-            displayDate: fu.displayDate.toUpperCase(),
-            title: `Follow-Up Check #${fu.followUpNumber}`,
-            category: 'followup' as const,
-            conditionSummary: `${fu.symptomObserved} · Status: ${fu.statusVerdict}. Treatment applied: ${fu.treatmentApplied}. Notes: ${fu.treatmentNotes || 'Scouted successfully'}.`,
-            riskProbability: fu.riskProbability,
-            pestCount: fu.currentPestCount,
-            weatherSummary: 'Chennai local weather'
-          })),
-          {
-            id: `hist-${field.id}-latest`,
-            fieldId: field.id,
-            date: '2026-09-04',
-            displayDate: 'TODAY',
-            title: `Current Check: ${field.currentConditionStatus}`,
-            category: (field.riskProbability >= 0.6 ? 'detection' : 'check') as 'detection' | 'check',
-            conditionSummary: `Condition: ${field.latestAnalysis.condition.status}. 7-day outbreak risk at ${Math.round(field.riskProbability * 100)}%. Pest pressure: ${field.pestPressureSummary}.`,
-            riskProbability: field.riskProbability,
-            pestCount: field.latestAnalysis.pest.currentCount,
-            weatherSummary: `${field.latestAnalysis.weather.temperature}°C, ${field.latestAnalysis.weather.humidity}% RH, ${field.latestAnalysis.weather.recentRainfall} mm rain`
-          }
-        ];
+        {
+          id: `hist-${field.id}-1`,
+          fieldId: field.id,
+          date: field.plantingDate,
+          displayDate: new Date(field.plantingDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }).toUpperCase(),
+          title: 'Field Sown & Planted',
+          category: 'planting' as const,
+          conditionSummary: `${field.variety} planted across ${field.areaAcres} acres in ${field.locationName}. Initial germination normal.`,
+          riskProbability: 0.05,
+          pestCount: 0,
+          weatherSummary: 'Pre-sowing weather, 31°C, favorable'
+        },
+        ...(field.followUpHistory || []).map((fu) => ({
+          id: fu.id,
+          fieldId: field.id,
+          date: fu.date,
+          displayDate: fu.displayDate.toUpperCase(),
+          title: `Follow-Up Check #${fu.followUpNumber}`,
+          category: 'followup' as const,
+          conditionSummary: `${fu.symptomObserved} · Status: ${fu.statusVerdict}. Treatment applied: ${fu.treatmentApplied}. Notes: ${fu.treatmentNotes || 'Scouted successfully'}.`,
+          riskProbability: fu.riskProbability,
+          pestCount: fu.currentPestCount,
+          weatherSummary: 'Chennai local weather'
+        })),
+        {
+          id: `hist-${field.id}-latest`,
+          fieldId: field.id,
+          date: '2026-09-06',
+          displayDate: 'TODAY (06 SEP)',
+          title: `Current Check: ${field.currentConditionStatus}`,
+          category: (field.riskProbability >= 0.6 ? 'detection' : 'check') as 'detection' | 'check',
+          conditionSummary: `Condition: ${field.latestAnalysis.condition.status}. 7-day outbreak risk at ${Math.round(field.riskProbability * 100)}%. Pest pressure: ${field.pestPressureSummary}.`,
+          riskProbability: field.riskProbability,
+          pestCount: field.latestAnalysis.pest.currentCount,
+          weatherSummary: `${field.latestAnalysis.weather.temperature}°C, ${field.latestAnalysis.weather.humidity}% RH, ${field.latestAnalysis.weather.recentRainfall} mm rain`
+        }
+      ];
 
   // Adjust trend data point for the active field's current risk
   const trendData = MOCK_TREND_DATA.map((pt, idx) => {
@@ -99,21 +99,19 @@ export const History: React.FC = () => {
         <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-xs">
           <button
             onClick={() => setActiveTab('timeline')}
-            className={`px-3.5 py-1.5 rounded-md font-semibold transition-colors cursor-pointer ${
-              activeTab === 'timeline'
+            className={`px-3.5 py-1.5 rounded-md font-semibold transition-colors cursor-pointer ${activeTab === 'timeline'
                 ? 'bg-white text-emerald-950 shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
-            }`}
+              }`}
           >
             Field Timeline
           </button>
           <button
             onClick={() => setActiveTab('trends')}
-            className={`px-3.5 py-1.5 rounded-md font-semibold transition-colors cursor-pointer ${
-              activeTab === 'trends'
+            className={`px-3.5 py-1.5 rounded-md font-semibold transition-colors cursor-pointer ${activeTab === 'trends'
                 ? 'bg-white text-emerald-950 shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
-            }`}
+              }`}
           >
             Health Trends
           </button>
@@ -128,22 +126,20 @@ export const History: React.FC = () => {
               <div key={entry.id || idx} className="relative group">
                 {/* Node marker */}
                 <div
-                  className={`absolute -left-6 sm:-left-8 top-1 w-6 h-6 rounded-full border-2 bg-white flex items-center justify-center ${
-                    entry.category === 'planting'
+                  className={`absolute -left-6 sm:-left-8 top-1 w-6 h-6 rounded-full border-2 bg-white flex items-center justify-center ${entry.category === 'planting'
                       ? 'border-emerald-600 text-emerald-700'
                       : entry.category === 'detection' || entry.riskProbability >= 0.6
-                      ? 'border-rose-600 text-rose-700'
-                      : 'border-slate-400 text-slate-600'
-                  }`}
+                        ? 'border-rose-600 text-rose-700'
+                        : 'border-slate-400 text-slate-600'
+                    }`}
                 >
                   <div
-                    className={`w-2 h-2 rounded-full ${
-                      entry.category === 'planting'
+                    className={`w-2 h-2 rounded-full ${entry.category === 'planting'
                         ? 'bg-emerald-600'
                         : entry.category === 'detection' || entry.riskProbability >= 0.6
-                        ? 'bg-rose-600'
-                        : 'bg-slate-400'
-                    }`}
+                          ? 'bg-rose-600'
+                          : 'bg-slate-400'
+                      }`}
                   />
                 </div>
 

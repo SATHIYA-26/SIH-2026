@@ -45,29 +45,28 @@ export const RiskTrendChart: React.FC<RiskTrendChartProps> = ({ className = '' }
           <div className="flex items-center gap-2">
             <h3 className="text-base font-semibold text-slate-900 uppercase tracking-tight">
               {metricTab === 'risk'
-                ? 'OUTBREAK RISK TREND'
+                ? 'HEALTH RISK TREND'
                 : metricTab === 'disease'
-                ? 'DISEASE PROBABILITY EVOLUTION'
-                : 'PEST PRESSURE & DENSITY TREND'}
+                  ? 'DISEASE SPREAD HISTORY'
+                  : 'INSECT COUNT TREND'}
             </h3>
             <span
-              className={`text-[11px] font-bold px-2 py-0.5 rounded border ${
-                field.riskLevel === 'HIGH'
+              className={`text-[11px] font-bold px-2 py-0.5 rounded border ${field.riskLevel === 'HIGH'
                   ? 'text-rose-800 bg-rose-50 border-rose-200'
                   : field.riskLevel === 'MODERATE'
-                  ? 'text-amber-800 bg-amber-50 border-amber-200'
-                  : 'text-emerald-800 bg-emerald-50 border-emerald-200'
-              }`}
+                    ? 'text-amber-800 bg-amber-50 border-amber-200'
+                    : 'text-emerald-800 bg-emerald-50 border-emerald-200'
+                }`}
             >
               {field.name} · {riskDelta > 0 ? `+${riskDelta}% Trend` : riskDelta < 0 ? `${riskDelta}% Trend` : 'Stable'}
             </span>
           </div>
           <p className="text-xs text-slate-500 mt-0.5">
             {metricTab === 'risk'
-              ? `7-day outbreak risk probability evolution for ${field.name}`
+              ? `7-day overall risk changes for ${field.name}`
               : metricTab === 'disease'
-              ? `Dynamic condition distribution across leaf scouting intervals`
-              : `Insect count (${pestType}) against atmospheric relative humidity`}
+                ? `Crop condition changes over recent field checks`
+                : `Insect count (${pestType}) compared with air humidity`}
           </p>
         </div>
 
@@ -78,35 +77,32 @@ export const RiskTrendChart: React.FC<RiskTrendChartProps> = ({ className = '' }
             <button
               type="button"
               onClick={() => setMetricTab('risk')}
-              className={`px-2.5 py-1 rounded-md font-semibold transition-colors cursor-pointer ${
-                metricTab === 'risk'
+              className={`px-2.5 py-1 rounded-md font-semibold transition-colors cursor-pointer ${metricTab === 'risk'
                   ? 'bg-white text-emerald-950 shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
-              }`}
+                }`}
             >
               Risk Trend
             </button>
             <button
               type="button"
               onClick={() => setMetricTab('disease')}
-              className={`px-2.5 py-1 rounded-md font-semibold transition-colors cursor-pointer ${
-                metricTab === 'disease'
+              className={`px-2.5 py-1 rounded-md font-semibold transition-colors cursor-pointer ${metricTab === 'disease'
                   ? 'bg-white text-emerald-950 shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
-              }`}
+                }`}
             >
               Disease
             </button>
             <button
               type="button"
               onClick={() => setMetricTab('pest')}
-              className={`px-2.5 py-1 rounded-md font-semibold transition-colors cursor-pointer ${
-                metricTab === 'pest'
+              className={`px-2.5 py-1 rounded-md font-semibold transition-colors cursor-pointer ${metricTab === 'pest'
                   ? 'bg-white text-emerald-950 shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
-              }`}
+                }`}
             >
-              Pests
+              Insects
             </button>
           </div>
 
@@ -117,11 +113,10 @@ export const RiskTrendChart: React.FC<RiskTrendChartProps> = ({ className = '' }
                 key={r}
                 type="button"
                 onClick={() => setRange(r)}
-                className={`px-2.5 py-1 rounded-md font-medium transition-colors cursor-pointer ${
-                  range === r
+                className={`px-2.5 py-1 rounded-md font-medium transition-colors cursor-pointer ${range === r
                     ? 'bg-white text-slate-900 shadow-xs'
                     : 'text-slate-500 hover:text-slate-900'
-                }`}
+                  }`}
               >
                 {r}
               </button>
@@ -158,10 +153,10 @@ export const RiskTrendChart: React.FC<RiskTrendChartProps> = ({ className = '' }
                       <div className="bg-slate-900 text-white text-xs rounded-lg p-2.5 shadow-lg border border-slate-800 space-y-1">
                         <div className="font-bold text-slate-200">{label} · {field.name}</div>
                         <div className="text-emerald-400 font-semibold">
-                          7-Day Outbreak Risk: <span className="text-white text-sm font-bold">{val}%</span>
+                          7-Day Risk Level: <span className="text-white text-sm font-bold">{val}%</span>
                         </div>
                         <div className="text-slate-400 text-[11px]">
-                          {pestType} Count: {item.pestCount} · Humidity: {item.humidity}% RH
+                          {pestType} Count: {item.pestCount} · Air Humidity: {item.humidity}% RH
                         </div>
                         {item.eventLabel && (
                           <div className="text-amber-400 font-medium text-[10px] pt-1 border-t border-slate-800">
@@ -176,11 +171,11 @@ export const RiskTrendChart: React.FC<RiskTrendChartProps> = ({ className = '' }
               />
               <ReferenceLine y={60} stroke="#f43f5e" strokeDasharray="3 3" label={{ value: 'High Risk (60%)', fill: '#e11d48', fontSize: 10, position: 'right' }} />
               <ReferenceLine y={35} stroke="#f59e0b" strokeDasharray="3 3" label={{ value: 'Moderate (35%)', fill: '#d97706', fontSize: 10, position: 'right' }} />
-              
+
               <Line
                 type="monotone"
                 dataKey="riskProbability"
-                name="7-Day Outbreak Risk"
+                name="7-Day Risk Level"
                 stroke={field.riskLevel === 'HIGH' ? '#dc2626' : field.riskLevel === 'MODERATE' ? '#d97706' : '#166534'}
                 strokeWidth={3}
                 dot={{ r: 4, fill: field.riskLevel === 'HIGH' ? '#dc2626' : '#166534', strokeWidth: 2, stroke: '#ffffff' }}
@@ -194,10 +189,10 @@ export const RiskTrendChart: React.FC<RiskTrendChartProps> = ({ className = '' }
               <YAxis domain={[0, 100]} unit="%" tick={{ fontSize: 11, fill: '#64748b' }} />
               <Tooltip />
               <Legend wrapperStyle={{ fontSize: 11 }} />
-              <Line type="monotone" dataKey="healthyProb" name="Healthy Foliage" stroke="#16a34a" strokeWidth={2.5} />
-              <Line type="monotone" dataKey="bacterialProb" name="Bacterial Blight" stroke="#dc2626" strokeWidth={2.5} />
-              <Line type="monotone" dataKey="curlVirusProb" name="Leaf Curl Virus" stroke="#d97706" strokeWidth={2} />
-              <Line type="monotone" dataKey="fusariumProb" name="Fusarium Wilt" stroke="#6366f1" strokeWidth={2} />
+              <Line type="monotone" dataKey="healthyProb" name="Healthy Leaves" stroke="#16a34a" strokeWidth={2.5} />
+              <Line type="monotone" dataKey="bacterialProb" name="Leaf Blight (Spotted)" stroke="#dc2626" strokeWidth={2.5} />
+              <Line type="monotone" dataKey="curlVirusProb" name="Leaf Curl" stroke="#d97706" strokeWidth={2} />
+              <Line type="monotone" dataKey="fusariumProb" name="Wilt / Root Rot" stroke="#6366f1" strokeWidth={2} />
             </LineChart>
           ) : (
             <LineChart data={data} margin={{ top: 10, right: 20, left: -20, bottom: 0 }}>
@@ -208,7 +203,7 @@ export const RiskTrendChart: React.FC<RiskTrendChartProps> = ({ className = '' }
               <Tooltip />
               <Legend wrapperStyle={{ fontSize: 11 }} />
               <Line yAxisId="left" type="monotone" dataKey="pestCount" name={`${pestType} Count`} stroke="#e11d48" strokeWidth={2.5} dot={{ r: 4 }} />
-              <Line yAxisId="right" type="monotone" dataKey="humidity" name="Relative Humidity %" stroke="#0284c7" strokeWidth={2} strokeDasharray="4 4" />
+              <Line yAxisId="right" type="monotone" dataKey="humidity" name="Air Humidity %" stroke="#0284c7" strokeWidth={2} strokeDasharray="4 4" />
             </LineChart>
           )}
         </ResponsiveContainer>
@@ -218,15 +213,14 @@ export const RiskTrendChart: React.FC<RiskTrendChartProps> = ({ className = '' }
         <div className="flex items-center gap-4">
           <span className="flex items-center gap-1.5">
             <span
-              className={`w-3 h-0.5 rounded-full ${
-                field.riskLevel === 'HIGH' ? 'bg-rose-600' : 'bg-emerald-700'
-              }`}
+              className={`w-3 h-0.5 rounded-full ${field.riskLevel === 'HIGH' ? 'bg-rose-600' : 'bg-emerald-700'
+                }`}
             />
-            <span>Active Parcel: <strong>{field.name}</strong> ({field.locationName})</span>
+            <span>Selected Field: <strong>{field.name}</strong> ({field.locationName})</span>
           </span>
         </div>
         <span className="text-[11px] text-slate-400">
-          Updated on every scouting observation
+          Updates automatically with each field check
         </span>
       </div>
     </div>

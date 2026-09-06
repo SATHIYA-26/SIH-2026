@@ -33,6 +33,7 @@ import { RecommendedActionsPanel } from '../components/dashboard/RecommendedActi
 import { NextCheckPanel } from '../components/dashboard/NextCheckPanel';
 import { ComparisonView } from '../components/followup/ComparisonView';
 import { COTTON_LEAF_BACTERIAL_IMAGE, COTTON_LEAF_HEALTHY_IMAGE } from '../data/mockData';
+import { calculateDaysSincePlanting, formatCalendarDate, getAppCurrentDate } from '../utils/dateUtils';
 
 export const CheckField: React.FC = () => {
   const navigate = useNavigate();
@@ -100,14 +101,6 @@ export const CheckField: React.FC = () => {
     }
   };
 
-  // Calculate days since planting dynamically
-  const calculateDaysSincePlanting = (dateStr: string) => {
-    const planted = new Date(dateStr);
-    const now = new Date('2026-09-05');
-    const diffTime = Math.abs(now.getTime() - planted.getTime());
-    return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 70;
-  };
-
   const daysSincePlanting = calculateDaysSincePlanting(formState.plantingDate);
 
   const handleRunAnalysis = () => {
@@ -158,8 +151,8 @@ export const CheckField: React.FC = () => {
         const newFollowUpRecord: FollowUpRecord = {
           id: `fu-rec-${Date.now()}`,
           followUpNumber: nextFuNumber,
-          date: new Date().toISOString().split('T')[0],
-          displayDate: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+          date: '2026-09-06',
+          displayDate: formatCalendarDate(getAppCurrentDate(), 'display'),
           treatmentApplied: formState.treatmentApplied,
           treatmentNotes: formState.treatmentNotes,
           leafImageUrl: result.condition.leafImageUrl || COTTON_LEAF_BACTERIAL_IMAGE,
@@ -889,7 +882,7 @@ export const CheckField: React.FC = () => {
                 </h3>
                 <p className="text-xs text-emerald-800">
                   Field records and follow-up timeline updated for <strong>{targetField.name}</strong> ({targetField.crop}) on{' '}
-                  {new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+                  {formatCalendarDate(getAppCurrentDate(), 'display')}
                 </p>
               </div>
             </div>

@@ -18,7 +18,7 @@ interface FieldState {
   activeScenario: DemoScenarioKey;
   timeFilter: 'Today' | '7 Days' | '30 Days';
   mapLayer: 'All' | 'Disease' | 'Pest' | 'Risk';
-  
+
   // Actions
   setSelectedFieldId: (id: string) => void;
   getSelectedField: () => Field;

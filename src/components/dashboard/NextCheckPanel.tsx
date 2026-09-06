@@ -3,6 +3,7 @@ import { FollowupSchedule } from '../../types/analysis';
 import { RiskLevel } from '../../types/risk';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, Clock, CheckSquare, PlusCircle, ArrowRight } from 'lucide-react';
+import { computeTargetDate, formatCalendarDate } from '../../utils/dateUtils';
 
 interface NextCheckPanelProps {
   followup: FollowupSchedule;
@@ -16,6 +17,10 @@ export const NextCheckPanel: React.FC<NextCheckPanelProps> = ({
   fieldId = 'field-cotton-a',
 }) => {
   const navigate = useNavigate();
+  const daysRemaining = followup.daysRemaining ?? 4;
+  const targetDateDisplay = followup.targetDate
+    ? formatCalendarDate(followup.targetDate)
+    : computeTargetDate(daysRemaining);
 
   return (
     <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-xs flex flex-col justify-between">
@@ -24,7 +29,7 @@ export const NextCheckPanel: React.FC<NextCheckPanelProps> = ({
           <div className="flex items-center gap-2">
             <Calendar className="w-4 h-4 text-slate-700" />
             <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-tight font-mono">
-              SCHEDULED RECHECK TIMELINE
+              NEXT FIELD CHECK REMINDER
             </h3>
           </div>
           <span
@@ -34,7 +39,7 @@ export const NextCheckPanel: React.FC<NextCheckPanelProps> = ({
                 : 'bg-emerald-100 text-emerald-900'
             }`}
           >
-            {riskLevel === 'HIGH' ? '2–4 Day Critical Cycle' : 'Standard Routine Cycle'}
+            {riskLevel === 'HIGH' ? 'Early Check Recommended' : 'Regular Routine Check'}
           </span>
         </div>
 
@@ -42,10 +47,10 @@ export const NextCheckPanel: React.FC<NextCheckPanelProps> = ({
         <div className="mt-3.5 p-3.5 rounded-lg bg-slate-50 border border-slate-200/80 flex items-center justify-between">
           <div>
             <div className="text-xl sm:text-2xl font-extrabold font-mono text-slate-900">
-              {followup.daysRemaining} Days Remaining
+              {daysRemaining} Days Remaining
             </div>
             <div className="text-xs text-slate-600 mt-0.5 font-medium">
-              Target Recheck: <strong>{followup.targetDate || 'September 9, 2026'}</strong>
+              Next Check Date: <strong>{targetDateDisplay}</strong>
             </div>
           </div>
           <div className="text-right">
@@ -57,16 +62,16 @@ export const NextCheckPanel: React.FC<NextCheckPanelProps> = ({
         {/* Scannable Recheck Protocol */}
         <div className="mt-3 space-y-1.5 text-xs text-slate-600">
           <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider font-mono">
-            RECHECK PROTOCOL:
+            WHAT TO CHECK ON NEXT VISIT:
           </div>
           <div className="grid grid-cols-2 gap-2 text-[11px]">
             <div className="bg-white border border-slate-200 rounded p-2">
-              <span className="text-slate-400 block">Lesion Boundaries:</span>
-              <strong className="text-slate-900">Measure spread radius</strong>
+              <span className="text-slate-400 block">Leaf Spots:</span>
+              <strong className="text-slate-900">Check if spots stopped</strong>
             </div>
             <div className="bg-white border border-slate-200 rounded p-2">
-              <span className="text-slate-400 block">Pest Counts:</span>
-              <strong className="text-slate-900">Underside 20 leaves</strong>
+              <span className="text-slate-400 block">Insects on Leaves:</span>
+              <strong className="text-slate-900">Count bugs under leaves</strong>
             </div>
           </div>
         </div>
@@ -75,7 +80,7 @@ export const NextCheckPanel: React.FC<NextCheckPanelProps> = ({
       {/* Footer CTA */}
       <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
         <div className="text-[11px] text-slate-500">
-          Reason: {followup.reason || 'Risk-based scouting interval'}
+          Reason: {followup.reason || 'Routine field check'}
         </div>
 
         <button

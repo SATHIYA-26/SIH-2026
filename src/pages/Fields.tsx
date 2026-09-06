@@ -5,6 +5,7 @@ import { StatusBadge } from '../components/common/StatusBadge';
 import { PlusCircle, Search, MapPin, ArrowRight, Eye, X, Sprout } from 'lucide-react';
 import { Field } from '../types/field';
 import { COTTON_LEAF_HEALTHY_IMAGE } from '../data/mockData';
+import { calculateDaysSincePlanting } from '../utils/dateUtils';
 
 export const Fields: React.FC = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ export const Fields: React.FC = () => {
     const matchesSearch = f.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       f.crop.toLowerCase().includes(searchQuery.toLowerCase()) ||
       f.locationName.toLowerCase().includes(searchQuery.toLowerCase());
-    
+
     const matchesRisk = filterRisk === 'ALL' || f.riskLevel === filterRisk;
     return matchesSearch && matchesRisk;
   });
@@ -34,9 +35,7 @@ export const Fields: React.FC = () => {
     e.preventDefault();
     if (!newFieldName) return;
 
-    const planted = new Date(newPlantingDate);
-    const now = new Date('2026-09-04');
-    const diffDays = Math.max(1, Math.ceil(Math.abs(now.getTime() - planted.getTime()) / (1000 * 60 * 60 * 24)));
+    const diffDays = calculateDaysSincePlanting(newPlantingDate);
 
     const newField: Field = {
       id: `field-${Date.now()}`,
@@ -173,11 +172,10 @@ export const Fields: React.FC = () => {
               <button
                 key={lvl}
                 onClick={() => setFilterRisk(lvl)}
-                className={`px-2.5 py-1 rounded-md font-semibold transition-colors cursor-pointer ${
-                  filterRisk === lvl
+                className={`px-2.5 py-1 rounded-md font-semibold transition-colors cursor-pointer ${filterRisk === lvl
                     ? 'bg-white text-emerald-950 shadow-xs'
                     : 'text-slate-600 hover:text-slate-900'
-                }`}
+                  }`}
               >
                 {lvl}
               </button>
@@ -235,13 +233,12 @@ export const Fields: React.FC = () => {
                     <td className="py-3.5 px-4">
                       <div className="flex items-center gap-2">
                         <span
-                          className={`font-bold font-mono text-sm ${
-                            f.riskLevel === 'HIGH'
+                          className={`font-bold font-mono text-sm ${f.riskLevel === 'HIGH'
                               ? 'text-rose-700'
                               : f.riskLevel === 'MODERATE'
-                              ? 'text-amber-700'
-                              : 'text-emerald-700'
-                          }`}
+                                ? 'text-amber-700'
+                                : 'text-emerald-700'
+                            }`}
                         >
                           {riskPercent}%
                         </span>

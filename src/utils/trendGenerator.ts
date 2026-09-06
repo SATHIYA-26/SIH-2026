@@ -31,7 +31,7 @@ export function getFieldTrendData(
       { date: 'Aug 28', timestamp: '2026-08-28', riskProbability: 42, pestCount: 8, healthyProb: 55, bacterialProb: 38, curlVirusProb: 4, fusariumProb: 3, humidity: 78, rainfall: 6, temperature: 30 },
       { date: 'Aug 30', timestamp: '2026-08-30', riskProbability: 55, pestCount: 10, healthyProb: 32, bacterialProb: 61, curlVirusProb: 4, fusariumProb: 3, humidity: 82, rainfall: 8, temperature: 29 },
       { date: 'Sep 01', timestamp: '2026-09-01', riskProbability: 59, pestCount: 14, healthyProb: 18, bacterialProb: 75, curlVirusProb: 4, fusariumProb: 3, humidity: 84, rainfall: 10, temperature: 29 },
-      { date: 'Sep 04', timestamp: '2026-09-04', riskProbability: currentRisk, pestCount: currentPest, healthyProb: healthyPct, bacterialProb: bacterialPct, curlVirusProb: curlPct, fusariumProb: fusariumPct, humidity: currentHumidity, rainfall: currentRain, temperature: currentTemp, eventLabel: 'Current Check' }
+      { date: 'Sep 06', timestamp: '2026-09-06', riskProbability: currentRisk, pestCount: currentPest, healthyProb: healthyPct, bacterialProb: bacterialPct, curlVirusProb: curlPct, fusariumProb: fusariumPct, humidity: currentHumidity, rainfall: currentRain, temperature: currentTemp, eventLabel: 'Current Check' }
     ];
     if (range === '7 Days') return fullSeries.slice(-4);
     if (range === '14 Days') return fullSeries.slice(-5);
@@ -45,7 +45,7 @@ export function getFieldTrendData(
       { date: 'Aug 28', timestamp: '2026-08-28', riskProbability: 15, pestCount: 3, healthyProb: 94, bacterialProb: 3, curlVirusProb: 2, fusariumProb: 1, humidity: 61, rainfall: 0, temperature: 28 },
       { date: 'Aug 30', timestamp: '2026-08-30', riskProbability: 16, pestCount: 3, healthyProb: 95, bacterialProb: 2, curlVirusProb: 2, fusariumProb: 1, humidity: 62, rainfall: 0, temperature: 28 },
       { date: 'Sep 01', timestamp: '2026-09-01', riskProbability: 17, pestCount: 3, healthyProb: 94, bacterialProb: 2, curlVirusProb: 2, fusariumProb: 2, humidity: 62, rainfall: 0, temperature: 28 },
-      { date: 'Sep 04', timestamp: '2026-09-04', riskProbability: currentRisk, pestCount: currentPest, healthyProb: healthyPct, bacterialProb: bacterialPct, curlVirusProb: curlPct, fusariumProb: fusariumPct, humidity: currentHumidity, rainfall: currentRain, temperature: currentTemp, eventLabel: 'Current Check' }
+      { date: 'Sep 06', timestamp: '2026-09-06', riskProbability: currentRisk, pestCount: currentPest, healthyProb: healthyPct, bacterialProb: bacterialPct, curlVirusProb: curlPct, fusariumProb: fusariumPct, humidity: currentHumidity, rainfall: currentRain, temperature: currentTemp, eventLabel: 'Current Check' }
     ];
     if (range === '7 Days') return fullSeries.slice(-4);
     if (range === '14 Days') return fullSeries.slice(-5);
@@ -59,7 +59,7 @@ export function getFieldTrendData(
       { date: 'Aug 28', timestamp: '2026-08-28', riskProbability: 34, pestCount: 5, healthyProb: 55, bacterialProb: 6, curlVirusProb: 35, fusariumProb: 4, humidity: 74, rainfall: 2, temperature: 32 },
       { date: 'Aug 30', timestamp: '2026-08-30', riskProbability: 38, pestCount: 6, healthyProb: 35, bacterialProb: 7, curlVirusProb: 54, fusariumProb: 4, humidity: 75, rainfall: 0, temperature: 32 },
       { date: 'Sep 01', timestamp: '2026-09-01', riskProbability: 41, pestCount: 7, healthyProb: 22, bacterialProb: 8, curlVirusProb: 66, fusariumProb: 4, humidity: 76, rainfall: 0, temperature: 32 },
-      { date: 'Sep 04', timestamp: '2026-09-04', riskProbability: currentRisk, pestCount: currentPest, healthyProb: healthyPct, bacterialProb: bacterialPct, curlVirusProb: curlPct, fusariumProb: fusariumPct, humidity: currentHumidity, rainfall: currentRain, temperature: currentTemp, eventLabel: 'Current Check' }
+      { date: 'Sep 06', timestamp: '2026-09-06', riskProbability: currentRisk, pestCount: currentPest, healthyProb: healthyPct, bacterialProb: bacterialPct, curlVirusProb: curlPct, fusariumProb: fusariumPct, humidity: currentHumidity, rainfall: currentRain, temperature: currentTemp, eventLabel: 'Current Check' }
     ];
     if (range === '7 Days') return fullSeries.slice(-4);
     if (range === '14 Days') return fullSeries.slice(-5);
@@ -73,7 +73,7 @@ export function getFieldTrendData(
       { date: 'Aug 28', timestamp: '2026-08-28', riskProbability: 18, pestCount: 3, healthyProb: 92, bacterialProb: 3, curlVirusProb: 3, fusariumProb: 2, humidity: 68, rainfall: 0, temperature: 29 },
       { date: 'Aug 30', timestamp: '2026-08-30', riskProbability: 19, pestCount: 3, healthyProb: 92, bacterialProb: 3, curlVirusProb: 3, fusariumProb: 2, humidity: 70, rainfall: 0, temperature: 29 },
       { date: 'Sep 01', timestamp: '2026-09-01', riskProbability: 20, pestCount: 4, healthyProb: 91, bacterialProb: 4, curlVirusProb: 3, fusariumProb: 2, humidity: 70, rainfall: 0, temperature: 29 },
-      { date: 'Sep 04', timestamp: '2026-09-04', riskProbability: currentRisk, pestCount: currentPest, healthyProb: healthyPct, bacterialProb: bacterialPct, curlVirusProb: curlPct, fusariumProb: fusariumPct, humidity: currentHumidity, rainfall: currentRain, temperature: currentTemp, eventLabel: 'Current Check' }
+      { date: 'Sep 06', timestamp: '2026-09-06', riskProbability: currentRisk, pestCount: currentPest, healthyProb: healthyPct, bacterialProb: bacterialPct, curlVirusProb: curlPct, fusariumProb: fusariumPct, humidity: currentHumidity, rainfall: currentRain, temperature: currentTemp, eventLabel: 'Current Check' }
     ];
     if (range === '7 Days') return fullSeries.slice(-4);
     if (range === '14 Days') return fullSeries.slice(-5);
@@ -125,8 +125,8 @@ export function getFieldTrendData(
       temperature: currentTemp,
     },
     {
-      date: 'Sep 04',
-      timestamp: '2026-09-04',
+      date: 'Sep 06',
+      timestamp: '2026-09-06',
       riskProbability: currentRisk,
       pestCount: currentPest,
       healthyProb: healthyPct,

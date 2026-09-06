@@ -142,23 +142,21 @@ export const Reports: React.FC = () => {
             </div>
 
             <div
-              className={`p-4 rounded-lg border space-y-1.5 text-xs ${
-                field.riskLevel === 'HIGH'
+              className={`p-4 rounded-lg border space-y-1.5 text-xs ${field.riskLevel === 'HIGH'
                   ? 'bg-rose-50/50 border-rose-200'
                   : field.riskLevel === 'MODERATE'
-                  ? 'bg-amber-50/50 border-amber-200'
-                  : 'bg-emerald-50/50 border-emerald-200'
-              }`}
+                    ? 'bg-amber-50/50 border-amber-200'
+                    : 'bg-emerald-50/50 border-emerald-200'
+                }`}
             >
               <span className="text-slate-600 font-medium">7-Day Outbreak Risk Forecast:</span>
               <div
-                className={`text-xl font-extrabold ${
-                  field.riskLevel === 'HIGH'
+                className={`text-xl font-extrabold ${field.riskLevel === 'HIGH'
                     ? 'text-rose-700'
                     : field.riskLevel === 'MODERATE'
-                    ? 'text-amber-700'
-                    : 'text-emerald-700'
-                }`}
+                      ? 'text-amber-700'
+                      : 'text-emerald-700'
+                  }`}
               >
                 {riskPercent}% ({field.riskLevel} RISK)
               </div>

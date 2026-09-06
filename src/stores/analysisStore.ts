@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { FullFieldAnalysis, DiseaseClass, DiseaseProbabilities } from '../types/analysis';
 import { RiskLevel } from '../types/risk';
 import { COTTON_LEAF_BACTERIAL_IMAGE, COTTON_LEAF_HEALTHY_IMAGE } from '../data/mockData';
+import { computeTargetDate, calculateDaysSincePlanting, getAppCurrentDate } from '../utils/dateUtils';
 
 export type CheckMode = 'initial' | 'followup';
 export type TreatmentStatus = 'YES' | 'PARTIAL' | 'NO';
@@ -212,9 +213,7 @@ export const useAnalysisStore = create<AnalysisState>((set, get) => ({
 
           // 4. Follow-up Interval
           const intervalDays = riskLevel === 'HIGH' ? 3 : riskLevel === 'MODERATE' ? 6 : 10;
-          const targetDateObj = new Date();
-          targetDateObj.setDate(targetDateObj.getDate() + intervalDays);
-          const targetDateFormatted = targetDateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+          const targetDateFormatted = computeTargetDate(intervalDays);
 
           // 5. Actions synthesizer
           const actions = [];
@@ -326,7 +325,7 @@ export const useAnalysisStore = create<AnalysisState>((set, get) => ({
           const result: FullFieldAnalysis = {
             id: `ana-${Date.now()}`,
             fieldId: formState.fieldId,
-            timestamp: new Date().toISOString(),
+            timestamp: getAppCurrentDate().toISOString(),
             condition: {
               status: statusTitle,
               confidence: conf,
@@ -364,7 +363,7 @@ export const useAnalysisStore = create<AnalysisState>((set, get) => ({
             cropStage: {
               cropName: crop,
               plantingDate: formState.plantingDate,
-              daysSincePlanting: Math.ceil(Math.abs(new Date().getTime() - new Date(formState.plantingDate).getTime()) / (1000 * 60 * 60 * 24)) || 70,
+              daysSincePlanting: calculateDaysSincePlanting(formState.plantingDate),
               stageName: 'Flowering & Boll Development',
               stageProgressPercent: 55,
               totalCycleDays: 160,

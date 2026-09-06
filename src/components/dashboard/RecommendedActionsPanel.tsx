@@ -18,26 +18,26 @@ export const RecommendedActionsPanel: React.FC<RecommendedActionsPanelProps> = (
     {
       id: '1',
       stepNumber: 1,
-      action: 'Inspect North-East Hotspot (Zone NE-2)',
-      detail: 'Scout 5-meter radius around bacterial lesion cluster and tag representative leaves.',
+      action: 'Check Damaged Leaves in North-East Area',
+      detail: 'Walk around affected plants and check if leaf spots are spreading.',
     },
     {
       id: '2',
       stepNumber: 2,
-      action: 'Verify Aphid Thresholds in Perimeter Rows',
-      detail: 'Check 20 random leaves in Zone SW-1 to determine if population exceeds 15 insects/leaf.',
+      action: 'Check Insect Count on Edge Rows',
+      detail: 'Turn over 20 leaves to check if bugs/aphids are increasing.',
     },
     {
       id: '3',
       stepNumber: 3,
-      action: 'Perform Targeted Containment & Aeration',
-      detail: 'Remove necrotic leaf debris and ensure drainage lines in south boundary are clear.',
+      action: 'Remove Fallen Diseased Leaves & Clear Water',
+      detail: 'Clear dry/rotted leaves and keep water channels flowing smoothly.',
     },
     {
       id: '4',
       stepNumber: 4,
-      action: 'Execute Follow-up Check within 48–72 Hours',
-      detail: 'Capture recheck photo to evaluate symptom stabilization delta.',
+      action: 'Take a Follow-Up Photo in 2 to 3 Days',
+      detail: 'Take a fresh crop photo to confirm if the crops are recovering.',
     },
   ];
 
@@ -50,11 +50,11 @@ export const RecommendedActionsPanel: React.FC<RecommendedActionsPanelProps> = (
           <div className="flex items-center gap-2">
             <ClipboardCheck className="w-4 h-4 text-emerald-800" />
             <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-tight font-mono">
-              5. WHAT SHOULD I DO NEXT? (RECOMMENDED ACTIONS)
+              4. WHAT SHOULD I DO NEXT? (RECOMMENDED STEPS)
             </h3>
           </div>
           <span className="text-[10px] font-bold text-emerald-900 bg-emerald-100 px-2 py-0.5 rounded">
-            Immediate Operational Steps
+            Simple Action Steps
           </span>
         </div>
 
@@ -83,10 +83,10 @@ export const RecommendedActionsPanel: React.FC<RecommendedActionsPanelProps> = (
         </div>
       </div>
 
-      {/* Direct Action CTAs (Inspect Hotspot & Start Follow-up) */}
+      {/* Direct Action CTAs (Inspect Spot & Start Follow-up) */}
       <div className="flex flex-wrap items-center justify-between gap-3 mt-4 pt-3 border-t border-slate-100">
         <div className="text-[11px] text-slate-500 font-medium">
-          IPM Protocol · Sathiya Verified
+          Field Safety Guide · Sathiya Verified
         </div>
 
         <div className="flex items-center gap-2">
@@ -102,7 +102,7 @@ export const RecommendedActionsPanel: React.FC<RecommendedActionsPanelProps> = (
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 text-xs font-semibold text-slate-800 bg-white hover:bg-slate-50 transition-colors cursor-pointer shadow-2xs"
           >
             <MapPin className="w-3.5 h-3.5 text-slate-600" />
-            <span>Inspect Hotspot</span>
+            <span>View on Map</span>
           </button>
 
           <button
