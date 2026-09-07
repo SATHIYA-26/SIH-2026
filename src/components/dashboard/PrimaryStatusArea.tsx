@@ -4,6 +4,7 @@ import { RiskResult } from '../../types/risk';
 import { StatusBadge } from '../common/StatusBadge';
 import { AlertTriangle, ShieldCheck, Activity, TrendingUp, Droplets, CloudRain, Bug, Eye, Sparkles } from 'lucide-react';
 import { COTTON_LEAF_BACTERIAL_IMAGE, COTTON_LEAF_HEALTHY_IMAGE } from '../../data/mockData';
+import { getValidLeafImageUrl, handleImageError } from '../../utils/imageUtils';
 import { useUserStore } from '../../stores/userStore';
 
 interface PrimaryStatusAreaProps {
@@ -25,8 +26,7 @@ export const PrimaryStatusArea: React.FC<PrimaryStatusAreaProps> = ({
   const isModerateRisk = risk.level === 'MODERATE';
   const isHealthy = condition.topClass === 'healthy';
 
-  const defaultImg = isHealthy ? COTTON_LEAF_HEALTHY_IMAGE : COTTON_LEAF_BACTERIAL_IMAGE;
-  const leafImg = condition.leafImageUrl || defaultImg;
+  const leafImg = getValidLeafImageUrl(condition.leafImageUrl, condition.status);
 
   // Extract top drivers
   const drivers = risk.drivers || [];
@@ -71,16 +71,20 @@ export const PrimaryStatusArea: React.FC<PrimaryStatusAreaProps> = ({
           {/* Body: Thumbnail + Core Finding */}
           <div className="flex items-start gap-4 mt-3.5">
             {/* Leaf Image Thumbnail */}
-            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-slate-900 border border-slate-200 shrink-0 relative group">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-slate-950 border border-slate-200 shrink-0 relative group flex items-center justify-center">
+              <img
+                src={leafImg}
+                alt=""
+                aria-hidden="true"
+                className="absolute inset-0 w-full h-full object-cover blur-sm opacity-35 scale-110 pointer-events-none"
+              />
               <img
                 src={leafImg}
                 alt="Field leaf evidence"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = defaultImg;
-                }}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                onError={(e) => handleImageError(e)}
+                className="relative z-10 max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-200"
               />
-              <span className="absolute bottom-1 right-1 bg-slate-900/80 text-[9px] text-white font-medium px-1.5 py-0.5 rounded">
+              <span className="absolute bottom-1 right-1 z-20 bg-slate-950/85 text-[9px] text-white font-medium px-1.5 py-0.5 rounded border border-white/10">
                 PHOTO
               </span>
             </div>

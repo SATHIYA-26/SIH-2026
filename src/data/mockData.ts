@@ -24,8 +24,29 @@ export const DEMO_SCENARIO_HIGH_RISK: Field = {
   pestPressureSummary: '18 aphids ↑ from 10',
   lastCheckedDate: 'Today',
   nextCheckDays: 4,
-  followUpCount: 1,
+  followUpCount: 2,
   followUpHistory: [
+    {
+      id: 'fu-hist-002',
+      followUpNumber: 2,
+      date: '2026-09-04',
+      displayDate: '04 Sep 2026',
+      treatmentApplied: 'YES',
+      treatmentNotes: 'Sprayed Copper Oxychloride 50 WP (2.5g/L) + localized Neem oil trap setup in Zone NE-2',
+      leafImageUrl: COTTON_LEAF_BACTERIAL_IMAGE,
+      symptomObserved: 'Bacterial Blight Lesions (Active Margin)',
+      pestType: 'Cotton Aphid',
+      currentPestCount: 18,
+      previousPestCount: 10,
+      pestDelta: 8,
+      riskProbability: 0.68,
+      previousRiskProbability: 0.55,
+      riskDelta: 0.13,
+      riskLevel: 'HIGH',
+      statusVerdict: 'High Risk / Pathogen Active',
+      agronomicAdvisory: 'Maintain barrier spray and check insect traps in 2 days.',
+      nextCheckDays: 4
+    },
     {
       id: 'fu-hist-001',
       followUpNumber: 1,
@@ -34,7 +55,7 @@ export const DEMO_SCENARIO_HIGH_RISK: Field = {
       treatmentApplied: 'PARTIAL',
       treatmentNotes: 'Spot rogueing of infected leaves done in Zone NE-2',
       leafImageUrl: COTTON_LEAF_BACTERIAL_IMAGE,
-      symptomObserved: 'Bacterial Blight Lesions',
+      symptomObserved: 'Bacterial Blight Lesions (Early spots)',
       pestType: 'Cotton Aphid',
       currentPestCount: 10,
       previousPestCount: 6,
@@ -43,7 +64,7 @@ export const DEMO_SCENARIO_HIGH_RISK: Field = {
       previousRiskProbability: 0.38,
       riskDelta: 0.17,
       riskLevel: 'MODERATE',
-      statusVerdict: 'Moderate Risk / Partial Response',
+      statusVerdict: 'Moderate Risk / Early Spread',
       agronomicAdvisory: 'Maintain aphid trap monitoring and prepare Copper Oxychloride foliar spray.',
       nextCheckDays: 5
     }
@@ -272,12 +293,31 @@ export const DEMO_SCENARIO_HIGH_RISK: Field = {
 
 export const DEMO_SCENARIO_IMPROVING: Field = {
   ...DEMO_SCENARIO_HIGH_RISK,
-  currentConditionStatus: 'Symptoms Stabilized / Healing',
-  riskProbability: 0.41,
-  riskLevel: 'MODERATE',
-  pestPressureSummary: '10 aphids ↓ from 18',
-  lastCheckedDate: 'Today',
-  nextCheckDays: 7,
+  followUpCount: 3,
+  followUpHistory: [
+    {
+      id: 'fu-hist-003',
+      followUpNumber: 3,
+      date: '2026-09-07',
+      displayDate: '07 Sep 2026',
+      treatmentApplied: 'YES',
+      treatmentNotes: 'Second application of bio-fungicide completed with insecticidal soap',
+      leafImageUrl: COTTON_LEAF_HEALTHY_IMAGE,
+      symptomObserved: 'Symptoms Stabilized / Healing Lesions',
+      pestType: 'Cotton Aphid',
+      currentPestCount: 10,
+      previousPestCount: 18,
+      pestDelta: -8,
+      riskProbability: 0.41,
+      previousRiskProbability: 0.68,
+      riskDelta: -0.27,
+      riskLevel: 'MODERATE',
+      statusVerdict: 'Fine / Improving Response',
+      agronomicAdvisory: 'Canopy drying is succeeding. Continue 7-day regular scouting.',
+      nextCheckDays: 7
+    },
+    ...DEMO_SCENARIO_HIGH_RISK.followUpHistory
+  ],
   latestAnalysis: {
     ...DEMO_SCENARIO_HIGH_RISK.latestAnalysis,
     condition: {

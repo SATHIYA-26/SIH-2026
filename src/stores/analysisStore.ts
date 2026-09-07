@@ -110,7 +110,7 @@ export const useAnalysisStore = create<AnalysisState>()(
             variety: varietyName,
             plantingDate: plantDate,
             imageFile: null,
-            imagePreviewUrl: isFollowup ? (priorAnalysis?.condition.leafImageUrl || COTTON_LEAF_BACTERIAL_IMAGE) : null,
+            imagePreviewUrl: null,
             pestType: priorAnalysis?.pest.pestType || 'Cotton Aphid',
             previousPestCount: isFollowup ? (priorAnalysis?.pest.currentCount || 10) : undefined,
             currentPestCount: isFollowup ? Math.max(2, Math.floor((priorAnalysis?.pest.currentCount || 10) / 2)) : 0,

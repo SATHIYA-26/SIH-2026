@@ -158,22 +158,24 @@ export const CheckField: React.FC = () => {
 
       if (formState.mode === 'followup') {
         const nextFuNumber = (targetField.followUpCount || 0) + 1;
-        const priorProb = targetField.latestAnalysis?.risk.probability || 0.68;
+        const priorProb = targetField.latestAnalysis?.risk?.probability ?? 0.55;
         const riskDelta = parseFloat((result.risk.probability - priorProb).toFixed(2));
-        const pestDelta = (result.pest.currentCount || 0) - (formState.previousPestCount || 0);
+        const priorPestCount = formState.previousPestCount ?? targetField.latestAnalysis?.pest?.currentCount ?? 0;
+        const pestDelta = (result.pest.currentCount || 0) - priorPestCount;
+        const todayDisplay = formatCalendarDate(getAppCurrentDate(), 'display');
 
         const newFollowUpRecord: FollowUpRecord = {
           id: `fu-rec-${Date.now()}`,
           followUpNumber: nextFuNumber,
-          date: '2026-09-06',
-          displayDate: formatCalendarDate(getAppCurrentDate(), 'display'),
+          date: todayDisplay,
+          displayDate: todayDisplay,
           treatmentApplied: formState.treatmentApplied,
           treatmentNotes: formState.treatmentNotes,
           leafImageUrl: result.condition.leafImageUrl || COTTON_LEAF_BACTERIAL_IMAGE,
           symptomObserved: result.condition.status,
           pestType: result.pest.pestType,
           currentPestCount: result.pest.currentCount,
-          previousPestCount: formState.previousPestCount,
+          previousPestCount: priorPestCount,
           pestDelta: pestDelta,
           riskProbability: result.risk.probability,
           previousRiskProbability: priorProb,
@@ -373,10 +375,12 @@ export const CheckField: React.FC = () => {
           <div className="flex items-start justify-between">
             <div>
               <h2 className="text-lg font-bold text-slate-900">
-                Step 1: {isFollowupMode ? 'Upload Latest Leaf Photo' : 'Upload Crop Leaf Photo'}
+                Step 1: {isFollowupMode ? 'Upload New Follow-Up Leaf Photo' : 'Upload Crop Leaf Photo'}
               </h2>
               <p className="text-xs text-slate-600 mt-1">
-                Upload or take a photo of the affected leaf from {formState.isNewFieldCreation ? (formState.newFieldName || 'new field') : targetField.name} ({targetField.crop}).
+                {isFollowupMode
+                  ? `Take or upload a new photo of the crop leaf to inspect how ${targetField.name} responded to the treatment.`
+                  : `Upload or take a photo of the leaf from ${formState.isNewFieldCreation ? (formState.newFieldName || 'new field') : targetField.name} (${targetField.crop}).`}
               </p>
             </div>
           </div>
@@ -392,13 +396,19 @@ export const CheckField: React.FC = () => {
           {/* Photo Preview or Clean Upload Dropzone */}
           {formState.imagePreviewUrl ? (
             <div className="space-y-4">
-              <div className="w-full h-64 sm:h-80 rounded-xl overflow-hidden bg-slate-900 border border-slate-200 relative group">
+              <div className="w-full aspect-[4/3] sm:aspect-[16/10] max-h-96 rounded-xl overflow-hidden bg-slate-950 border border-slate-200 relative group flex items-center justify-center shadow-inner">
+                <img
+                  src={formState.imagePreviewUrl}
+                  alt=""
+                  aria-hidden="true"
+                  className="absolute inset-0 w-full h-full object-cover blur-lg opacity-30 scale-110 pointer-events-none"
+                />
                 <img
                   src={formState.imagePreviewUrl}
                   alt="Captured crop leaf preview"
-                  className="w-full h-full object-cover"
+                  className="relative z-10 max-w-full max-h-full object-contain mx-auto transition-transform duration-300 group-hover:scale-105"
                 />
-                <div className="absolute top-3 left-3 bg-slate-900/85 text-white text-xs px-2.5 py-1 rounded backdrop-blur-xs font-semibold flex items-center gap-1.5">
+                <div className="absolute top-3 left-3 z-20 bg-slate-950/85 text-white text-xs px-2.5 py-1 rounded backdrop-blur-xs font-semibold flex items-center gap-1.5 border border-white/10 shadow-xs">
                   <ScanLine className="w-3.5 h-3.5 text-emerald-400" />
                   <span>PHOTO LOADED</span>
                 </div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { DiseaseCondition } from '../../types/analysis';
 import { COTTON_LEAF_BACTERIAL_IMAGE, COTTON_LEAF_HEALTHY_IMAGE } from '../../data/mockData';
+import { getValidLeafImageUrl, handleImageError } from '../../utils/imageUtils';
 import { Sparkles, Camera, Image as ImageIcon, ZoomIn, CheckCircle2, AlertTriangle, ShieldCheck } from 'lucide-react';
 
 interface DiagnosisPanelProps {
@@ -26,8 +27,7 @@ export const DiagnosisPanel: React.FC<DiagnosisPanelProps> = ({ condition, onRet
   ].sort((a, b) => b.prob - a.prob);
 
   const isHealthy = condition.topClass === 'healthy';
-  const defaultFallbackImage = isHealthy ? COTTON_LEAF_HEALTHY_IMAGE : COTTON_LEAF_BACTERIAL_IMAGE;
-  const imageSource = condition.leafImageUrl || defaultFallbackImage;
+  const imageSource = getValidLeafImageUrl(condition.leafImageUrl, condition.status);
 
   return (
     <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-xs">
@@ -54,23 +54,24 @@ export const DiagnosisPanel: React.FC<DiagnosisPanelProps> = ({ condition, onRet
         <div className="md:col-span-4 relative group">
           <div
             onClick={() => setShowFullImage(!showFullImage)}
-            className="w-full h-44 sm:h-48 rounded-lg overflow-hidden bg-slate-950 border border-slate-200 relative shadow-2xs cursor-pointer"
+            className="w-full aspect-[4/3] max-h-52 rounded-xl overflow-hidden bg-slate-950 border border-slate-200 relative shadow-2xs cursor-pointer flex items-center justify-center"
           >
             <img
               src={imageSource}
-              alt="Inspected leaf condition"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                if (target.src !== defaultFallbackImage) {
-                  target.src = defaultFallbackImage;
-                }
-              }}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 block"
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 w-full h-full object-cover blur-md opacity-30 scale-110 pointer-events-none"
             />
-            <div className="absolute top-2 left-2 bg-slate-950/85 text-white text-[9px] font-semibold uppercase px-2 py-0.5 rounded backdrop-blur-xs">
+            <img
+              src={imageSource}
+              alt="Inspected leaf condition"
+              onError={(e) => handleImageError(e)}
+              className="relative z-10 max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-300 block"
+            />
+            <div className="absolute top-2 left-2 z-20 bg-slate-950/85 text-white text-[9px] font-semibold uppercase px-2 py-0.5 rounded backdrop-blur-xs border border-white/10">
               FIELD PHOTO
             </div>
-            <div className="absolute bottom-2 right-2 bg-slate-950/80 text-white p-1 rounded backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="absolute bottom-2 right-2 z-20 bg-slate-950/80 text-white p-1 rounded backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity">
               <ZoomIn className="w-3.5 h-3.5" />
             </div>
           </div>

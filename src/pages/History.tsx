@@ -12,6 +12,7 @@ import {
   Legend,
 } from 'recharts';
 import { Sprout, CheckCircle2, AlertTriangle, Clock, TrendingUp, Bug, Filter, MapPin } from 'lucide-react';
+import { getAppCurrentDate, formatCalendarDate } from '../utils/dateUtils';
 
 export const History: React.FC = () => {
   const { getSelectedField } = useFieldStore();
@@ -50,8 +51,8 @@ export const History: React.FC = () => {
         {
           id: `hist-${field.id}-latest`,
           fieldId: field.id,
-          date: '2026-09-06',
-          displayDate: 'TODAY (06 SEP)',
+          date: formatCalendarDate(getAppCurrentDate(), 'display'),
+          displayDate: `TODAY (${formatCalendarDate(getAppCurrentDate(), 'short').toUpperCase()})`,
           title: `Current Check: ${field.currentConditionStatus}`,
           category: (field.riskProbability >= 0.6 ? 'detection' : 'check') as 'detection' | 'check',
           conditionSummary: `Condition: ${field.latestAnalysis.condition.status}. 7-day outbreak risk at ${Math.round(field.riskProbability * 100)}%. Pest pressure: ${field.pestPressureSummary}.`,
