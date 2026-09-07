@@ -18,9 +18,7 @@ export const NextCheckPanel: React.FC<NextCheckPanelProps> = ({
 }) => {
   const navigate = useNavigate();
   const daysRemaining = followup.daysRemaining ?? 4;
-  const targetDateDisplay = followup.targetDate
-    ? formatCalendarDate(followup.targetDate)
-    : computeTargetDate(daysRemaining);
+  const targetDateDisplay = computeTargetDate(daysRemaining);
 
   return (
     <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-xs flex flex-col justify-between">

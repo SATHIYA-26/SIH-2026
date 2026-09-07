@@ -15,9 +15,7 @@ export const FieldContextStrip: React.FC<FieldContextStripProps> = ({ field }) =
   const followup = analysis.followup;
 
   const daysRemaining = followup.daysRemaining ?? field.nextCheckDays ?? 4;
-  const targetDateStr = followup.targetDate
-    ? formatCalendarDate(followup.targetDate)
-    : computeTargetDate(daysRemaining);
+  const targetDateStr = computeTargetDate(daysRemaining);
 
   const getCleanStageName = (stage: string) => {
     if (stage.toLowerCase().includes('flowering')) return 'Flowering Stage';

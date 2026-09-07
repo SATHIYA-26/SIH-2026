@@ -54,6 +54,7 @@ export const CheckField: React.FC = () => {
     latestResult,
     previousResult,
     isLowConfidenceResult,
+    resetAnalysisSession,
   } = useAnalysisStore();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -933,7 +934,7 @@ export const CheckField: React.FC = () => {
           <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-200">
             <button
               onClick={() => {
-                initializeForField(targetField.id, isFollowupMode ? 'followup' : 'initial');
+                resetAnalysisSession(targetField.id);
               }}
               className="flex items-center gap-1.5 px-4 py-2 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer"
             >

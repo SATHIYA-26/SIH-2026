@@ -20,6 +20,8 @@ import {
   LucideIcon,
 } from 'lucide-react';
 
+import { useUserStore } from '../../stores/userStore';
+
 interface NavItem {
   label: string;
   path: string;
@@ -36,6 +38,7 @@ interface NavGroup {
 
 export const Sidebar: React.FC = () => {
   const { sidebarOpen, setSidebarOpen, alerts } = useUIStore();
+  const { profile } = useUserStore();
   const navigate = useNavigate();
 
   const unreadAlertCount = alerts.filter(a => !a.isRead).length;
@@ -161,19 +164,22 @@ export const Sidebar: React.FC = () => {
         </div>
 
         {/* Sidebar Footer User Info */}
-        <div className="p-3 border-t border-slate-100 bg-slate-50/70">
+        <div
+          onClick={() => navigate('/profile')}
+          className="p-3 border-t border-slate-100 bg-slate-50/70 hover:bg-slate-100/80 transition-colors cursor-pointer"
+        >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-full bg-emerald-800 flex items-center justify-center text-white text-xs font-bold">
-                S
+              <div className="w-7 h-7 rounded-full bg-emerald-800 flex items-center justify-center text-white text-xs font-bold shrink-0">
+                {profile.name.charAt(0).toUpperCase()}
               </div>
-              <div className="text-left">
-                <div className="text-xs font-semibold text-slate-900 leading-none">Sathiya</div>
-                <div className="text-[11px] text-slate-500 leading-none mt-1">Chennai, Tamil Nadu</div>
+              <div className="text-left min-w-0">
+                <div className="text-xs font-semibold text-slate-900 leading-none truncate">{profile.name}</div>
+                <div className="text-[11px] text-slate-500 leading-none mt-1 truncate">{profile.location}</div>
               </div>
             </div>
-            <span className="text-[10px] text-emerald-700 bg-emerald-100/70 font-semibold px-1.5 py-0.5 rounded">
-              Agronomist
+            <span className="text-[10px] text-emerald-700 bg-emerald-100/70 font-semibold px-1.5 py-0.5 rounded shrink-0">
+              Officer
             </span>
           </div>
         </div>

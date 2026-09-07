@@ -4,6 +4,7 @@ import { RiskResult } from '../../types/risk';
 import { StatusBadge } from '../common/StatusBadge';
 import { AlertTriangle, ShieldCheck, Activity, TrendingUp, Droplets, CloudRain, Bug, Eye, Sparkles } from 'lucide-react';
 import { COTTON_LEAF_BACTERIAL_IMAGE, COTTON_LEAF_HEALTHY_IMAGE } from '../../data/mockData';
+import { useUserStore } from '../../stores/userStore';
 
 interface PrimaryStatusAreaProps {
   condition: DiseaseCondition;
@@ -16,6 +17,7 @@ export const PrimaryStatusArea: React.FC<PrimaryStatusAreaProps> = ({
   risk,
   zoneName = 'Main Field Area',
 }) => {
+  const { profile } = useUserStore();
   const isUnassessed = condition.status.toLowerCase().includes('awaiting') || condition.status.toLowerCase().includes('uninspected');
   const riskPercentage = isUnassessed ? null : Math.round(risk.probability * 100);
   const conditionConfidence = isUnassessed ? null : (condition.confidence * 100).toFixed(0);
@@ -34,7 +36,7 @@ export const PrimaryStatusArea: React.FC<PrimaryStatusAreaProps> = ({
 
   const getCleanStatus = (status: string) => {
     if (status.toLowerCase().includes('bacterial blight detected')) return 'Leaf Spot & Blight Found';
-    if (status.toLowerCase().includes('curl geminivirus')) return 'Leaf Curl Virus Found';
+    if (status.toLowerCase().includes('curl geminivirus') || status.toLowerCase().includes('curl virus')) return 'Leaf Curl Virus Found';
     if (status.toLowerCase().includes('healthy')) return 'Healthy Leaves (No Disease)';
     if (status.toLowerCase().includes('stabilized')) return 'Crop is Healing & Improving';
     return status;
@@ -133,7 +135,7 @@ export const PrimaryStatusArea: React.FC<PrimaryStatusAreaProps> = ({
         {/* Footer Meta */}
         <div className="mt-4 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
           <span>{isUnassessed ? 'No photos uploaded yet' : 'Photo Check · Clear Quality'}</span>
-          <span className="font-medium text-slate-700">Checked by Sathiya</span>
+          <span className="font-medium text-slate-700">Checked by {profile.name}</span>
         </div>
       </div>
 
@@ -245,3 +247,4 @@ export const PrimaryStatusArea: React.FC<PrimaryStatusAreaProps> = ({
     </div>
   );
 };
+

@@ -1,13 +1,11 @@
 // Central date utilities for AP0CALYPSE AI
-// Baseline operational date for SIH 2026 Precision Agriculture dataset: September 6, 2026
-
-export const BASE_APP_DATE = new Date('2026-09-06T00:00:00');
+// Real-time dynamic precision agriculture operational date
 
 /**
  * Returns the current application operational date
  */
 export function getAppCurrentDate(): Date {
-  return new Date(BASE_APP_DATE);
+  return new Date();
 }
 
 /**
@@ -41,30 +39,34 @@ export function addDays(date: Date | string, days: number): Date {
 }
 
 /**
- * Computes calendar target date from days offset from current app date (2026-09-06)
- * Example: 4 days offset from Sep 6 -> "September 10, 2026"
+ * Computes calendar target date from days offset from current app date
+ * Example: 3 days offset from today -> "September 10, 2026"
  */
-export function computeTargetDate(daysFromNow: number, baseDate: Date | string = BASE_APP_DATE): string {
-  const target = addDays(baseDate, daysFromNow);
+export function computeTargetDate(daysFromNow: number, baseDate?: Date | string): string {
+  const base = baseDate ? (typeof baseDate === 'string' ? new Date(baseDate) : baseDate) : getAppCurrentDate();
+  const target = addDays(base, daysFromNow);
   return formatCalendarDate(target, 'long');
 }
 
 /**
  * Compute days remaining between baseDate and targetDate
  */
-export function computeDaysRemaining(targetDate: Date | string, baseDate: Date | string = BASE_APP_DATE): number {
+export function computeDaysRemaining(targetDate: Date | string, baseDate?: Date | string): number {
   const t = typeof targetDate === 'string' ? new Date(targetDate) : targetDate;
-  const b = typeof baseDate === 'string' ? new Date(baseDate) : baseDate;
+  const b = baseDate ? (typeof baseDate === 'string' ? new Date(baseDate) : baseDate) : getAppCurrentDate();
   
   if (isNaN(t.getTime()) || isNaN(b.getTime())) return 4;
 
-  const diffMs = t.getTime() - b.getTime();
+  const startOfT = new Date(t.getFullYear(), t.getMonth(), t.getDate()).getTime();
+  const startOfB = new Date(b.getFullYear(), b.getMonth(), b.getDate()).getTime();
+
+  const diffMs = startOfT - startOfB;
   return Math.round(diffMs / (1000 * 60 * 60 * 24));
 }
 
 /**
  * Formats relative day text consistently
- * e.g. 0 -> "Today (Due Now)", 1 -> "Tomorrow (In 1 day)", 4 -> "In 4 days"
+ * e.g. 0 -> "Today (Due Now)", 1 -> "Tomorrow (In 1 day)", 3 -> "In 3 days"
  */
 export function formatRelativeDays(daysRemaining: number): string {
   if (daysRemaining === 0) return 'Today (Due Now)';
@@ -78,10 +80,10 @@ export function formatRelativeDays(daysRemaining: number): string {
  */
 export function calculateDaysSincePlanting(
   plantingDateStr: string,
-  currentDate: Date | string = BASE_APP_DATE
+  currentDate?: Date | string
 ): number {
   const planted = new Date(plantingDateStr);
-  const now = typeof currentDate === 'string' ? new Date(currentDate) : currentDate;
+  const now = currentDate ? (typeof currentDate === 'string' ? new Date(currentDate) : currentDate) : getAppCurrentDate();
   
   if (isNaN(planted.getTime())) return 70;
 
@@ -89,3 +91,4 @@ export function calculateDaysSincePlanting(
   const days = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
   return Math.max(1, days);
 }
+

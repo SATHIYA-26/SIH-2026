@@ -1,6 +1,7 @@
 import { Field } from '../types/field';
 import { FieldAlert } from '../types/alert';
 import { HistoryTimelineEntry, TrendDataPoint } from '../types/history';
+import { computeTargetDate } from '../utils/dateUtils';
 
 import cottonBacterial from '../assets/cotton_bacterial_blight.jpg';
 import cottonHealthy from '../assets/cotton_healthy.jpg';
@@ -204,7 +205,7 @@ export const DEMO_SCENARIO_HIGH_RISK: Field = {
     followup: {
       daysRemaining: 4,
       recommendedIntervalDays: 4,
-      targetDate: 'September 10, 2026',
+      targetDate: computeTargetDate(4),
       status: 'pending',
       reason: 'High risk status requires 2–4 day scouting check'
     }
@@ -328,7 +329,7 @@ export const DEMO_SCENARIO_IMPROVING: Field = {
     followup: {
       daysRemaining: 7,
       recommendedIntervalDays: 7,
-      targetDate: 'September 13, 2026',
+      targetDate: computeTargetDate(7),
       status: 'pending',
       reason: 'Condition improving; moderate 7-day check scheduled'
     }
@@ -460,7 +461,7 @@ export const DEMO_SCENARIO_LOW_RISK: Field = {
     followup: {
       daysRemaining: 10,
       recommendedIntervalDays: 10,
-      targetDate: 'September 16, 2026',
+      targetDate: computeTargetDate(10),
       status: 'pending',
       reason: 'Low risk profile permits extended 7–14 day cycle'
     }
@@ -522,7 +523,7 @@ export const DEMO_SCENARIO_WORSENING: Field = {
     followup: {
       daysRemaining: 2,
       recommendedIntervalDays: 2,
-      targetDate: 'September 8, 2026',
+      targetDate: computeTargetDate(2),
       status: 'pending',
       reason: 'Urgent check due to acute worsening risk'
     }
@@ -630,7 +631,7 @@ export const ALL_FIELDS: Field[] = [
       followup: {
         daysRemaining: 5,
         recommendedIntervalDays: 5,
-        targetDate: 'September 11, 2026',
+        targetDate: computeTargetDate(5),
         status: 'pending',
         reason: 'Moderate risk 5-day cycle'
       }
@@ -714,7 +715,7 @@ export const ALL_FIELDS: Field[] = [
       followup: {
         daysRemaining: 8,
         recommendedIntervalDays: 8,
-        targetDate: 'September 14, 2026',
+        targetDate: computeTargetDate(8),
         status: 'pending',
         reason: 'Low risk 8-day inspection cycle'
       }

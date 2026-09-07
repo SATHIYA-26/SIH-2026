@@ -45,10 +45,8 @@ export const Followups: React.FC = () => {
   );
 
   const schedules = fields.map((f) => {
-    const daysRemaining = f.nextCheckDays ?? 4;
-    const targetDate = f.latestAnalysis?.followup?.targetDate
-      ? formatCalendarDate(f.latestAnalysis.followup.targetDate)
-      : computeTargetDate(daysRemaining);
+    const daysRemaining = f.nextCheckDays ?? f.latestAnalysis?.followup?.daysRemaining ?? 4;
+    const targetDate = computeTargetDate(daysRemaining);
 
     return {
       fieldId: f.id,

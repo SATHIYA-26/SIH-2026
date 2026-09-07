@@ -129,7 +129,7 @@ export const useFieldStore = create<FieldState>()(
       }
     }),
     {
-      name: 'apocalypse_ai_field_storage_v1',
+      name: 'apocalypse_ai_field_storage_v2',
     }
   )
 );

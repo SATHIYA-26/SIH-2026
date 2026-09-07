@@ -3,6 +3,8 @@ import { ActionRecommendation } from '../../types/analysis';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircle2, ChevronRight, Eye, PlusCircle, ArrowRight, MapPin, Calendar, ClipboardCheck } from 'lucide-react';
 
+import { useUserStore } from '../../stores/userStore';
+
 interface RecommendedActionsPanelProps {
   actions: ActionRecommendation[];
   fieldId?: string;
@@ -13,6 +15,7 @@ export const RecommendedActionsPanel: React.FC<RecommendedActionsPanelProps> = (
   fieldId = 'field-cotton-a',
 }) => {
   const navigate = useNavigate();
+  const { profile } = useUserStore();
 
   const defaultActions = [
     {
@@ -86,7 +89,7 @@ export const RecommendedActionsPanel: React.FC<RecommendedActionsPanelProps> = (
       {/* Direct Action CTAs (Inspect Spot & Start Follow-up) */}
       <div className="flex flex-wrap items-center justify-between gap-3 mt-4 pt-3 border-t border-slate-100">
         <div className="text-[11px] text-slate-500 font-medium">
-          Field Safety Guide · Sathiya Verified
+          Field Safety Guide · {profile.name} Verified
         </div>
 
         <div className="flex items-center gap-2">

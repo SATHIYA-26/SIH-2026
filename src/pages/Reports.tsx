@@ -1,9 +1,12 @@
 import React from 'react';
 import { useFieldStore } from '../stores/fieldStore';
+import { useUserStore } from '../stores/userStore';
 import { FileText, Printer, Download, Share2, Sprout, CheckCircle2, AlertTriangle, Calendar, MapPin, User, ShieldCheck } from 'lucide-react';
+import { formatCalendarDate, getAppCurrentDate } from '../utils/dateUtils';
 
 export const Reports: React.FC = () => {
   const { getSelectedField, fields, setSelectedFieldId } = useFieldStore();
+  const { profile } = useUserStore();
   const field = getSelectedField();
   const analysis = field.latestAnalysis;
 
@@ -13,6 +16,7 @@ export const Reports: React.FC = () => {
 
   const riskPercent = Math.round(analysis.risk.probability * 100);
   const reportId = `RPT-2026-${field.id.replace('field-', '').toUpperCase()}-${Date.now().toString().slice(-4)}`;
+  const formattedToday = formatCalendarDate(getAppCurrentDate(), 'display');
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -83,12 +87,14 @@ export const Reports: React.FC = () => {
               Precision Crop Disease, Pest & Outbreak Risk Management Dossier
             </p>
             <div className="text-xs text-slate-600 mt-1 flex items-center gap-2">
-              <span><strong>Agronomist:</strong> Sathiya (Chennai, Tamil Nadu)</span>
+              <span><strong>Agronomist:</strong> {profile.name} ({profile.location})</span>
+              <span className="text-slate-300">·</span>
+              <span><strong>ID:</strong> {profile.officerId}</span>
             </div>
           </div>
 
           <div className="text-right text-xs text-slate-600 space-y-0.5">
-            <div><strong>Report Date:</strong> 06 September 2026</div>
+            <div><strong>Report Date:</strong> {formattedToday}</div>
             <div><strong>Evaluation Period:</strong> Last 30 Days</div>
             <div><strong>Dossier ID:</strong> {reportId}</div>
             <div><strong>Follow-up Status:</strong> {field.followUpCount || 0} checks completed</div>
