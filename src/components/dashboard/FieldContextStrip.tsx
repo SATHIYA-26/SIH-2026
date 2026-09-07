@@ -29,7 +29,7 @@ export const FieldContextStrip: React.FC<FieldContextStripProps> = ({ field }) =
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 divide-y sm:divide-y-0 sm:divide-x divide-slate-100">
         {/* 1. CROP & AGE */}
         <div className="pt-2 sm:pt-0 sm:px-2 first:px-0">
-          <div className="flex items-center gap-1.5 text-slate-500 text-[10px] font-bold uppercase tracking-wider font-mono">
+          <div className="flex items-center gap-1.5 text-slate-500 text-[10.5px] font-bold uppercase tracking-wider font-heading">
             <Sprout className="w-3.5 h-3.5 text-emerald-700" />
             <span>CROP & SIZE</span>
           </div>
@@ -43,7 +43,7 @@ export const FieldContextStrip: React.FC<FieldContextStripProps> = ({ field }) =
 
         {/* 2. GROWTH STAGE */}
         <div className="pt-2 sm:pt-0 sm:px-3">
-          <div className="flex items-center gap-1.5 text-slate-500 text-[10px] font-bold uppercase tracking-wider font-mono">
+          <div className="flex items-center gap-1.5 text-slate-500 text-[10.5px] font-bold uppercase tracking-wider font-heading">
             <Clock className="w-3.5 h-3.5 text-indigo-700" />
             <span>GROWTH STAGE</span>
           </div>
@@ -57,7 +57,7 @@ export const FieldContextStrip: React.FC<FieldContextStripProps> = ({ field }) =
 
         {/* 3. WEATHER */}
         <div className="pt-2 sm:pt-0 sm:px-3">
-          <div className="flex items-center gap-1.5 text-slate-500 text-[10px] font-bold uppercase tracking-wider font-mono">
+          <div className="flex items-center gap-1.5 text-slate-500 text-[10.5px] font-bold uppercase tracking-wider font-heading">
             <CloudSun className="w-3.5 h-3.5 text-sky-700" />
             <span>FIELD WEATHER</span>
           </div>
@@ -71,7 +71,7 @@ export const FieldContextStrip: React.FC<FieldContextStripProps> = ({ field }) =
 
         {/* 4. INSECTS & PESTS */}
         <div className="pt-2 sm:pt-0 sm:px-3">
-          <div className="flex items-center gap-1.5 text-slate-500 text-[10px] font-bold uppercase tracking-wider font-mono">
+          <div className="flex items-center gap-1.5 text-slate-500 text-[10.5px] font-bold uppercase tracking-wider font-heading">
             <Bug className="w-3.5 h-3.5 text-rose-700" />
             <span>INSECTS / PESTS</span>
           </div>
@@ -89,7 +89,7 @@ export const FieldContextStrip: React.FC<FieldContextStripProps> = ({ field }) =
 
         {/* 5. NEXT CHECK */}
         <div className="pt-2 sm:pt-0 sm:px-3">
-          <div className="flex items-center gap-1.5 text-slate-500 text-[10px] font-bold uppercase tracking-wider font-mono">
+          <div className="flex items-center gap-1.5 text-slate-500 text-[10.5px] font-bold uppercase tracking-wider font-heading">
             <Calendar className="w-3.5 h-3.5 text-slate-700" />
             <span>NEXT FIELD CHECK</span>
           </div>

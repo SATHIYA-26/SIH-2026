@@ -63,7 +63,7 @@ export const RiskDriversPanel: React.FC<RiskDriversPanelProps> = ({ risk }) => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2.5 border-b border-slate-100">
         <div className="flex items-center gap-2">
           <Activity className="w-4 h-4 text-slate-700" />
-          <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-tight font-mono">
+          <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-tight font-heading">
             4. WHY DID IT HAPPEN? (ROOT-CAUSE RISK CONTRIBUTORS)
           </h3>
         </div>
@@ -101,7 +101,7 @@ export const RiskDriversPanel: React.FC<RiskDriversPanelProps> = ({ risk }) => {
 
                 {/* Metric Value */}
                 <div className="mt-2.5">
-                  <div className="text-base font-bold text-slate-900 font-mono tracking-tight">
+                  <div className="text-base font-bold text-slate-900 font-heading tracking-tight">
                     {drv.value}
                   </div>
                 </div>

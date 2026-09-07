@@ -30,7 +30,7 @@ const defaultProfile: UserProfile = {
   officerId: 'TN-AGRI-2026-CHE-04',
   assignedParcelsCount: 4,
   totalAcresMonitored: 13.5,
-  monitoredCrops: 'Cotton (Bt RCH-659, DCH-32, Bunny, Suraj)',
+  monitoredCrops: 'Cotton',
 };
 
 export const useUserStore = create<UserState>()(

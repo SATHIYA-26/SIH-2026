@@ -189,7 +189,7 @@ export const Fields: React.FC = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider font-mono">
+              <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider text-[11px]">
                 <th className="py-3 px-4">Field Name</th>
                 <th className="py-3 px-4">Crop</th>
                 <th className="py-3 px-4">Area</th>
@@ -222,7 +222,7 @@ export const Fields: React.FC = () => {
                       </div>
                     </td>
                     <td className="py-3.5 px-4 font-medium text-slate-700">{f.crop}</td>
-                    <td className="py-3.5 px-4 font-mono text-slate-700">{f.areaAcres} ac</td>
+                    <td className="py-3.5 px-4 font-heading font-medium text-slate-700">{f.areaAcres} ac</td>
                     <td className="py-3.5 px-4">
                       <span className="font-semibold text-slate-900">Day {f.daysSincePlanting}</span>
                       <div className="text-[10px] text-slate-400 truncate max-w-32">{f.estimatedGrowthStage}</div>
@@ -233,7 +233,7 @@ export const Fields: React.FC = () => {
                     <td className="py-3.5 px-4">
                       <div className="flex items-center gap-2">
                         <span
-                          className={`font-bold font-mono text-sm ${f.riskLevel === 'HIGH'
+                          className={`font-bold font-heading text-sm ${f.riskLevel === 'HIGH'
                               ? 'text-rose-700'
                               : f.riskLevel === 'MODERATE'
                                 ? 'text-amber-700'
@@ -247,7 +247,7 @@ export const Fields: React.FC = () => {
                     </td>
                     <td className="py-3.5 px-4 text-slate-600 font-medium">
                       <div>{f.lastCheckedDate}</div>
-                      <div className="text-[10px] text-slate-400 font-mono mt-0.5">
+                      <div className="text-[10px] text-slate-400 mt-0.5">
                         {f.followUpCount ? `${f.followUpCount} Follow-up${f.followUpCount > 1 ? 's' : ''}` : 'Baseline only'}
                       </div>
                     </td>
@@ -261,16 +261,15 @@ export const Fields: React.FC = () => {
                             setSelectedFieldId(f.id);
                             navigate('/');
                           }}
-                          className="p-1.5 rounded-md hover:bg-slate-100 text-slate-600 hover:text-slate-900"
-                          title="Open Field Dashboard"
+                          className="px-2.5 py-1 text-[11px] font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded transition-colors"
                         >
-                          <Eye className="w-4 h-4" />
+                          View
                         </button>
                         <button
-                          onClick={() => navigate(`/check-field?fieldId=${f.id}&mode=${f.lastCheckedDate === 'Never' ? 'initial' : 'followup'}`)}
-                          className="px-2.5 py-1 rounded-md bg-emerald-700 text-white hover:bg-emerald-800 font-semibold text-[11px] shadow-xs cursor-pointer"
+                          onClick={() => navigate(`/check-field?fieldId=${f.id}`)}
+                          className="px-2.5 py-1 text-[11px] font-semibold text-emerald-800 hover:bg-emerald-50 rounded transition-colors"
                         >
-                          {f.lastCheckedDate === 'Never' ? 'Initial Check' : 'Follow-up'}
+                          Check
                         </button>
                       </div>
                     </td>
@@ -282,8 +281,8 @@ export const Fields: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Card Layout */}
-      <div className="md:hidden space-y-3">
+      {/* Mobile Card Grid */}
+      <div className="md:hidden grid grid-cols-1 gap-3">
         {filteredFields.map((f) => (
           <div
             key={f.id}
@@ -295,10 +294,8 @@ export const Fields: React.FC = () => {
           >
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="text-sm font-bold text-slate-900">{f.name}</h3>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  {f.crop} · {f.areaAcres} acres · Day {f.daysSincePlanting}
-                </p>
+                <h3 className="font-bold text-slate-900">{f.name}</h3>
+                <div className="text-xs text-slate-500">{f.crop} · {f.areaAcres} acres</div>
               </div>
               <StatusBadge type="risk" riskLevel={f.riskLevel} size="sm" />
             </div>
@@ -310,7 +307,7 @@ export const Fields: React.FC = () => {
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">7-Day Risk:</span>
-                <span className="font-bold font-mono text-slate-900">{Math.round(f.riskProbability * 100)}%</span>
+                <span className="font-bold font-heading text-slate-900">{Math.round(f.riskProbability * 100)}%</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">Next Check:</span>

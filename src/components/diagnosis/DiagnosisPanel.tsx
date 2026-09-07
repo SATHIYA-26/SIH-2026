@@ -34,7 +34,7 @@ export const DiagnosisPanel: React.FC<DiagnosisPanelProps> = ({ condition, onRet
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2.5 border-b border-slate-100">
         <div className="flex items-center gap-2">
-          <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-tight font-mono">
+          <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-tight font-heading">
             LEAF PHOTO & CROP HEALTH CHECK
           </h3>
           <span className="text-[10px] font-semibold bg-slate-100 text-slate-700 px-2 py-0.5 rounded">
@@ -43,7 +43,7 @@ export const DiagnosisPanel: React.FC<DiagnosisPanelProps> = ({ condition, onRet
         </div>
         <div className="flex items-center gap-2">
           <span className="text-xs font-semibold text-slate-500">Match Accuracy:</span>
-          <span className="text-xs font-mono font-bold text-slate-900 bg-slate-100 px-2 py-0.5 rounded">
+          <span className="text-xs font-heading font-bold text-slate-900 bg-slate-100 px-2 py-0.5 rounded">
             {(condition.confidence * 100).toFixed(1)}%
           </span>
         </div>
@@ -67,7 +67,7 @@ export const DiagnosisPanel: React.FC<DiagnosisPanelProps> = ({ condition, onRet
               }}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 block"
             />
-            <div className="absolute top-2 left-2 bg-slate-950/85 text-white text-[9px] font-mono px-2 py-0.5 rounded backdrop-blur-xs font-semibold">
+            <div className="absolute top-2 left-2 bg-slate-950/85 text-white text-[9px] font-semibold uppercase px-2 py-0.5 rounded backdrop-blur-xs">
               FIELD PHOTO
             </div>
             <div className="absolute bottom-2 right-2 bg-slate-950/80 text-white p-1 rounded backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity">
@@ -80,7 +80,7 @@ export const DiagnosisPanel: React.FC<DiagnosisPanelProps> = ({ condition, onRet
         <div className="md:col-span-8 space-y-3.5">
           <div>
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider font-mono text-slate-400">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
                 Detected Crop Condition
               </span>
               <span
@@ -107,7 +107,7 @@ export const DiagnosisPanel: React.FC<DiagnosisPanelProps> = ({ condition, onRet
 
           {/* Clean Probability Bars */}
           <div className="space-y-2 pt-2 border-t border-slate-100">
-            <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider font-mono">
+            <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
               POSSIBILITY BREAKDOWN:
             </div>
 
@@ -122,7 +122,7 @@ export const DiagnosisPanel: React.FC<DiagnosisPanelProps> = ({ condition, onRet
                       <span className={`text-[11px] font-medium ${isTop ? 'text-slate-900 font-bold' : 'text-slate-500'}`}>
                         {item.label}
                       </span>
-                      <span className={`font-mono text-[11px] ${isTop ? 'font-bold text-slate-900' : 'text-slate-400'}`}>
+                      <span className={`text-[11px] font-heading ${isTop ? 'font-bold text-slate-900' : 'text-slate-500'}`}>
                         {percent}%
                       </span>
                     </div>

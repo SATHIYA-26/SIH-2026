@@ -1,16 +1,82 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --font-heading: 'Satoshi', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Satoshi', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-satoshi: 'Satoshi', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
 @layer base {
   :root {
-    --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    --font-heading: 'Satoshi', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  html {
+    font-family: var(--font-sans);
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
     font-family: var(--font-sans);
+    font-weight: 400;
+    line-height: 1.5;
     background-color: #f8fafc;
     color: #0f172a;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Satoshi for all headings, page titles, section titles, card headings */
+  h1, h2, h3, h4, h5, h6,
+  .font-heading,
+  .font-display,
+  .font-satoshi,
+  [data-heading] {
+    font-family: var(--font-heading);
+    font-feature-settings: 'ss01', 'cv01';
+  }
+
+  h1 {
+    font-weight: 700;
+    letter-spacing: -0.025em;
+  }
+
+  h2 {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  h3 {
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  h4, h5, h6 {
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  /* Inter for body, navigation, buttons, form fields, tables, tooltips */
+  p, span, div, a, button, input, select, textarea, label, table, th, td {
+    font-family: inherit;
+  }
+
+  button, input, select, textarea, nav {
+    font-family: var(--font-sans);
+  }
+
+  /* Large metrics, percentages, risk scores use Satoshi with tabular figures */
+  .font-mono,
+  .metric-number,
+  .risk-value {
+    font-family: var(--font-heading);
+    font-feature-settings: 'tnum', 'ss01';
+    font-variant-numeric: tabular-nums;
   }
 }
 
@@ -39,7 +105,7 @@
   height: 100%;
   border-radius: 0.5rem;
   z-index: 1;
-  font-family: inherit;
+  font-family: var(--font-sans);
 }
 
 /* Print styles for reports */

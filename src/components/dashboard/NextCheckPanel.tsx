@@ -26,7 +26,7 @@ export const NextCheckPanel: React.FC<NextCheckPanelProps> = ({
         <div className="flex items-center justify-between pb-2.5 border-b border-slate-100">
           <div className="flex items-center gap-2">
             <Calendar className="w-4 h-4 text-slate-700" />
-            <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-tight font-mono">
+            <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-tight font-heading">
               NEXT FIELD CHECK REMINDER
             </h3>
           </div>
@@ -44,7 +44,7 @@ export const NextCheckPanel: React.FC<NextCheckPanelProps> = ({
         {/* Countdown Module */}
         <div className="mt-3.5 p-3.5 rounded-lg bg-slate-50 border border-slate-200/80 flex items-center justify-between">
           <div>
-            <div className="text-xl sm:text-2xl font-extrabold font-mono text-slate-900">
+            <div className="text-xl sm:text-2xl font-extrabold font-heading text-slate-900">
               {daysRemaining} Days Remaining
             </div>
             <div className="text-xs text-slate-600 mt-0.5 font-medium">
@@ -52,14 +52,14 @@ export const NextCheckPanel: React.FC<NextCheckPanelProps> = ({
             </div>
           </div>
           <div className="text-right">
-            <span className="text-[10px] uppercase tracking-wider font-mono text-slate-400 block">Status</span>
+            <span className="text-[10.5px] uppercase tracking-wider font-semibold text-slate-400 block">Status</span>
             <span className="text-xs font-bold text-emerald-700">Scheduled</span>
           </div>
         </div>
 
         {/* Scannable Recheck Protocol */}
         <div className="mt-3 space-y-1.5 text-xs text-slate-600">
-          <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider font-mono">
+          <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider font-heading">
             WHAT TO CHECK ON NEXT VISIT:
           </div>
           <div className="grid grid-cols-2 gap-2 text-[11px]">

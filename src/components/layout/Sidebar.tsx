@@ -127,7 +127,7 @@ export const Sidebar: React.FC = () => {
         <div className="flex-1 overflow-y-auto px-3 py-4 space-y-5">
           {navGroups.map((grp) => (
             <div key={grp.group} className="space-y-1">
-              <div className="px-2.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">
+              <div className="px-2.5 text-[10.5px] font-semibold uppercase tracking-wider text-slate-400">
                 {grp.group}
               </div>
               <div className="space-y-0.5">

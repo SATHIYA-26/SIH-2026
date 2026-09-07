@@ -185,7 +185,7 @@ export const FieldOverviewMap: React.FC<FieldOverviewMapProps> = ({ field }) => 
 
           {/* Simple Map Legend Overlay */}
           <div className="absolute bottom-3 left-3 z-[1000] bg-white/95 backdrop-blur-xs border border-slate-200 rounded-lg p-2.5 shadow-md text-xs space-y-1.5 pointer-events-auto">
-            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider font-mono">
+            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider font-heading">
               MAP GUIDE
             </div>
             <div className="flex items-center gap-2">
@@ -208,7 +208,7 @@ export const FieldOverviewMap: React.FC<FieldOverviewMapProps> = ({ field }) => 
           {selectedPoint ? (
             <div className="space-y-3">
               <div className="flex items-center justify-between pb-2 border-b border-slate-200">
-                <span className="text-xs font-bold text-slate-700 uppercase tracking-wider font-mono">
+                <span className="text-xs font-bold text-slate-700 uppercase tracking-wider font-heading">
                   SELECTED SPOT DETAILS
                 </span>
                 <span

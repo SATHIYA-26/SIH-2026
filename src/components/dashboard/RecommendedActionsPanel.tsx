@@ -52,7 +52,7 @@ export const RecommendedActionsPanel: React.FC<RecommendedActionsPanelProps> = (
         <div className="flex items-center justify-between pb-2.5 border-b border-slate-100">
           <div className="flex items-center gap-2">
             <ClipboardCheck className="w-4 h-4 text-emerald-800" />
-            <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-tight font-mono">
+            <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-tight font-heading">
               4. WHAT SHOULD I DO NEXT? (RECOMMENDED STEPS)
             </h3>
           </div>

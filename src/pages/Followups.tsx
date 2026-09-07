@@ -94,7 +94,7 @@ export const Followups: React.FC = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Calendar className="w-4 h-4 text-emerald-700" />
-            <h2 className="text-base font-bold text-slate-900 uppercase font-mono tracking-wider">
+            <h2 className="text-base font-bold text-slate-900 uppercase font-heading tracking-wider">
               1. UPCOMING FIELD CHECKS
             </h2>
           </div>
@@ -137,7 +137,7 @@ export const Followups: React.FC = () => {
                       <Calendar className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="font-bold text-slate-900">{sch.targetDate}</div>
+                      <div className="font-bold text-slate-900 font-heading">{sch.targetDate}</div>
                       <div className="text-slate-500 font-medium">{sch.relativeDaysText}</div>
                     </div>
                   </div>
@@ -157,7 +157,7 @@ export const Followups: React.FC = () => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">7-Day Risk Level:</span>
-                    <span className="font-bold text-slate-900">{sch.riskPercent}%</span>
+                    <span className="font-bold text-slate-900 font-heading">{sch.riskPercent}%</span>
                   </div>
                   <div className="text-[11px] text-slate-500 pt-1 italic">
                     Reason: {sch.reason}
@@ -194,7 +194,7 @@ export const Followups: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <History className="w-4 h-4 text-blue-700" />
-            <h2 className="text-base font-bold text-slate-900 uppercase font-mono tracking-wider">
+            <h2 className="text-base font-bold text-slate-900 uppercase font-heading tracking-wider">
               2. PAST CHECKS & TREATMENT HISTORY ({filteredHistory.length} RECORDS)
             </h2>
           </div>
@@ -231,7 +231,7 @@ export const Followups: React.FC = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider font-mono">
+                  <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider text-[11px]">
                     <th className="py-3 px-4">Field Name</th>
                     <th className="py-3 px-4">Check Number</th>
                     <th className="py-3 px-4">Date Checked</th>
@@ -255,7 +255,7 @@ export const Followups: React.FC = () => {
                           <div className="text-[11px] text-slate-400 font-normal">{item.crop}</div>
                         </td>
                         <td className="py-3.5 px-4">
-                          <span className="px-2 py-0.5 rounded bg-blue-100 text-blue-900 font-bold font-mono text-[11px]">
+                          <span className="px-2 py-0.5 rounded bg-blue-100 text-blue-900 font-semibold text-[11px]">
                             Follow-Up #{rec.followUpNumber}
                           </span>
                         </td>
@@ -281,7 +281,7 @@ export const Followups: React.FC = () => {
                             </div>
                           )}
                         </td>
-                        <td className="py-3.5 px-4 font-mono font-bold">
+                        <td className="py-3.5 px-4 font-heading font-bold">
                           <span
                             className={
                               rec.riskLevel === 'HIGH'
@@ -302,8 +302,8 @@ export const Followups: React.FC = () => {
                             </span>
                           )}
                         </td>
-                        <td className="py-3.5 px-4 font-mono text-slate-800">
-                          {rec.currentPestCount} {rec.pestType}
+                        <td className="py-3.5 px-4 font-medium text-slate-800">
+                          <span className="font-heading font-bold">{rec.currentPestCount}</span> {rec.pestType}
                           {rec.pestDelta !== undefined && rec.pestDelta !== 0 && (
                             <span
                               className={`text-[10px] ml-1 font-semibold ${rec.pestDelta < 0 ? 'text-emerald-700' : 'text-rose-700'

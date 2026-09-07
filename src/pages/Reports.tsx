@@ -103,7 +103,7 @@ export const Reports: React.FC = () => {
 
         {/* Section 1: Parcel & Crop Info */}
         <div>
-          <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono mb-3">
+          <h3 className="text-xs font-bold text-slate-600 uppercase tracking-wider font-heading mb-3">
             1. PARCEL & CROP IDENTIFICATION
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-lg bg-slate-50 border border-slate-200 text-xs">
@@ -119,12 +119,12 @@ export const Reports: React.FC = () => {
             </div>
             <div>
               <span className="text-slate-400 block">Total Area:</span>
-              <strong className="text-slate-900">{field.areaAcres} acres</strong>
+              <strong className="text-slate-900 font-heading">{field.areaAcres} acres</strong>
               <div className="text-[10px] text-slate-500">{field.inspectionPoints?.length || 3} scouting points</div>
             </div>
             <div>
               <span className="text-slate-400 block">Crop Age & Stage:</span>
-              <strong className="text-slate-900">Day {field.daysSincePlanting}</strong>
+              <strong className="text-slate-900 font-heading">Day {field.daysSincePlanting}</strong>
               <div className="text-[10px] text-slate-500">{field.estimatedGrowthStage}</div>
             </div>
           </div>
@@ -132,7 +132,7 @@ export const Reports: React.FC = () => {
 
         {/* Section 2: Health & Risk Evaluation */}
         <div>
-          <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono mb-3">
+          <h3 className="text-xs font-bold text-slate-600 uppercase tracking-wider font-heading mb-3">
             2. HEALTH STATUS & 7-DAY OUTBREAK RISK FORECAST
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -140,7 +140,7 @@ export const Reports: React.FC = () => {
               <span className="text-slate-500 font-medium">Visual Leaf Diagnosis:</span>
               <div className="text-base font-bold text-slate-900">{analysis.condition.status}</div>
               <div className="text-slate-600">
-                AI Confidence Rating: <strong>{(analysis.condition.confidence * 100).toFixed(1)}%</strong>
+                AI Confidence Rating: <strong className="font-heading">{(analysis.condition.confidence * 100).toFixed(1)}%</strong>
               </div>
               <div className="text-[11px] text-slate-500 pt-1 border-t border-slate-100">
                 Top Identified Class: <strong className="capitalize">{analysis.condition.topClass}</strong>
@@ -157,7 +157,7 @@ export const Reports: React.FC = () => {
             >
               <span className="text-slate-600 font-medium">7-Day Outbreak Risk Forecast:</span>
               <div
-                className={`text-xl font-extrabold ${field.riskLevel === 'HIGH'
+                className={`text-xl font-extrabold font-heading ${field.riskLevel === 'HIGH'
                     ? 'text-rose-700'
                     : field.riskLevel === 'MODERATE'
                       ? 'text-amber-700'
@@ -173,22 +173,22 @@ export const Reports: React.FC = () => {
 
         {/* Section 3: Weather & Pest Dynamics */}
         <div>
-          <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono mb-3">
+          <h3 className="text-xs font-bold text-slate-600 uppercase tracking-wider font-heading mb-3">
             3. MICROCLIMATE & PEST DYNAMICS
           </h3>
           <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 text-xs space-y-2">
             <div className="grid grid-cols-3 gap-4">
               <div>
                 <span className="text-slate-500">Canopy Temperature:</span>{' '}
-                <strong className="text-slate-900">{analysis.weather.temperature}°C</strong>
+                <strong className="text-slate-900 font-heading">{analysis.weather.temperature}°C</strong>
               </div>
               <div>
                 <span className="text-slate-500">Relative Humidity:</span>{' '}
-                <strong className="text-slate-900">{analysis.weather.humidity}% RH</strong>
+                <strong className="text-slate-900 font-heading">{analysis.weather.humidity}% RH</strong>
               </div>
               <div>
                 <span className="text-slate-500">Recent Rain (48h):</span>{' '}
-                <strong className="text-slate-900">{analysis.weather.recentRainfall} mm</strong>
+                <strong className="text-slate-900 font-heading">{analysis.weather.recentRainfall} mm</strong>
               </div>
             </div>
             <div className="pt-2 border-t border-slate-200 text-slate-700">
@@ -200,7 +200,7 @@ export const Reports: React.FC = () => {
         {/* Section 4: Key Risk Drivers */}
         {analysis.risk.drivers && analysis.risk.drivers.length > 0 && (
           <div>
-            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono mb-3">
+            <h3 className="text-xs font-bold text-slate-600 uppercase tracking-wider font-heading mb-3">
               4. RISK CONTRIBUTORS & EXPLANATION
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
@@ -208,7 +208,7 @@ export const Reports: React.FC = () => {
                 <div key={drv.id} className="p-3 rounded-lg border border-slate-200 bg-white space-y-1">
                   <div className="flex items-center justify-between">
                     <strong className="text-slate-900">{drv.title}</strong>
-                    <span className="text-xs font-mono font-bold text-slate-700">{drv.value}</span>
+                    <span className="text-xs font-bold text-slate-700 font-heading">{drv.value}</span>
                   </div>
                   <p className="text-[11px] text-slate-600">{drv.description}</p>
                 </div>
@@ -219,7 +219,7 @@ export const Reports: React.FC = () => {
 
         {/* Section 5: Recommended Agronomic Actions */}
         <div>
-          <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono mb-3">
+          <h3 className="text-xs font-bold text-slate-600 uppercase tracking-wider font-heading mb-3">
             5. RECOMMENDED ACTION PLAN
           </h3>
           <div className="space-y-2 text-xs">

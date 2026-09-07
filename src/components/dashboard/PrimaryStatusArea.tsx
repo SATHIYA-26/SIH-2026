@@ -56,7 +56,7 @@ export const PrimaryStatusArea: React.FC<PrimaryStatusAreaProps> = ({
           {/* Header */}
           <div className="flex items-center justify-between pb-2.5 border-b border-slate-100">
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-600 font-mono">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-600 font-heading">
                 1. CURRENT LEAF CONDITION
               </span>
               <span className="text-[10px] font-semibold bg-slate-100 text-slate-700 px-2 py-0.5 rounded">
@@ -80,7 +80,7 @@ export const PrimaryStatusArea: React.FC<PrimaryStatusAreaProps> = ({
                 }}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
               />
-              <span className="absolute bottom-1 right-1 bg-slate-900/80 text-[9px] text-white font-mono px-1 py-0.5 rounded">
+              <span className="absolute bottom-1 right-1 bg-slate-900/80 text-[9px] text-white font-medium px-1.5 py-0.5 rounded">
                 PHOTO
               </span>
             </div>
@@ -88,7 +88,7 @@ export const PrimaryStatusArea: React.FC<PrimaryStatusAreaProps> = ({
             {/* Finding Details */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
-                <h2 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
+                <h2 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight font-heading">
                   {isUnassessed ? 'Not checked yet' : getCleanStatus(condition.status)}
                 </h2>
                 <span
@@ -145,7 +145,7 @@ export const PrimaryStatusArea: React.FC<PrimaryStatusAreaProps> = ({
           {/* Header */}
           <div className="flex items-center justify-between pb-2.5 border-b border-slate-100">
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-600 font-mono">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-600 font-heading">
                 2. 7-DAY DISEASE RISK FORECAST
               </span>
               <span className="text-[10px] font-medium text-slate-500">
@@ -160,7 +160,7 @@ export const PrimaryStatusArea: React.FC<PrimaryStatusAreaProps> = ({
           <div className="flex items-baseline justify-between gap-4 mt-3">
             <div className="flex items-baseline gap-3">
               <span
-                className={`text-3xl sm:text-4xl font-extrabold tracking-tight font-mono ${
+                className={`text-3xl sm:text-4xl font-bold tracking-tight font-heading ${
                   isUnassessed
                     ? 'text-slate-400 text-2xl sm:text-3xl'
                     : isHighRisk
@@ -207,7 +207,7 @@ export const PrimaryStatusArea: React.FC<PrimaryStatusAreaProps> = ({
 
           {/* Risk Drivers Chips */}
           <div className="mt-3.5 pt-3 border-t border-slate-100">
-            <div className="text-[11px] font-bold text-slate-600 uppercase tracking-wider font-mono mb-2">
+            <div className="text-[11px] font-bold text-slate-600 uppercase tracking-wider font-heading mb-2">
               WHY IS THIS RISK LEVEL HAPPENING:
             </div>
             <div className="grid grid-cols-3 gap-2 text-xs">

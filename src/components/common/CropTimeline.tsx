@@ -82,7 +82,7 @@ export const CropTimeline: React.FC<CropTimelineProps> = ({
               <div className={`text-xs font-semibold line-clamp-2 leading-snug ${isCurrent ? 'text-emerald-950 font-bold' : isDone ? 'text-slate-800' : 'text-slate-500'}`}>
                 {st.name}
               </div>
-              <div className="text-[11px] text-slate-400 mt-1 font-mono">{st.day}</div>
+              <div className="text-[11px] text-slate-400 mt-1 font-heading font-medium">{st.day}</div>
             </div>
           );
         })}

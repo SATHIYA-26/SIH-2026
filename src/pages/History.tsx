@@ -146,7 +146,7 @@ export const History: React.FC = () => {
                 <div className="bg-slate-50/80 border border-slate-200 rounded-lg p-4 hover:border-slate-300 transition-colors">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pb-2 border-b border-slate-200/60">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold font-mono px-2 py-0.5 rounded bg-emerald-100 text-emerald-900">
+                      <span className="text-xs font-bold font-heading px-2.5 py-0.5 rounded bg-emerald-100 text-emerald-900">
                         {entry.displayDate}
                       </span>
                       <h3 className="text-sm font-bold text-slate-900">{entry.title}</h3>

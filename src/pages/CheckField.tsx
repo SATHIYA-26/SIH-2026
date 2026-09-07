@@ -207,7 +207,7 @@ export const CheckField: React.FC = () => {
         <div>
           <div className="flex items-center gap-2">
             <span
-              className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider font-mono ${
+              className={`px-2.5 py-0.5 rounded text-[10.5px] font-bold uppercase tracking-wider ${
                 isFollowupMode
                   ? 'bg-blue-100 text-blue-800 border border-blue-200'
                   : 'bg-emerald-100 text-emerald-800 border border-emerald-200'
@@ -219,7 +219,7 @@ export const CheckField: React.FC = () => {
             </span>
             <span className="text-xs text-slate-400 font-medium">· {targetField.crop}</span>
           </div>
-          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 mt-1">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 mt-1 font-heading">
             {formState.isNewFieldCreation ? (formState.newFieldName || 'Register & Check New Field') : targetField.name}
           </h1>
           <p className="text-xs text-slate-500 mt-0.5">
@@ -254,11 +254,11 @@ export const CheckField: React.FC = () => {
               }}
               className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all cursor-pointer ${
                 isFollowupMode
-                  ? 'bg-white text-blue-950 shadow-xs'
+                  ? 'bg-blue-800 text-white shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              Follow-Up Check
+              Follow-up Check
             </button>
           </div>
         )}
@@ -270,7 +270,7 @@ export const CheckField: React.FC = () => {
           <div className="flex items-center justify-between pb-2 border-b border-blue-100">
             <div className="flex items-center gap-2">
               <GitCompare className="w-4 h-4 text-blue-700" />
-              <span className="text-xs font-bold text-blue-900 uppercase font-mono tracking-wider">
+              <span className="text-xs font-bold text-blue-900 uppercase font-heading tracking-wider">
                 PREVIOUS CHECK SUMMARY ({targetField.name.toUpperCase()})
               </span>
             </div>
@@ -288,14 +288,14 @@ export const CheckField: React.FC = () => {
             </div>
             <div>
               <span className="text-slate-500 text-[11px] block">Previous 7-Day Risk</span>
-              <span className="font-bold font-mono text-rose-700 mt-0.5 block">
+              <span className="font-bold font-heading text-rose-700 mt-0.5 block">
                 {Math.round(targetField.latestAnalysis.risk.probability * 100)}% (
                 {targetField.latestAnalysis.risk.level})
               </span>
             </div>
             <div>
               <span className="text-slate-500 text-[11px] block">Previous Pest Count</span>
-              <span className="font-bold text-slate-900 mt-0.5 block">
+              <span className="font-bold text-slate-900 mt-0.5 block font-heading">
                 {targetField.latestAnalysis.pest.currentCount} {targetField.latestAnalysis.pest.pestType}
               </span>
             </div>
@@ -385,7 +385,7 @@ export const CheckField: React.FC = () => {
                   alt="Captured crop leaf preview"
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute top-3 left-3 bg-slate-900/85 text-white text-xs px-2.5 py-1 rounded backdrop-blur-xs font-mono flex items-center gap-1.5">
+                <div className="absolute top-3 left-3 bg-slate-900/85 text-white text-xs px-2.5 py-1 rounded backdrop-blur-xs font-semibold flex items-center gap-1.5">
                   <ScanLine className="w-3.5 h-3.5 text-emerald-400" />
                   <span>PHOTO LOADED</span>
                 </div>
@@ -513,7 +513,7 @@ export const CheckField: React.FC = () => {
           {/* Follow-up Treatment Verification Input */}
           {isFollowupMode && (
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
-              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider font-mono block">
+              <label className="text-xs font-bold text-slate-800 uppercase tracking-wider block font-heading">
                 Did you apply the recommended treatment / action?
               </label>
 
@@ -572,7 +572,7 @@ export const CheckField: React.FC = () => {
           {/* Pest Inputs */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider font-mono">
+              <label className="text-xs font-semibold text-slate-700">
                 Primary Pest Observed
               </label>
               <select
@@ -590,7 +590,7 @@ export const CheckField: React.FC = () => {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider font-mono">
+              <label className="text-xs font-semibold text-slate-700">
                 Current Pest Count (per 20 leaves)
               </label>
               <input
@@ -604,7 +604,7 @@ export const CheckField: React.FC = () => {
 
             {isFollowupMode && (
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-700 uppercase tracking-wider font-mono">
+                <label className="text-xs font-semibold text-slate-700">
                   Prior Baseline Count
                 </label>
                 <div className="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-medium text-slate-600">
@@ -614,7 +614,7 @@ export const CheckField: React.FC = () => {
             )}
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider font-mono">
+              <label className="text-xs font-semibold text-slate-700">
                 Derived Population Trend
               </label>
               <div className="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 flex items-center justify-between">
@@ -672,7 +672,7 @@ export const CheckField: React.FC = () => {
           {!isFollowupMode && (
             <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-bold text-slate-700 uppercase tracking-wider font-mono">
+                <label className="text-xs font-bold text-slate-800 uppercase tracking-wider font-heading">
                   Field Selection
                 </label>
                 <label className="flex items-center gap-2 text-xs font-semibold text-emerald-800 cursor-pointer">
@@ -732,7 +732,7 @@ export const CheckField: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider font-mono">
+              <label className="text-xs font-semibold text-slate-700">
                 Planting Date & Crop Age
               </label>
               <input
@@ -742,13 +742,13 @@ export const CheckField: React.FC = () => {
                 className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-medium text-slate-900 focus:outline-none focus:ring-1 focus:ring-emerald-600 focus:bg-white"
               />
               <div className="text-[11px] text-slate-500 font-medium">
-                Crop Age: <strong>{daysSincePlanting} days</strong> · Stage:{' '}
+                Crop Age: <strong className="font-heading">{daysSincePlanting} days</strong> · Stage:{' '}
                 {daysSincePlanting > 60 ? 'Flowering & Boll Development' : 'Vegetative Stage'}
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider font-mono">
+              <label className="text-xs font-semibold text-slate-700">
                 Crop Variety
               </label>
               <input
@@ -765,7 +765,7 @@ export const CheckField: React.FC = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <CloudSun className="w-4 h-4 text-sky-600" />
-                <span className="text-xs font-bold text-slate-700 uppercase tracking-wider font-mono">
+                <span className="text-xs font-bold text-slate-700 uppercase tracking-wider font-heading">
                   LOCAL CHENNAI WEATHER
                 </span>
               </div>
