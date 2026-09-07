@@ -27,7 +27,7 @@ export const FieldHealth: React.FC = () => {
               key={f.id}
               onClick={() => {
                 setSelectedFieldId(f.id);
-                navigate('/');
+                navigate('/dashboard');
               }}
               className="bg-white border border-slate-200 rounded-xl p-5 shadow-xs hover:border-slate-300 transition-colors cursor-pointer flex flex-col justify-between"
             >

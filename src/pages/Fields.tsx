@@ -210,7 +210,7 @@ export const Fields: React.FC = () => {
                     key={f.id}
                     onClick={() => {
                       setSelectedFieldId(f.id);
-                      navigate('/');
+                      navigate('/dashboard');
                     }}
                     className="hover:bg-slate-50/80 transition-colors cursor-pointer"
                   >
@@ -259,7 +259,7 @@ export const Fields: React.FC = () => {
                         <button
                           onClick={() => {
                             setSelectedFieldId(f.id);
-                            navigate('/');
+                            navigate('/dashboard');
                           }}
                           className="px-2.5 py-1 text-[11px] font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded transition-colors"
                         >
@@ -288,7 +288,7 @@ export const Fields: React.FC = () => {
             key={f.id}
             onClick={() => {
               setSelectedFieldId(f.id);
-              navigate('/');
+              navigate('/dashboard');
             }}
             className="bg-white border border-slate-200 rounded-xl p-4 shadow-xs space-y-3 cursor-pointer"
           >

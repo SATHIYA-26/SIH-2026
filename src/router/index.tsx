@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { AppShell } from '../components/layout/AppShell';
+import { Landing } from '../pages/Landing';
 import { Dashboard } from '../pages/Dashboard';
 import { Fields } from '../pages/Fields';
 import { FieldHealth } from '../pages/FieldHealth';
@@ -18,9 +19,14 @@ import { Profile } from '../pages/Profile';
 export const router = createBrowserRouter([
   {
     path: '/',
+    element: <Landing />,
+  },
+  {
+    path: '/',
     element: <AppShell />,
     children: [
-      { index: true, element: <Dashboard /> },
+      { path: 'dashboard', element: <Dashboard /> },
+      { path: 'app', element: <Dashboard /> },
       { path: 'fields', element: <Fields /> },
       { path: 'field-health', element: <FieldHealth /> },
       { path: 'history', element: <History /> },
@@ -37,3 +43,4 @@ export const router = createBrowserRouter([
     ],
   },
 ]);
+

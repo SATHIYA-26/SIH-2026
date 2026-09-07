@@ -178,15 +178,6 @@ export const TopHeader: React.FC = () => {
               </div>
             )}
           </div>
-
-          {/* Primary Action Button: CHECK FIELD */}
-          <button
-            onClick={() => navigate('/check-field')}
-            className="flex items-center gap-2 bg-emerald-700 hover:bg-emerald-800 active:bg-emerald-900 text-white px-3.5 py-2 rounded-lg text-xs font-semibold transition-all shadow-sm shadow-emerald-900/10 cursor-pointer"
-          >
-            <PlusCircle className="w-4 h-4" />
-            <span className="uppercase tracking-wider">CHECK FIELD</span>
-          </button>
         </div>
       </div>
     </header>

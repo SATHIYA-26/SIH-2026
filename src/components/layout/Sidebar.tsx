@@ -17,6 +17,7 @@ import {
   User,
   X,
   Sprout,
+  Globe,
   LucideIcon,
 } from 'lucide-react';
 
@@ -47,7 +48,7 @@ export const Sidebar: React.FC = () => {
     {
       group: 'OVERVIEW',
       items: [
-        { label: 'Dashboard', path: '/', icon: LayoutDashboard },
+        { label: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
         { label: 'My Fields', path: '/fields', icon: Grid },
         { label: 'Field Health', path: '/field-health', icon: HeartPulse },
         { label: 'History', path: '/history', icon: HistoryIcon },

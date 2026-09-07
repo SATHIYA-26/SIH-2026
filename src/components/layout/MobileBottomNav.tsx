@@ -10,9 +10,9 @@ export const MobileBottomNav: React.FC = () => {
 
   return (
     <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 px-2 py-1 flex items-center justify-around shadow-md">
-      {/* Home */}
+      {/* Home / Dashboard */}
       <NavLink
-        to="/"
+        to="/dashboard"
         className={({ isActive }) =>
           `flex flex-col items-center py-1 px-3 text-[11px] font-medium transition-colors ${
             isActive ? 'text-emerald-800 font-bold' : 'text-slate-500 hover:text-slate-900'

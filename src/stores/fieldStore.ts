@@ -112,10 +112,17 @@ export const useFieldStore = create<FieldState>()(
       },
 
       addField: (field: Field) => {
-        set(state => ({
-          fields: [field, ...state.fields],
-          selectedFieldId: field.id
-        }));
+        set(state => {
+          const exists = state.fields.some(f => f.id === field.id);
+          const updated = exists
+            ? state.fields.map(f => (f.id === field.id ? field : f))
+            : [field, ...state.fields];
+
+          return {
+            fields: updated,
+            selectedFieldId: field.id
+          };
+        });
       },
 
       resetToDefaults: () => {

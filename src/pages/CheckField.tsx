@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAnalysisStore, CheckMode, TreatmentStatus } from '../stores/analysisStore';
 import { useFieldStore } from '../stores/fieldStore';
 import { Field, FollowUpRecord } from '../types/field';
+import { FullFieldAnalysis } from '../types/analysis';
 import {
   Camera,
   UploadCloud,
@@ -107,9 +108,15 @@ export const CheckField: React.FC = () => {
   const handleRunAnalysis = () => {
     startAnalysis((result) => {
       if (formState.isNewFieldCreation && formState.newFieldName) {
-        // Create brand new field
+        // Create brand new field with permanent ID
+        const generatedId = `field-${Date.now()}`;
+        const finalResult: FullFieldAnalysis = {
+          ...result,
+          fieldId: generatedId,
+        };
+
         const newFieldObj: Field = {
-          id: `field-${Date.now()}`,
+          id: generatedId,
           name: formState.newFieldName,
           crop: formState.crop,
           variety: formState.variety,
@@ -117,13 +124,13 @@ export const CheckField: React.FC = () => {
           plantingDate: formState.plantingDate,
           daysSincePlanting: daysSincePlanting,
           estimatedGrowthStage: daysSincePlanting > 60 ? 'Flowering & Boll Development' : 'Vegetative Stage',
-          currentConditionStatus: result.condition.status,
-          riskProbability: result.risk.probability,
-          riskLevel: result.risk.level,
-          pestPressureSummary: `${result.pest.currentCount} ${result.pest.pestType} (${result.pest.pestPressure})`,
+          currentConditionStatus: finalResult.condition.status,
+          riskProbability: finalResult.risk.probability,
+          riskLevel: finalResult.risk.level,
+          pestPressureSummary: `${finalResult.pest.currentCount} ${finalResult.pest.pestType} (${finalResult.pest.pestPressure})`,
           lastCheckedDate: 'Today',
-          nextCheckDays: result.followup.daysRemaining,
-          locationName: formState.newLocation,
+          nextCheckDays: finalResult.followup.daysRemaining,
+          locationName: formState.newLocation || 'Chennai Agritech Sector, Tamil Nadu',
           polygon: {
             center: [13.0827, 80.2707],
             bounds: [
@@ -134,12 +141,18 @@ export const CheckField: React.FC = () => {
             ]
           },
           inspectionPoints: [],
-          latestAnalysis: result,
+          latestAnalysis: finalResult,
           followUpCount: 0,
           followUpHistory: []
         };
         addField(newFieldObj);
         setSelectedFieldId(newFieldObj.id);
+        updateForm({
+          isNewFieldCreation: false,
+          fieldId: newFieldObj.id,
+          newFieldName: '',
+        });
+        setSearchParams({ fieldId: newFieldObj.id, mode: 'initial' }, { replace: true });
         return;
       }
 
@@ -889,7 +902,7 @@ export const CheckField: React.FC = () => {
             </div>
 
             <button
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/dashboard')}
               className="px-3.5 py-1.5 rounded-lg bg-white border border-emerald-300 text-xs font-semibold text-emerald-900 hover:bg-emerald-100 transition-colors cursor-pointer self-start sm:self-auto"
             >
               Open Dashboard

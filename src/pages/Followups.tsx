@@ -169,7 +169,7 @@ export const Followups: React.FC = () => {
                 <button
                   onClick={() => {
                     setSelectedFieldId(sch.fieldId);
-                    navigate('/');
+                    navigate('/dashboard');
                   }}
                   className="text-xs text-slate-600 hover:text-slate-900 font-medium cursor-pointer"
                 >
